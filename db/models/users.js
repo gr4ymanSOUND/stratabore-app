@@ -1,7 +1,6 @@
 // grab our db client connection to use with our adapters
 const client = require('../client');
 const bcrypt = require('bcrypt');
-const { user } = require('pg/lib/defaults');
 const SALT = 13;
 
 async function getAllUsers() {

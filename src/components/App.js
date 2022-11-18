@@ -9,11 +9,18 @@ import Footer from './Footer';
 
 const App = () => {
 
+  const tokenFromStorage = localStorage.getItem('userToken');
+
+  const [ token, setToken ] = useState(tokenFromStorage);
+  const [ user, setUser ] = useState();
+
+
+
     return (
         <BrowserRouter>
             <Header />
             <Routes>
-                <Route exact path="/" element={<Login />} />
+                <Route exact path="/" element={<Login setToken={setToken}/>} />
                 <Route exact path="/database" element={<Database />} />
             </Routes>
             <Footer />
