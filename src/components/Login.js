@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { loginUser } from "../axios-services";
 
-
 const Login = ({ setToken }) => {
 
     const [userName, setUserName] = useState("");
@@ -15,9 +14,10 @@ const Login = ({ setToken }) => {
           return;
         }
 
-        // const response = await loginUser(userName, password);
-        // setToken(response.token);
-        // localStorage.setItem("userToken", response.token);
+        const response = await loginUser(userName, password);
+        setToken(response.token);
+        localStorage.setItem("userToken", response.token);
+        console.log(response.message, response.user);
 
         setUserName("");
         setPassword("");
