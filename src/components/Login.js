@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { loginUser } from "../axios-services";
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setUser}) => {
 
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
@@ -16,6 +16,7 @@ const Login = ({ setToken }) => {
 
         const response = await loginUser(userName, password);
         setToken(response.token);
+        setUser(response.user);
         localStorage.setItem("userToken", response.token);
         console.log(response.message, response.user);
 
@@ -26,33 +27,37 @@ const Login = ({ setToken }) => {
 
     return (
         <>
-            <form className='account-form' onSubmit={submitHandler}>
-                <h2>Please Log In</h2>
-                <div className="form-section">
-                <label className="form-label">Username:</label>
-                <input
-                    type="text"
-                    minLength={'6'}
-                    value={userName}
-                    onChange={({target: {value}}) => setUserName(value)}
-                    className="form-control"
-                    id="user"
-                    placeholder="Your User Name Here"
-                />
+            <form className='login-form' onSubmit={submitHandler}>
+                <div className='login-header'>
+                    <h2>Please Log In</h2>
                 </div>
-                <div className="form-section">
-                <label className="form-label">Password:</label>
-                <input
-                    type="password"
-                    minLength={'6'}
-                    value={password}
-                    onChange={({target: {value}}) => setPassword(value)}
-                    className="form-control"
-                    id="pass"
-                    placeholder="********"
-                />
+                <div className='login-body'>
+                    <div className="input-section">
+                        <label className="input-label">Username:</label>
+                        <input
+                            type="text"
+                            minLength={'6'}
+                            value={userName}
+                            onChange={({target: {value}}) => setUserName(value)}
+                            className="form-control"
+                            id="user"
+                            placeholder="Your User Name Here"
+                        />
+                    </div>
+                    <div className="input-section">
+                        <label className="input-label">Password:</label>
+                        <input
+                            type="password"
+                            minLength={'6'}
+                            value={password}
+                            onChange={({target: {value}}) => setPassword(value)}
+                            className="form-control"
+                            id="pass"
+                            placeholder="********"
+                        />
+                    </div>
+                    <button className="login-button" type='submit'>Login</button>
                 </div>
-                <button className="userform-button" type='submit'>Login</button>
             </form>
         </>
     )

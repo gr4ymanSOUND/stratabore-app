@@ -15,3 +15,20 @@ export async function loginUser(userName, password){
         console.error(error)
     }
 }
+
+export async function getMe(token) {
+    try {
+     const auth = {
+       headers: {
+         Authorization: `Bearer ${token}`
+       }
+     };
+ 
+     const { data } = await axios.get(`/api/users/me`, auth);
+ 
+     return data;
+ 
+    } catch (error) {
+      console.error(error)
+    }
+ }
