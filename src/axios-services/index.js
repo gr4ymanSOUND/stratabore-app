@@ -31,4 +31,12 @@ export async function getMe(token) {
     } catch (error) {
       console.error(error)
     }
- }
+}
+
+export async function getJobs(token) {
+    try {
+      
+    } catch (error) {
+      
+    }
+}
