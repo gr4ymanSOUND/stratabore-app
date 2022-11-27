@@ -1,0 +1,110 @@
+
+/* Header */
+
+header {
+    display: block;
+    width: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#logo {
+    height: auto;
+    width: 80px;
+    margin-bottom: -.7rem;
+    margin-top: -.3rem;
+    margin-left: 2rem;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    padding-top: 0;
+    width: 100vw;
+    font-size: 1.2rem;
+    background-image: linear-gradient(120deg, rgb(158, 158, 158), rgb(180, 180, 180));
+    border-bottom: 2px rgb(224, 194, 22) solid;
+    box-shadow: 2px 2px 2px rgba(100, 100, 100, 0.75);
+}
+
+.other-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.other-nav a {
+    display: block;
+    align-self: stretch;
+    padding: 1rem 1.8rem .3rem 1rem;
+    margin: 0rem 0rem 0rem -.3rem;
+    text-decoration: none;
+    color:rgb(224, 194, 22);
+    text-shadow: 2px 1px 3px black;
+    background-image: linear-gradient(120deg, rgba(183, 183, 183, 0.6), rgba(188, 188, 188, 0.7), rgba(183, 183, 183, 0.5), rgba(183, 183, 183, 0.4), rgba(178, 178, 178, 0.1));
+    border-left: 5px rgb(224, 194, 22) solid;
+    border-radius: 0px 0px 0px 8px;
+}
+
+.other-nav a:hover {
+    background-image: linear-gradient(to right, rgb(224, 194, 22), rgb(224, 194, 22), rgba(224, 194, 22, 0.76), rgba(224, 194, 22, 0.062));
+    color: rgb(50, 50, 50);
+    text-shadow: 2px 1px 3px gray;
+}
+
+.navbar .icon {
+    display: none;
+    padding: 1rem;
+    text-decoration: none;
+    color:rgb(224, 194, 22);
+    text-shadow: 2px 1px 3px black;
+    font-size: 1.75rem;
+}
+
+@media only screen and (max-width: 740px) {
+
+    header {
+        display: block;
+        width: auto;
+        position: sticky;
+        top: 0;
+    }
+
+    .navbar {
+        display: block;
+    }
+
+    .other-nav {
+        display: none;
+    }
+
+    #logo {
+        height:fit-content;
+        width: 100px;
+        margin-right: 0;
+        margin-top: 0;
+        margin-top: -.25rem;
+        margin-left: 1rem;
+    }
+
+    .other-nav a {
+        font-size: 1.5rem;
+        padding: .5rem 1rem .5rem .5rem;
+        background-image: none;
+    }
+
+    .navbar .icon {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+    }
+
+    .other-nav.open {
+        display: block;
+    }
+    
+}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Login from './Login';
-import { getJobs } from '../axios-services/index';
+import { getAllJobs } from '../axios-services/index';
 
 const Database = ({ token }) => {
 
@@ -28,23 +27,23 @@ const Database = ({ token }) => {
         }
     ]
 
-    const [ joblist, setJobList ] = useState(testJobs);
+    const [ joblist, setJobList ] = useState([]);
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     const fetchJobs = async () => {
-    //         try {
-    //             const jobs = await getJobs(token);
-    //             setJobList();
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
+        const fetchJobs = async () => {
+            try {
+                const jobs = await getAllJobs(token);
+                setJobList();
+            } catch (error) {
+                console.log(error);
+            }
 
-    //     }
+        }
 
-    //     fetchJobs();
+        fetchJobs();
 
-    // }, [])
+    }, [])
 
 
     return (

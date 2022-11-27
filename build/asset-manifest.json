@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.efe3d24c.css",
-    "main.js": "/static/js/main.99dd6f33.js",
+    "main.css": "/static/css/main.05e8f9f9.css",
+    "main.js": "/static/js/main.7e02e6e2.js",
     "static/media/stratabore-logo-transparent.png": "/static/media/stratabore-logo-transparent.6c5fec07f29bde4ed17f.png",
     "index.html": "/index.html",
-    "main.efe3d24c.css.map": "/static/css/main.efe3d24c.css.map",
-    "main.99dd6f33.js.map": "/static/js/main.99dd6f33.js.map"
+    "main.05e8f9f9.css.map": "/static/css/main.05e8f9f9.css.map",
+    "main.7e02e6e2.js.map": "/static/js/main.7e02e6e2.js.map"
   },
   "entrypoints": [
-    "static/css/main.efe3d24c.css",
-    "static/js/main.99dd6f33.js"
+    "static/css/main.05e8f9f9.css",
+    "static/js/main.7e02e6e2.js"
   ]
 }

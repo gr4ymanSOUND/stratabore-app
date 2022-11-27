@@ -14,7 +14,7 @@ const App = () => {
   const tokenFromStorage = localStorage.getItem('userToken');
 
   const [ token, setToken ] = useState(tokenFromStorage);
-  const [ user, setUser ] = useState();
+  const [ user, setUser ] = useState({});
 
   useEffect(() => {
 

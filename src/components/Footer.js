@@ -15,7 +15,7 @@ const Footer = ({ user, setUser, token, setToken }) => {
                 { !user ? null : (
                     <>
                     <p className="big-vert-line">|</p>
-                    <p>Logged in as: {user.userName}</p>
+                    <p>Logged in as: <span>{user.userName}</span></p>
                     <button onClick={logOut}>Log Out</button>
                     </>
                 )}

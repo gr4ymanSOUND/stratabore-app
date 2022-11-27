@@ -18,25 +18,33 @@ export async function loginUser(userName, password){
 
 export async function getMe(token) {
     try {
-     const auth = {
-       headers: {
-         Authorization: `Bearer ${token}`
-       }
-     };
- 
-     const { data } = await axios.get(`/api/users/me`, auth);
- 
-     return data;
+        const auth = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+        };
+    
+        const { data } = await axios.get(`/api/users/me`, auth);
+    
+        return data;
  
     } catch (error) {
-      console.error(error)
+        console.error(error)
     }
 }
 
-export async function getJobs(token) {
+export async function getAllJobs(token) {
     try {
+
+        const auth = {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          };
+
+          const { data } = await axios.get(`/api/jobs`, auth);
       
     } catch (error) {
-      
+        console.error(error);
     }
 }
