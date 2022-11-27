@@ -1,6 +1,9 @@
 /* Footer */
 
 footer {
+    height: 5vh;
+    position: sticky;
+    bottom: 0;
     display: flex;
     justify-content: center;
     margin-top: .25rem;
@@ -21,7 +24,7 @@ footer {
 
 .big-vert-line {
     font-weight: normal;
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin: 0rem .5rem;
 }
 

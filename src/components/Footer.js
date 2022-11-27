@@ -8,6 +8,8 @@ const Footer = ({ user, setUser, token, setToken }) => {
         localStorage.removeItem('userToken');
     }
 
+    console.log(user);
+
     return (
         <footer>
             <div className="copyright-username">

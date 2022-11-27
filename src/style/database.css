@@ -1,3 +1,67 @@
+/* Database Page */
+
+.database {
+    min-height: 85vh;
+    width: 95vw;
+    margin: 0 auto;
+    border: 1px rgb(175, 175, 175) solid;
+    /* border: 1px black solid; */
+    box-shadow: 2px 1px 8px 3px rgba(0,0,0, 0.4);
+}
+
+.joblist-column-headers {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 2.5rem;
+    text-align: center;
+    border-bottom: 2px black solid;
+    background-color: rgb(175, 175, 175);
+}
+
+.numCol {
+    min-width: 80px;
+    width: 15vw;
+    text-align: center;
+}
+
+.textCol {
+    min-width: 120px;
+    width: 40vw;
+    padding-left: .5rem;
+}
+
+.joblist-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.single-job {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 1.75rem;
+    border-bottom: 1px black dotted;
+    background-color: rgb(200, 200, 200);
+}
+
+.single-job:nth-child(even) {
+    background-color: rgb(185, 185, 185);
+}
+
+/* handle styles common to every column, like the dotted borders between columns */
+
+.column {
+    border-right: 1px black dotted;
+}
+
+.column:last-child {
+    border-right: none;
+}
 
 
 @media only screen and (max-width: 740px) {

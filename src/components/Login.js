@@ -26,7 +26,7 @@ const Login = ({ setToken, setUser}) => {
 
 
     return (
-        <>
+        <div className='login'>
             <form className='login-form' onSubmit={submitHandler}>
                 <div className='login-header'>
                     <h2>Please Log In</h2>
@@ -59,7 +59,7 @@ const Login = ({ setToken, setUser}) => {
                     <button className="login-button" type='submit'>Login</button>
                 </div>
             </form>
-        </>
+        </div>
     )
 }
 

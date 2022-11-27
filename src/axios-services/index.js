@@ -43,6 +43,8 @@ export async function getAllJobs(token) {
           };
 
           const { data } = await axios.get(`/api/jobs`, auth);
+
+          return data;
       
     } catch (error) {
         console.error(error);
