@@ -1,12 +1,13 @@
 /* Database Page */
 
 .database {
-    min-height: 85vh;
+    height: 85vh;
     width: 95vw;
-    margin: 0 auto;
+    margin: .5rem auto;
     border: 1px rgb(175, 175, 175) solid;
     /* border: 1px black solid; */
     box-shadow: 2px 1px 8px 3px rgba(0,0,0, 0.4);
+    overflow: scroll;
 }
 
 .joblist-column-headers {
@@ -64,8 +65,8 @@
 }
 
 
-@media only screen and (max-width: 740px) {
+/* @media only screen and (max-width: 740px) {
 
 
     
-}
+} */
