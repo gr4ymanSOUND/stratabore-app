@@ -1,16 +1,24 @@
 /* Database Page */
 
 .database {
-    height: 85vh;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    max-height: 75vh;
     width: 95vw;
-    margin: .5rem auto;
+    margin: 0 auto;
     border: 1px rgb(175, 175, 175) solid;
     /* border: 1px black solid; */
     box-shadow: 2px 1px 8px 3px rgba(0,0,0, 0.4);
-    overflow: scroll;
+    background-color: rgb(175, 175, 175);
 }
 
 .joblist-column-headers {
+    width: 95vw;
+    margin: 4rem auto 0 auto;
+
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
@@ -18,7 +26,7 @@
     height: 2.5rem;
     text-align: center;
     border-bottom: 2px black solid;
-    background-color: rgb(175, 175, 175);
+    background-color: rgb(170, 170, 170);
 }
 
 .numCol {
@@ -38,6 +46,9 @@
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: stretch;
+    overflow: scroll;
+    /* height: 100%; */
+
 }
 
 .single-job {

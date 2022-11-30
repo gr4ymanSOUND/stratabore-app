@@ -26,14 +26,15 @@ const Database = ({ token }) => {
 
 
     return (
+        <>
+        <div className='joblist-column-headers'>
+            <div className='column numCol'>Number</div>
+            <div className='column textCol'>Location</div>
+            <div className='column numCol'># Holes</div>
+            <div className='column numCol'>Total Ft</div>
+            <div className='column numCol'>Rig</div>
+        </div>
         <div className='database'>
-            <div className='joblist-column-headers'>
-                <div className='column numCol'>Number</div>
-                <div className='column textCol'>Location</div>
-                <div className='column numCol'># Holes</div>
-                <div className='column numCol'>Total Ft</div>
-                <div className='column numCol'>Rig</div>
-            </div>
             <div className='joblist-container'>
                 {jobList.map((job) => {
 
@@ -50,6 +51,7 @@ const Database = ({ token }) => {
                 })}
             </div>
         </div>
+        </>
     )
 }
 
