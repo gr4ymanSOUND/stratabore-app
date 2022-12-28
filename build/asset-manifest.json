@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.394da7ed.css",
+    "main.js": "/static/js/main.f5b27fd1.js",
+    "static/media/stratabore-logo-transparent.png": "/static/media/stratabore-logo-transparent.6c5fec07f29bde4ed17f.png",
+    "index.html": "/index.html",
+    "main.394da7ed.css.map": "/static/css/main.394da7ed.css.map",
+    "main.f5b27fd1.js.map": "/static/js/main.f5b27fd1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.394da7ed.css",
+    "static/js/main.f5b27fd1.js"
+  ]
+}
