@@ -4,6 +4,7 @@ import { getAllJobs, addJob, deleteJob, editJob } from '../axios-services';
 
 const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected }) => {
 
+  const gridRef = useRef();
   const [jobNumber, setJobNumber] = useState('');
   const [location, setLocation] = useState('');
   const [numHoles, setNumHoles] = useState('');
@@ -77,10 +78,10 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setFormType("reset")
   };
 
-  const cancelListener = useCallback(e => {
-    e.preventDefault();
-    setFormType("reset");
-  }, []);
+  // const cancelListener = useCallback(e => {
+  //   e.preventDefault();
+  //   setFormType("reset");
+  // }, []);
 
 
   return !formType ? null : (
@@ -144,7 +145,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>
           {(formType === "edit-job") ? <button id='delete-job' onClick={deleteListener}>Delete Job</button> : null}
-          <button className="cancel-button" onClick={cancelListener}>Cancel</button>
+          {/* <button className="cancel-button" onClick={cancelListener}>Cancel</button> */}
         </div>
       </form>
     </>

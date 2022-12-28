@@ -31,11 +31,16 @@ const Database = ({ token }) => {
 
   // effect to un-select the row when the form type changes to "add" or ""
   useEffect(() => {
-    if (formType == "add-job" || formType == "reset") {
+    if (formType == "add-job" || formType == "cancel") {
       setCurrentSelected({});
       gridRef.current.api.deselectAll();
 
-      formType == "reset" ? setFormType("") : null
+      if (formType == "cancel") {
+        setFormType("")
+        const buttonTimeout = setTimeout(() => {
+          gridRef.current.api.sizeColumnsToFit();
+        })
+      }
     }
   }, [formType])
 
@@ -59,10 +64,13 @@ const Database = ({ token }) => {
     setCurrentSelected(e.data);
   }
 
-  // Example using Grid's API
   // sets the formType when the add or edit button is clicked
-  const buttonListener = useCallback(e => {
+  // also resizes the grid to show all columns when the form is added/removed in the sidebar
+  const buttonListener = useCallback((e) => {
     setFormType(e.target.id);
+    const buttonResizeTrigger = setTimeout(() => {
+      gridRef.current.api.sizeColumnsToFit();
+    })
   }, []);
 
   // resizes the columns inside the grid to fit the grid/window size (is called when the grid/window gets resized)
@@ -84,29 +92,31 @@ const Database = ({ token }) => {
 
   return (
     <div className='database'>
-      <div className="ag-theme-alpine" style={{ height: '100%', width: '100%' }}>
-        <AgGridReact
-          ref={gridRef} // Ref for accessing Grid's API
-          rowData={jobList} // Row Data
-          columnDefs={columnDefs} // Column Defs
-          defaultColDef={defaultColDef} // Default Column Properties
-          animateRows={true} // Optional - set to 'true' to have rows animate when sorted
-          rowSelection='single' // Options - allows click selection of rows
-          onRowClicked={rowSelectedListener} // register row selection event
-          onGridReady={onGridReady}
-        />
-      </div>
-      <div className='database-sidebar'>
+      <div className='button-list' >
         {
-          formType ? null :
-            <div className='button-list' >
-              <button id='add-job' onClick={buttonListener}>Add Job</button>
+          (formType == "edit-job" || formType == "add-job") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
+          :
+            <>
               {Object.keys(currentSelected).length !== 0 ? <button id='edit-job' onClick={buttonListener}>Edit Selected Job</button> : null}
-            </div>
+              <button id='add-job' onClick={buttonListener}>Add Job</button>
+            </>
         }
-        <div className='form-container'>
+      </div>
+      <div className='data-table'>
+        <div className="ag-theme-alpine" style={{ height: '100%', width: '100%' }}>
+          <AgGridReact
+            ref={gridRef} // Ref for accessing Grid's API
+            rowData={jobList} // Row Data
+            columnDefs={columnDefs} // Column Defs
+            defaultColDef={defaultColDef} // Default Column Properties
+            animateRows={true} // Optional - set to 'true' to have rows animate when sorted
+            rowSelection='single' // Options - allows click selection of rows
+            onRowClicked={rowSelectedListener} // register row selection event
+            onGridReady={onGridReady}
+          />
+        </div>
+        <div className='data-form'>
           <JobForm
-            gridRef={gridRef}
             token={token}
             formType={formType}
             setFormType={setFormType}
@@ -117,6 +127,7 @@ const Database = ({ token }) => {
         </div>
       </div>
     </div>
+    
   );
 }
 
