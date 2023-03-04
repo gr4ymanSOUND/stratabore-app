@@ -29,19 +29,20 @@ const Database = ({ token }) => {
     fetchJobs();
   }, [])
 
-  // effect to un-select the row when the form type changes to "add" or ""
+  // effect to deal with formtype changes
   useEffect(() => {
-    if (formType == "add-job" || formType == "cancel") {
+    if (formType == "add-job") {
       setCurrentSelected({});
       gridRef.current.api.deselectAll();
-
-      if (formType == "cancel") {
-        setFormType("")
-        const buttonTimeout = setTimeout(() => {
-          gridRef.current.api.sizeColumnsToFit();
-        })
-      }
     }
+
+    if (formType == "cancel" || formType == "reset") {
+      setFormType("")
+      const buttonTimeout = setTimeout(() => {
+        gridRef.current.api.sizeColumnsToFit();
+      })
+    }
+
   }, [formType])
 
 
@@ -64,7 +65,7 @@ const Database = ({ token }) => {
     setCurrentSelected(e.data);
   }
 
-  // sets the formType when the add or edit button is clicked
+  // sets the formType when any button is clicked
   // also resizes the grid to show all columns when the form is added/removed in the sidebar
   const buttonListener = useCallback((e) => {
     setFormType(e.target.id);
@@ -94,7 +95,7 @@ const Database = ({ token }) => {
     <div className='database'>
       <div className='button-list' >
         {
-          (formType == "edit-job" || formType == "add-job") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
+          (formType == "edit-job" || formType == "add-job" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
           :
             <>
               {Object.keys(currentSelected).length !== 0 ? <button id='edit-job' onClick={buttonListener}>Edit Selected Job</button> : null}

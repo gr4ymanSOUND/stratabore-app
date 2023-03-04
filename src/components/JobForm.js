@@ -49,33 +49,34 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     if (formType == 'edit-job') {
       const jobId = currentSelected.id;
       const response = await editJob(token, jobId, newJob)
-
       console.log('edit job submission, id: ', jobId, newJob);
     }
-
-    //reset form state after sumbission
+    
+    //reset form state and close the form after sumbission
     setJobNumber('');
     setLocation('');
     setNumHoles('');
     setNumFeet('');
     setRigId('');
+    setFormType("reset")
 
     // reset the job list and see the newly added/edited data in the spreadsheet
     const newJobList = await getAllJobs(token);
     setJobList(newJobList);
-    setFormType("reset")
-
   };
 
   const deleteListener = async (e) => {
     e.preventDefault();
     const jobId = currentSelected.id;
     await deleteJob(token, jobId);
+
+    // reset the selection and hide the form
     setCurrentSelected({});
+    setFormType("reset")
+
     // reset the job list
     const newJobList = await getAllJobs(token);
     setJobList(newJobList);
-    setFormType("reset")
   };
 
   // const cancelListener = useCallback(e => {
