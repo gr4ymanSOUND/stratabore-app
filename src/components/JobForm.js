@@ -60,9 +60,13 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setRigId('');
     setFormType("reset")
 
+    // sets the edited job data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
+    setCurrentSelected(newJob);
+
     // reset the job list and see the newly added/edited data in the spreadsheet
     const newJobList = await getAllJobs(token);
     setJobList(newJobList);
+
   };
 
   const deleteListener = async (e) => {
@@ -79,9 +83,12 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setJobList(newJobList);
   };
 
-  // const cancelListener = useCallback(e => {
-  //   e.preventDefault();
-  //   setFormType("reset");
+  // this is an example for programmatically selecting a row based on part of the data
+  // I should be able to use this to re-select the correct row after editing/adding jobs
+  // const selectAllAmerican = useCallback(() => {
+  //   gridRef.current.api.forEachNode(function (node) {
+  //     node.setSelected(node.data.country === 'United States');
+  //   });
   // }, []);
 
 

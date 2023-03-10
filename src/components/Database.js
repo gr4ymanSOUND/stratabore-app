@@ -27,6 +27,7 @@ const Database = ({ token }) => {
       }
     }
     fetchJobs();
+
   }, [])
 
   // effect to deal with formtype changes
@@ -40,8 +41,22 @@ const Database = ({ token }) => {
       setFormType("")
       const buttonTimeout = setTimeout(() => {
         gridRef.current.api.sizeColumnsToFit();
+        
       })
     }
+
+    // if (formType == "") {
+    //   if (currentSelected.jobNumber) {
+    //     console.log('attempting to re-select job: ', currentSelected.jobNumber);
+    //     const reselectTimeout = setTimeout(() => {
+    //       gridRef.current.api.forEachNode(function (node) {
+    //         console.log('node job: ', node.data.jobNumber);
+    //         node.setSelected(node.data.jobNumber === currentSelected.jobNumber);
+    //       });
+    //     })
+        
+    //   }
+    // }
 
   }, [formType])
 
@@ -68,9 +83,11 @@ const Database = ({ token }) => {
   // sets the formType when any button is clicked
   // also resizes the grid to show all columns when the form is added/removed in the sidebar
   const buttonListener = useCallback((e) => {
+
     setFormType(e.target.id);
     const buttonResizeTrigger = setTimeout(() => {
       gridRef.current.api.sizeColumnsToFit();
+
     })
   }, []);
 
@@ -89,6 +106,20 @@ const Database = ({ token }) => {
   console.log('form type', formType)
   console.log('jobs', jobList)
   console.log('current row', currentSelected);
+  console.log('does current selected have ID?: ', "id" in currentSelected);
+
+
+  // only run this if there is a "currentSelected" object that does not have an ID, but run it after the final render every time
+  // have to do this so late because only the final re-render seems to capture updated job numbers in state properly for this to access it
+  if (!("id" in currentSelected) && currentSelected.jobNumber) {
+    const timer = setTimeout(() => {
+      console.log('attempting to re-select job: ', currentSelected.jobNumber);
+      gridRef.current.api.forEachNode(function (node) {
+        console.log('node job: ', node.data.jobNumber);
+        node.setSelected(node.data.jobNumber === currentSelected.jobNumber);
+      });
+    })
+  }
 
 
   return (

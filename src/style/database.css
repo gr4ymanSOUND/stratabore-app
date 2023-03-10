@@ -1,7 +1,7 @@
 /* Database Page */
 
 .database {
-  margin: 4rem auto;
+  margin: 4rem auto 1rem auto;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-evenly;
