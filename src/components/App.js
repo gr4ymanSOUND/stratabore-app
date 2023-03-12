@@ -8,28 +8,23 @@ import Footer from './Footer';
 
 import { getMe } from '../axios-services';
 
-
 const App = () => {
-
+  // state  and useEffect dealing with user details for logged in users
   const tokenFromStorage = localStorage.getItem('userToken');
-
   const [ token, setToken ] = useState(tokenFromStorage);
   const [ user, setUser ] = useState({});
 
   useEffect(() => {
-
     const getUserInfo = async () => {
       const userInfo = await getMe(token);
       return setUser(userInfo);
     }
-
     if (token) {
       getUserInfo();
     }
-
   }, [token]);
 
-
+  //contains the routes for each main page
     return (
         <BrowserRouter>
             <Header token={token}/>
@@ -55,7 +50,6 @@ const App = () => {
               setToken={setToken}
             />
         </BrowserRouter>
-  
     )
   }
 

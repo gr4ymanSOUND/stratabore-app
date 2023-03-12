@@ -9,17 +9,20 @@ const Login = ({ setToken, setUser}) => {
     const submitHandler = async (e) =>{
         e.preventDefault()
 
+        // quick pop-up prompt if the user left a field blank
         if (!userName || !password) {
           alert('Please enter a username and/or password!')
           return;
         }
 
+        // call API to attempt to log in
         const response = await loginUser(userName, password);
         setToken(response.token);
         setUser(response.user);
         localStorage.setItem("userToken", response.token);
         console.log(response.message, response.user);
 
+        // reset state for the form
         setUserName("");
         setPassword("");
     }

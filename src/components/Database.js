@@ -10,12 +10,15 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 import { getAllJobs } from '../axios-services/index';
 
 const Database = ({ token }) => {
+  //for accessing Grid's API
+  const gridRef = useRef();
 
-  const gridRef = useRef(); // Optional - for accessing Grid's API
+  // state for database contents , formtype, and currently selected row
   const [jobList, setJobList] = useState([]);
   const [formType, setFormType] = useState("");
   const [currentSelected, setCurrentSelected] = useState({});
 
+  // get all the jobs when the page loads
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -27,7 +30,6 @@ const Database = ({ token }) => {
       }
     }
     fetchJobs();
-
   }, [])
 
   // effect to deal with formtype changes
@@ -36,7 +38,6 @@ const Database = ({ token }) => {
       setCurrentSelected({});
       gridRef.current.api.deselectAll();
     }
-
     if (formType == "cancel" || formType == "reset") {
       setFormType("")
       const buttonTimeout = setTimeout(() => {
@@ -44,22 +45,7 @@ const Database = ({ token }) => {
         
       })
     }
-
-    // if (formType == "") {
-    //   if (currentSelected.jobNumber) {
-    //     console.log('attempting to re-select job: ', currentSelected.jobNumber);
-    //     const reselectTimeout = setTimeout(() => {
-    //       gridRef.current.api.forEachNode(function (node) {
-    //         console.log('node job: ', node.data.jobNumber);
-    //         node.setSelected(node.data.jobNumber === currentSelected.jobNumber);
-    //       });
-    //     })
-        
-    //   }
-    // }
-
   }, [formType])
-
 
   // Each Column Definition results in one Column.
   const [columnDefs, setColumnDefs] = useState([
@@ -83,11 +69,9 @@ const Database = ({ token }) => {
   // sets the formType when any button is clicked
   // also resizes the grid to show all columns when the form is added/removed in the sidebar
   const buttonListener = useCallback((e) => {
-
     setFormType(e.target.id);
     const buttonResizeTrigger = setTimeout(() => {
       gridRef.current.api.sizeColumnsToFit();
-
     })
   }, []);
 
@@ -108,7 +92,6 @@ const Database = ({ token }) => {
   console.log('current row', currentSelected);
   console.log('does current selected have ID?: ', "id" in currentSelected);
 
-
   // only run this if there is a "currentSelected" object that does not have an ID, but run it after the final render every time
   // have to do this so late because only the final re-render seems to capture updated job numbers in state properly for this to access it
   if (!("id" in currentSelected) && currentSelected.jobNumber) {
@@ -120,7 +103,6 @@ const Database = ({ token }) => {
       });
     })
   }
-
 
   return (
     <div className='database'>
@@ -159,7 +141,6 @@ const Database = ({ token }) => {
         </div>
       </div>
     </div>
-    
   );
 }
 

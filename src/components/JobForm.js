@@ -3,15 +3,14 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { getAllJobs, addJob, deleteJob, editJob } from '../axios-services';
 
 const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected }) => {
-
-  const gridRef = useRef();
+  // state for editable form fields
   const [jobNumber, setJobNumber] = useState('');
   const [location, setLocation] = useState('');
   const [numHoles, setNumHoles] = useState('');
   const [numFeet, setNumFeet] = useState('');
   const [rigId, setRigId] = useState('');
 
-
+  // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
     if (formType === "edit-job") {
       setJobNumber(currentSelected.jobNumber);
@@ -21,6 +20,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setRigId(currentSelected.rigId);
     }
 
+    // makes sure the form is empty when it is hidden
     if (formType == "") {
       setJobNumber("");
       setLocation("");
@@ -31,7 +31,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
   }, [formType, currentSelected])
 
-
+  // listens to any submit event - either add or edit
   const submitListener = async (e) => {
     e.preventDefault();
 
@@ -69,28 +69,25 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
   };
 
+  // specifically listens to the delete button
   const deleteListener = async (e) => {
     e.preventDefault();
-    const jobId = currentSelected.id;
-    await deleteJob(token, jobId);
 
-    // reset the selection and hide the form
-    setCurrentSelected({});
-    setFormType("reset")
+    // sanity check with the user before deleting
+    if( confirm(`Are you sure you want to delete this job? \n Job #: ${currentSelected.jobNumber}`) ) {
+      // call the API to delete the job
+      const jobId = currentSelected.id;
+      await deleteJob(token, jobId);
 
-    // reset the job list
-    const newJobList = await getAllJobs(token);
-    setJobList(newJobList);
+      // reset the selection and hide the form
+      setCurrentSelected({});
+      setFormType("reset")
+
+      // reset the job list to include the changes
+      const newJobList = await getAllJobs(token);
+      setJobList(newJobList);
+    }
   };
-
-  // this is an example for programmatically selecting a row based on part of the data
-  // I should be able to use this to re-select the correct row after editing/adding jobs
-  // const selectAllAmerican = useCallback(() => {
-  //   gridRef.current.api.forEachNode(function (node) {
-  //     node.setSelected(node.data.country === 'United States');
-  //   });
-  // }, []);
-
 
   return !formType ? null : (
     <>
@@ -158,7 +155,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       </form>
     </>
   )
-
 }
 
 export default JobForm;
