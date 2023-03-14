@@ -5,6 +5,7 @@ import { getAllJobs, addJob, deleteJob, editJob } from '../axios-services';
 const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected }) => {
   // state for editable form fields
   const [jobNumber, setJobNumber] = useState('');
+  const [client, setClient] = useState('');
   const [location, setLocation] = useState('');
   const [numHoles, setNumHoles] = useState('');
   const [numFeet, setNumFeet] = useState('');
@@ -14,6 +15,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   useEffect(() => {
     if (formType === "edit-job") {
       setJobNumber(currentSelected.jobNumber);
+      setClient(currentSelected.client);
       setLocation(currentSelected.location);
       setNumHoles(currentSelected.numHoles);
       setNumFeet(currentSelected.numFeet);
@@ -23,6 +25,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     // makes sure the form is empty when it is hidden
     if (formType == "") {
       setJobNumber("");
+      setClient("");
       setLocation("");
       setNumHoles("");
       setNumFeet("");
@@ -37,6 +40,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
     const newJob = {
       jobNumber: jobNumber,
+      client: client,
       location: location,
       numHoles: numHoles,
       numFeet: numFeet,
@@ -54,6 +58,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     
     //reset form state and close the form after sumbission
     setJobNumber('');
+    setClient('');
     setLocation('');
     setNumHoles('');
     setNumFeet('');
@@ -100,9 +105,23 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               value={jobNumber}
               onChange={({ target: { value } }) => setJobNumber(value)}
               className="form-control"
-              id="jobNum"
+              id="jobNumber"
               placeholder="XXX-000"
             />
+          </div>
+          <div className="input-section">
+            <label className="input-label">Client</label>
+            <select 
+              id="client"
+              name="client"
+              value={client}
+              onChange={({ target: { value } }) => setClient(value)}
+            >
+              <option value="EWL">EWL</option>
+              <option value="TER">TER</option>
+              <option value="AAA">AAA</option>
+              <option value="ZZZ">ZZZ</option>
+            </select>
           </div>
           <div className="input-section">
             <label className="input-label">Location</label>

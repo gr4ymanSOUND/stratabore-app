@@ -50,6 +50,7 @@ const Database = ({ token }) => {
   // Each Column Definition results in one Column.
   const [columnDefs, setColumnDefs] = useState([
     { field: 'jobNumber', filter: true },
+    { field: 'client', filter: true },
     { field: 'location', filter: true },
     { field: 'numHoles' },
     { field: 'numFeet' },
