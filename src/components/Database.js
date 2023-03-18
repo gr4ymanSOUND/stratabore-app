@@ -49,12 +49,13 @@ const Database = ({ token }) => {
 
   // Each Column Definition results in one Column.
   const [columnDefs, setColumnDefs] = useState([
-    { field: 'jobNumber', filter: true },
-    { field: 'client', filter: true },
+    { headerName: 'Job #',field: 'jobNumber', filter: true, width: 150},
+    { field: 'client', filter: true , width: 130},
     { field: 'location', filter: true },
-    { field: 'numHoles' },
-    { field: 'numFeet' },
-    { field: 'rigId', filter: true }
+    { headerName: 'Holes', field: 'numHoles', width: 75 },
+    { headerName: '# Ft', field: 'numFeet', width: 75 },
+    { headerName: 'Date', field: 'jobDate', filter: true, width: 100 },
+    { headerName: 'Rig', field: 'rigId', filter: true, width: 60}
   ]);
 
   // DefaultColDef sets props common to all Columns

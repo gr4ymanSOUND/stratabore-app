@@ -20,6 +20,10 @@
   --ag-cell-horizontal-border: solid lightgray;
 }
 
+.ag-header-cell-label {
+  justify-content: center;
+}
+
 /* table, buttons, and forms */
 
 
@@ -29,7 +33,7 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  height: 85vh;
+  height: 84vh;
   width: 95vw;
   border: 1px rgb(175, 175, 175) solid;
   box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
@@ -60,6 +64,20 @@
   min-height: 1.5rem;
   /* hack to put buttons slightly over top of table headers */
   z-index: 3;
+}
+
+.button-list button {
+  background-color:rgb(224, 194, 22);
+  color: rgb(48, 48, 48);
+  border: none;
+  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  margin: .25rem;
+  padding: .25rem;
+}
+
+.button-list button:hover {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
 }
 
 

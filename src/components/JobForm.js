@@ -9,6 +9,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const [location, setLocation] = useState('');
   const [numHoles, setNumHoles] = useState('');
   const [numFeet, setNumFeet] = useState('');
+  const [jobDate, setJobDate] = useState('');
   const [rigId, setRigId] = useState('');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
@@ -19,17 +20,19 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setLocation(currentSelected.location);
       setNumHoles(currentSelected.numHoles);
       setNumFeet(currentSelected.numFeet);
+      setJobDate(currentSelected.jobDate);
       setRigId(currentSelected.rigId);
     }
 
     // makes sure the form is empty when it is hidden
     if (formType == "") {
-      setJobNumber("");
-      setClient("");
-      setLocation("");
-      setNumHoles("");
-      setNumFeet("");
-      setRigId("");
+      setJobNumber('')
+      setClient('');
+      setLocation('');
+      setNumHoles('');
+      setNumFeet('');
+      setJobDate('')
+      setRigId('');
     }
 
   }, [formType, currentSelected])
@@ -62,6 +65,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setLocation('');
     setNumHoles('');
     setNumFeet('');
+    setJobDate('');
     setRigId('');
     setFormType("reset")
 
@@ -154,6 +158,17 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               className="form-control"
               id="numFeet"
               placeholder="20"
+            />
+          </div>
+          <div className="input-section">
+            <label className="input-label">Date</label>
+            <input
+              type="date"
+              value={jobDate}
+              onChange={({ target: { value } }) => setJobDate(value)}
+              className="form-control"
+              id="jobDate"
+              placeholder=""
             />
           </div>
           <div className="input-section">
