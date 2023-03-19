@@ -14,6 +14,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
+
     if (formType === "edit-job") {
       setJobNumber(currentSelected.jobNumber);
       setClient(currentSelected.client);
@@ -47,6 +48,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       location: location,
       numHoles: numHoles,
       numFeet: numFeet,
+      jobDate: jobDate,
       rigId: rigId
     }
 

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './Header';
 import Login from './Login';
 import Database from './Database';
+import Calendar from './Calendar';
 import Footer from './Footer';
 
 import { getMe } from '../axios-services';
@@ -41,6 +42,13 @@ const App = () => {
                     element={
                       !token ? <Navigate to="/" replace /> :
                       <Database token={token}/>
+                    }
+                  />
+                  <Route 
+                    exact path="/calendar"
+                    element={
+                      !token ? <Navigate to="/" replace /> :
+                      <Calendar token={token}/>
                     }
                   />
               </Routes>
