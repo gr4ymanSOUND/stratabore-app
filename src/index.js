@@ -10,6 +10,7 @@ import './style/database.css';
 import './style/calendar.css';
 import './style/jobForm.css';
 import './style/login.css';
+import './style/adminTools.css';
 
 const root = createRoot(document.getElementById('root'));
 root.render(

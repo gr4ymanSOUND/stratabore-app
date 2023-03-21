@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-const Date = ({currentMonth, specificDate, jobList}) => {
+const SingleDate = ({currentMonth, specificDate, jobList}) => {
   
   // split the date string into parts to create the date labels
   // check if the date is in the current month or not, and adjust the label appropriately
@@ -15,4 +15,4 @@ const Date = ({currentMonth, specificDate, jobList}) => {
 
 }
 
-export default Date;
+export default SingleDate;

@@ -3,9 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Header from './Header';
 import Login from './Login';
-import Database from './Database';
+import JobDatabase from './JobDatabase';
 import Calendar from './Calendar';
 import Footer from './Footer';
+import AdminTools from './AdminTools';
 
 import { getMe } from '../axios-services';
 
@@ -41,7 +42,7 @@ const App = () => {
                     exact path="/database"
                     element={
                       !token ? <Navigate to="/" replace /> :
-                      <Database token={token}/>
+                      <JobDatabase token={token}/>
                     }
                   />
                   <Route 
@@ -49,6 +50,13 @@ const App = () => {
                     element={
                       !token ? <Navigate to="/" replace /> :
                       <Calendar token={token}/>
+                    }
+                  />
+                  <Route 
+                    exact path="/admin"
+                    element={
+                      !token ? <Navigate to="/" replace /> :
+                      <AdminTools token={token} user={user}/>
                     }
                   />
               </Routes>

@@ -186,7 +186,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>
           {(formType === "edit-job") ? <button id='delete-job' onClick={deleteListener}>Delete Job</button> : null}
-          {/* <button className="cancel-button" onClick={cancelListener}>Cancel</button> */}
         </div>
       </form>
     </>
