@@ -30,7 +30,7 @@ const Database = ({ token }) => {
       }
     }
     fetchJobs();
-  }, [])
+  }, []);
 
   // effect to deal with formtype changes
   useEffect(() => {
@@ -45,7 +45,7 @@ const Database = ({ token }) => {
         
       })
     }
-  }, [formType])
+  }, [formType]);
 
   // Each Column Definition results in one Column.
   const [columnDefs, setColumnDefs] = useState([
