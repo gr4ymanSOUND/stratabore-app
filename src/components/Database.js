@@ -24,7 +24,6 @@ const Database = ({ token }) => {
       try {
         const jobs = await getAllJobs(token);
         setJobList(jobs);
-
       } catch (error) {
         console.log(error);
       }
@@ -42,7 +41,6 @@ const Database = ({ token }) => {
       setFormType("")
       const buttonTimeout = setTimeout(() => {
         gridRef.current.api.sizeColumnsToFit();
-        
       })
     }
   }, [formType]);

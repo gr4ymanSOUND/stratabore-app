@@ -22,7 +22,6 @@ const Calendar = ({token}) => {
       try {
         const jobs = await getAllJobs(token);
         setJobList(jobs);
-
       } catch (error) {
         console.log(error);
       }
@@ -36,10 +35,8 @@ const Calendar = ({token}) => {
   }, []);
 
   const monthButtons = (e) => {
-
     let newYear;
     let newMonth;
-
     // month logic
     if (e.currentTarget.id == 'prevMonth') {
       newMonth = currentMonth - 1;
@@ -47,7 +44,6 @@ const Calendar = ({token}) => {
     if (e.currentTarget.id == 'nextMonth') {
       newMonth = currentMonth + 1;
     }
-
     // check if year needs to be updated
     if (newMonth < 0) {
       newMonth += 12;
@@ -59,10 +55,8 @@ const Calendar = ({token}) => {
       newYear = currentYear + 1;
       setCurrentYear(newYear);
     }
-
     // set month to state after all other updates
     setCurrentMonth(newMonth);
-
   };
 
   // create an array with dates to use to generate the SingleDate components
@@ -81,20 +75,19 @@ const Calendar = ({token}) => {
     // find the number of days in the previous month to use for creating startHolders
     const daysLastMonth = new Date(year, month, 0).getUTCDate();
     for (let i = startHolders; i > 0; i--) {
-      dateHolderArray.push(`(${daysLastMonth - i + 1})`);
+      dateHolderArray.push(`${year}-${month}-${daysLastMonth - i + 1}`);
     }
     for (let i = 0; i < daysInMonth; i++) {
-      dateHolderArray.push(i+1);
+      dateHolderArray.push(`${year}-${ (month + 1) % 12 }-${i+1}`);
     }
     for (let i = 0; i < endHolders ;i++) {
-      dateHolderArray.push(`(${i+1})`);
+      dateHolderArray.push(`${year}-${ (month + 2) % 12 }-${i+1}`);
     }
     // return the array of date labels
     return dateHolderArray;
   }
 
   const testDates = createDateArray(currentYear,currentMonth);
-
 
   return (
     <div className='calendar-container'>
@@ -118,7 +111,11 @@ const Calendar = ({token}) => {
           testDates.map((specificDate,index) => {
             return (
               <div className='day' key={index}>
-                <SingleDate specificDate={specificDate}/>
+                <SingleDate
+                  currentMonth={currentMonth}
+                  specificDate={specificDate}
+                  jobList={jobList}
+                />
               </div>
             )
           })
