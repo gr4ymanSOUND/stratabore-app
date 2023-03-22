@@ -116,7 +116,7 @@ const JobDatabase = ({ token }) => {
             </>
         }
       </div>
-      <div className='data-table'>
+      <div className='job-table'>
         <div className="ag-theme-alpine" style={{ height: '100%', width: '100%' }}>
           <AgGridReact
             ref={gridRef} // Ref for accessing Grid's API
@@ -137,7 +137,8 @@ const JobDatabase = ({ token }) => {
             jobList={jobList}
             setJobList={setJobList}
             currentSelected={currentSelected}
-            setCurrentSelected={setCurrentSelected} />
+            setCurrentSelected={setCurrentSelected}
+          />
         </div>
       </div>
     </div>

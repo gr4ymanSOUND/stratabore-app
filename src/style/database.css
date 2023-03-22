@@ -13,6 +13,8 @@
 
 .ag-theme-alpine {
 
+  --ag-grid-size: 5px;
+
   --ag-header-column-separator-display: block;
   --ag-header-column-separator-color: black;
   --ag-header-background-color: rgb(170, 170, 170);
@@ -27,7 +29,7 @@
 /* table, buttons, and forms */
 
 
-.data-table {
+.job-table {
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -60,9 +62,11 @@
   justify-content: flex-end;
   justify-self: flex-end;
   align-self: flex-end;
-  width: 95vw;
+  width: 95%;
   min-height: 1.5rem;
   /* hack to put buttons slightly over top of table headers */
+  position: relative;
+
   z-index: 3;
 }
 
@@ -86,4 +90,18 @@
   display: block;
 }
 
+/* admin tool specific changes */
 
+.admin-table {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  height: 400px;
+  border: 1px rgb(175, 175, 175) solid;
+  box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
+  background-color: rgb(175, 175, 175);
+
+  overflow: hidden;
+}
