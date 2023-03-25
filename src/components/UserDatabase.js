@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
+import UserForm from './UserForm';
+
 // AG Grid imports
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
@@ -32,7 +34,7 @@ const UserDatabase = ({token}) => {
 
   // effect to deal with formtype changes
   useEffect(() => {
-    if (formType == "add-rig") {
+    if (formType == "add-user") {
       setCurrentSelected({});
       gridRef.current.api.deselectAll();
     }
@@ -92,7 +94,7 @@ const UserDatabase = ({token}) => {
           :
             <>
               {Object.keys(currentSelected).length !== 0 ? <button id='edit-user' onClick={buttonListener}>Edit Selected User</button> : null}
-              <button id='add-rig' onClick={buttonListener}>Add User</button>
+              <button id='add-user' onClick={buttonListener}>Add User</button>
             </>
         }
       </div>
@@ -110,7 +112,13 @@ const UserDatabase = ({token}) => {
           />
         </div>
         <div className='data-form'>
-
+          <UserForm 
+            formType={formType}
+            setFormType={setFormType}
+            currentSelected={currentSelected}
+            setCurrentSelected={setCurrentSelected}
+            setUserList={setUserList}
+          />
         </div>
       </div>
     </div>
