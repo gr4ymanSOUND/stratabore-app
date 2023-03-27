@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
+import RigForm from './RigForm';
+
 // AG Grid imports
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 
 // axios imports
-import { getAllRigs} from '../axios-services';
+import { getAllRigs } from '../axios-services';
 
 const RigDatabase = ({token}) => {
   //for accessing Grid's API
@@ -82,6 +84,8 @@ const RigDatabase = ({token}) => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
 
+  console.log('rig list', rigList);
+
   return (
     <div className='rig-database'>
       <div>rig list and form here</div>
@@ -109,7 +113,13 @@ const RigDatabase = ({token}) => {
           />
         </div>
         <div className='data-form'>
-
+          <RigForm 
+            formType={formType}
+            setFormType={setFormType}
+            currentSelected={currentSelected}
+            setCurrentSelected={setCurrentSelected}
+            setRigList={setRigList}
+          />
         </div>
       </div>
     </div>

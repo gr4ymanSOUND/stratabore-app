@@ -86,12 +86,6 @@ const JobDatabase = ({ token }) => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
 
-  // a few sanity check console.logs
-  console.log('form type', formType)
-  console.log('jobs', jobList)
-  console.log('current row', currentSelected);
-  console.log('does current selected have ID?: ', "id" in currentSelected);
-
   // only run this if there is a "currentSelected" object that does not have an ID, but run it after the final render every time
   // have to do this so late because only the final re-render seems to capture updated job numbers in state properly for this to access it
   if (!("id" in currentSelected) && currentSelected.jobNumber) {

@@ -1,11 +1,11 @@
-.job-form {
+.form-container {
   border: 1px green solid;
   font-size: 1rem;
 }
 
 
 
-.job-form button {
+.form-container button {
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);
   border: none;
@@ -14,7 +14,7 @@
   padding: .25rem;
 }
 
-.job-form button:hover {
+.form-container button:hover {
   background-color: rgb(48, 48, 48);
   color:rgb(224, 194, 22);
 }

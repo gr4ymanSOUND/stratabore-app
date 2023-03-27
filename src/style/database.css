@@ -64,9 +64,9 @@
   align-self: flex-end;
   width: 95%;
   min-height: 1.5rem;
+  
   /* hack to put buttons slightly over top of table headers */
   position: relative;
-
   z-index: 3;
 }
 

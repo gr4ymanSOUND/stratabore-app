@@ -10,6 +10,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
   const [userEmail, setUserEmail] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [userStatus, setUserStatus] = useState('');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
@@ -21,6 +22,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
       setUserEmail(currentSelected.email);
       setIsAdmin(currentSelected.isAdmin);
       setIsChecked(currentSelected.isAdmin)
+      setUserStatus(currentSelected.status);
     }
 
     // makes sure the form is empty when it is hidden
@@ -30,6 +32,8 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
       setLastName('');
       setUserEmail('');
       setIsAdmin(false);
+      setIsChecked(false)
+      setUserStatus('');
     }
 
   }, [formType, currentSelected])
@@ -44,6 +48,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
       lastName: lastName,
       email: userEmail,
       isAdmin: isAdmin,
+      status: userStatus
     }
 
     if (formType == 'add-user') {
@@ -61,6 +66,8 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
     setLastName('');
     setUserEmail('');
     setIsAdmin(false);
+    setIsChecked(false);
+    setUserStatus('')
     setFormType("reset")
 
     console.log('new user', newUser)
@@ -102,7 +109,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
 
   return !formType ? null : (
     <>
-      <form className='job-form' onSubmit={submitListener}>
+      <form className='form-container' onSubmit={submitListener}>
         <div className='form-body'>
           <div className="input-section">
             <label className="input-label">UserName</label>
@@ -157,6 +164,18 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
               checked={isChecked}
               onChange={handleAdminChange}
               />
+          </div>
+          <div className="input-section">
+            <label className="input-label">Status</label>
+            <select 
+              id="userStatus"
+              name="userStatus"
+              value={userStatus}
+              onChange={({ target: { value } }) => setUserStatus(value)}
+            >
+              <option value="inactive">Inactive</option>
+              <option value="active">Active</option>
+            </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>
           {(formType === "edit-user") ? <button id='delete-user' onClick={deleteListener}>Delete User</button> : null}

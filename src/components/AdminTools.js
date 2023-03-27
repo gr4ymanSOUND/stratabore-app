@@ -9,7 +9,6 @@ import { getAllUsers, getAllRigs } from '../axios-services';
 
 const AdminTools = ({token, user}) => {
 
-  console.log('current user', user);
 
   return (
     <>

@@ -11,6 +11,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const [numFeet, setNumFeet] = useState('');
   const [jobDate, setJobDate] = useState('');
   const [rigId, setRigId] = useState('');
+  const [jobStatus, setJobStatus] = useState('');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
@@ -23,6 +24,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setNumFeet(currentSelected.numFeet);
       setJobDate(currentSelected.jobDate);
       setRigId(currentSelected.rigId);
+      setJobStatus(currentSelected.status);
     }
 
     // makes sure the form is empty when it is hidden
@@ -34,6 +36,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setNumFeet('');
       setJobDate('')
       setRigId('');
+      setJobStatus('');
     }
 
   }, [formType, currentSelected])
@@ -49,7 +52,8 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       numHoles: numHoles,
       numFeet: numFeet,
       jobDate: jobDate,
-      rigId: rigId
+      rigId: rigId,
+      status: jobStatus
     }
 
     if (formType == 'add-job') {
@@ -69,6 +73,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setNumFeet('');
     setJobDate('');
     setRigId('');
+    setJobStatus('');
     setFormType("reset")
 
     // sets the edited job data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
@@ -102,7 +107,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
   return !formType ? null : (
     <>
-      <form className='job-form' onSubmit={submitListener}>
+      <form className='form-container' onSubmit={submitListener}>
         <div className='job-body'>
           <div className="input-section">
             <label className="input-label">Job Number</label>
@@ -183,6 +188,19 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               id="rigId"
               placeholder="?"
             />
+          </div>
+          <div className="input-section">
+            <label className="input-label">Status</label>
+            <select 
+              id="jobStatus"
+              name="jobStatus"
+              value={jobStatus}
+              onChange={({ target: { value } }) => setJobStatus(value)}
+            >
+              <option value="pending">Pending</option>
+              <option value="complete">Complete</option>
+              <option value="canceled">Canceled</option>
+            </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>
           {(formType === "edit-job") ? <button id='delete-job' onClick={deleteListener}>Delete Job</button> : null}
