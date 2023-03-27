@@ -51,7 +51,8 @@ const RigDatabase = ({token}) => {
     { headerName: 'ID', field: 'id' },
     { headerName: 'Plate', field: 'licensePlate', filter: true },
     { headerName: 'Type', field: 'rigType', filter: true },
-    { headerName: 'Color', field: 'boardColor', filter: true }
+    { headerName: 'Color', field: 'boardColor', filter: true },
+    { headerName: 'Status', field: 'status', filter: true }
   ]);
 
   // DefaultColDef sets props common to all Columns
@@ -88,7 +89,7 @@ const RigDatabase = ({token}) => {
 
   return (
     <div className='rig-database'>
-      <div>rig list and form here</div>
+      <div>All Rigs</div>
       <div className='button-list' >
         {
           (formType == "edit-rig" || formType == "add-rig" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>

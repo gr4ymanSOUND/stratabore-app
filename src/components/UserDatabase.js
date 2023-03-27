@@ -52,7 +52,8 @@ const UserDatabase = ({token}) => {
     { headerName: 'First Name', field: 'firstName', filter: true },
     { headerName: 'Last Name', field: 'lastName', filter: true },
     { headerName: 'Email', field: 'email', filter: true },
-    { headerName: 'Admin', field: 'isAdmin', filter: true }
+    { headerName: 'Admin', field: 'isAdmin', filter: true },
+    { headerName: 'Status', field: 'status', filter: true }
   ]);
 
   // DefaultColDef sets props common to all Columns
@@ -85,9 +86,11 @@ const UserDatabase = ({token}) => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
 
+  console.log('users', userList);
+
   return (
     <div className='user-database'>
-      <div>user list and form here</div>
+      <div>All Users:</div>
       <div className='button-list' >
         {
           (formType == "edit-user" || formType == "add-user" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
