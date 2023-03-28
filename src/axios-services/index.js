@@ -45,6 +45,37 @@ export async function getAllUsers(token) {
   }
 }
 
+export async function editUser(token, userId, newUserData) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const payload = {
+      newUserData: newUserData
+    }
+    const { data } = await axios.patch(`/api/users/${userId}`, payload, auth);
+    return data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function removeUser(token, userId) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const { data } = await axios.delete(`/api/users/${userId}`, auth);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 // job calls
 
 export async function getAllJobs(token) {
@@ -78,7 +109,7 @@ export async function addJob(token, newJob) {
   }
 }
 
-export async function deleteJob(token, jobId) {
+export async function cancelJob(token, jobId) {
   try {
     const auth = {
       headers: {
@@ -125,5 +156,34 @@ export async function getAllRigs(token) {
   }
 }
 
+export async function editRig(token, rigId, newRigData) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const payload = {
+      newRigData: newRigData
+    }
+    const { data } = await axios.patch(`/api/rigs/${rigId}`, payload, auth);
+    return data;
+  } catch (error) {
+    console.error(error)
+  }
+}
 
+export async function removeRig(token, rigId) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const { data } = await axios.delete(`/api/rigs/${rigId}`, auth);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
 

@@ -25,7 +25,7 @@ const JobDatabase = ({ token }) => {
         const jobs = await getAllJobs(token);
         setJobList(jobs);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     fetchJobs();

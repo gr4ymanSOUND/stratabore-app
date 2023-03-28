@@ -26,7 +26,7 @@ const RigDatabase = ({token}) => {
         const allRigs = await getAllRigs(token);
         setRigList(allRigs);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     fetchRigs();
@@ -85,7 +85,7 @@ const RigDatabase = ({token}) => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
 
-  console.log('rig list', rigList);
+  console.log('current rig', currentSelected)
 
   return (
     <div className='rig-database'>
@@ -114,7 +114,8 @@ const RigDatabase = ({token}) => {
           />
         </div>
         <div className='data-form'>
-          <RigForm 
+          <RigForm
+            token={token}
             formType={formType}
             setFormType={setFormType}
             currentSelected={currentSelected}

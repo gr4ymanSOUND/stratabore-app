@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllRigs } from '../axios-services';
+import { getAllRigs, editRig, removeRig } from '../axios-services';
 
-const RigForm = ({formType, setFormType, currentSelected, setCurrentSelected, setRigList}) => {
+const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelected, setRigList}) => {
 
   const [ licensePlate, setLicensePlate ] = useState('');
   const [ rigType, setRigType ] = useState('');
@@ -11,7 +11,6 @@ const RigForm = ({formType, setFormType, currentSelected, setCurrentSelected, se
 
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
-
     if (formType === "edit-rig") {
       setLicensePlate(currentSelected.licensePlate);
       setRigType(currentSelected.rigType);
@@ -44,8 +43,9 @@ const RigForm = ({formType, setFormType, currentSelected, setCurrentSelected, se
       // const response = await addRig();
     }
     if (formType == 'edit-rig') {
+      console.log('current rig id', currentSelected.id)
       const rigId = currentSelected.id;
-      // const response = await editRig(token, rigId, newRig)
+      const response = await editRig(token, rigId, newRig)
       console.log('edit rig submission, id: ', rigId, newRig);
     }
     
@@ -59,11 +59,11 @@ const RigForm = ({formType, setFormType, currentSelected, setCurrentSelected, se
     console.log('new rig', newRig)
 
     // sets the edited rig data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
-    // setCurrentSelected(newRig);
+    setCurrentSelected(newRig);
 
     // reset the rig list and see the newly added/edited data in the spreadsheet
-    // const newRigList = await getAllRigs(token);
-    // setRigList(newRigList);
+    const newRigList = await getAllRigs(token);
+    setRigList(newRigList);
 
   };
 
@@ -72,10 +72,10 @@ const RigForm = ({formType, setFormType, currentSelected, setCurrentSelected, se
     e.preventDefault();
 
     // sanity check with the user before deleting
-    if( confirm(`Are you sure you want to delete this Rig? \n ${currentSelected.licensePlate}`) ) {
+    if( confirm(`Are you sure you want to deactivate this Rig? \n ${currentSelected.licensePlate}`) ) {
       // call the API to delete the rig
       const rigId = currentSelected.id;
-      // await deleteJob(token, jobId);
+      await removeRig(token, rigId);
 
       // reset the selection and hide the form
       setCurrentSelected({});
@@ -139,13 +139,13 @@ const RigForm = ({formType, setFormType, currentSelected, setCurrentSelected, se
               value={rigStatus}
               onChange={({ target: { value } }) => setRigStatus(value)}
             >
-              <option value="lil">Inactive</option>
-              <option value="mid">In Repairs</option>
-              <option value="big">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="repairs">In Repairs</option>
+              <option value="active">Active</option>
             </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>
-          {(formType === "edit-rig") ? <button id='delete-rig' onClick={deleteListener}>Delete Rig</button> : null}
+          {(formType === "edit-rig") ? <button id='delete-rig' onClick={deleteListener}>Remove Rig</button> : null}
         </div>
       </form>
     </>

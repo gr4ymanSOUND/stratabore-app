@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllJobs, addJob, deleteJob, editJob } from '../axios-services';
+import { getAllJobs, addJob, cancelJob, editJob } from '../axios-services';
 
 const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected }) => {
   // state for editable form fields
@@ -85,15 +85,15 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
   };
 
-  // specifically listens to the delete button
-  const deleteListener = async (e) => {
+  // specifically listens to the cancel button
+  const cancelListener = async (e) => {
     e.preventDefault();
 
     // sanity check with the user before deleting
-    if( confirm(`Are you sure you want to delete this job? \n Job #: ${currentSelected.jobNumber}`) ) {
-      // call the API to delete the job
+    if( confirm(`Are you sure you want to cancel this job? \n Job #: ${currentSelected.jobNumber}`) ) {
+      // call the API to cancel the job
       const jobId = currentSelected.id;
-      await deleteJob(token, jobId);
+      await cancelJob(token, jobId);
 
       // reset the selection and hide the form
       setCurrentSelected({});
@@ -203,7 +203,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>
-          {(formType === "edit-job") ? <button id='delete-job' onClick={deleteListener}>Delete Job</button> : null}
+          {(formType === "edit-job") ? <button id='cancel-job' onClick={cancelListener}>Cancel Job</button> : null}
         </div>
       </form>
     </>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllUsers } from '../axios-services';
+import { getAllUsers, editUser, removeUser } from '../axios-services';
 
 const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, setUserList}) => {
 
@@ -56,7 +56,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
     }
     if (formType == 'edit-user') {
       const userId = currentSelected.id;
-      // const response = await editUser(token, userId, newUser)
+      const response = await editUser(token, userId, newUser)
       console.log('edit user submission, id: ', userId, newUser);
     }
     
@@ -73,11 +73,11 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
     console.log('new user', newUser)
 
     // sets the edited user data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
-    // setCurrentSelected(newUser);
+    setCurrentSelected(newUser);
 
     // reset the user list and see the newly added/edited data in the spreadsheet
-    // const newUserList = await getAllUsers(token);
-    // setUserList(newUserList);
+    const newUserList = await getAllUsers(token);
+    setUserList(newUserList);
 
   };
 
@@ -86,10 +86,10 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
     e.preventDefault();
 
     // sanity check with the user before deleting
-    if( confirm(`Are you sure you want to delete this User? \n ${currentSelected.userName}`) ) {
+    if( confirm(`Are you sure you want to deactivate this User? \n ${currentSelected.userName}`) ) {
       // call the API to delete the user
       const userId = currentSelected.id;
-      // await deleteJob(token, jobId);
+      await removeUser(token, userId);
 
       // reset the selection and hide the form
       setCurrentSelected({});
@@ -178,7 +178,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
             </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>
-          {(formType === "edit-user") ? <button id='delete-user' onClick={deleteListener}>Delete User</button> : null}
+          {(formType === "edit-user") ? <button id='delete-user' onClick={deleteListener}>Remove User</button> : null}
         </div>
       </form>
     </>

@@ -26,7 +26,7 @@ const UserDatabase = ({token}) => {
         const allUsers = await getAllUsers(token);
         setUserList(allUsers);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     fetchUsers();
@@ -86,8 +86,6 @@ const UserDatabase = ({token}) => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
 
-  console.log('users', userList);
-
   return (
     <div className='user-database'>
       <div>All Users:</div>
@@ -116,6 +114,7 @@ const UserDatabase = ({token}) => {
         </div>
         <div className='data-form'>
           <UserForm 
+            token={token}
             formType={formType}
             setFormType={setFormType}
             currentSelected={currentSelected}
