@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import SingleDate from './SingleDate';
 
 // axios imports
-import { getAllJobs } from '../axios-services/index';
+import { getAllJobs, getAllRigs } from '../axios-services/index';
 
 const Calendar = ({token}) => {
   // will use imported token for pulling data
@@ -12,11 +12,12 @@ const Calendar = ({token}) => {
   const [currentMonth, setCurrentMonth] = useState('');
   const [currentYear, setCurrentYear] = useState('');
   const [jobList, setJobList] = useState([]);
+  const [rigList, setRigList] = useState([]);
 
   // array to store month names to convert from numbers for label at top of calendar
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-  // uses the token to pull the job list, and set the date to current if there's nothing there
+  // uses the token to pull the job list, and 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -27,12 +28,29 @@ const Calendar = ({token}) => {
       }
     }
     fetchJobs();
+  }, []);
+
+  // set the date to current if there's nothing there
+  useEffect(() => {
     if (!currentMonth) {
       const d = new Date();
       setCurrentMonth(d.getUTCMonth());
       setCurrentYear(d.getUTCFullYear());
     }
-  }, []);
+  },[]);
+
+  // get the rig list to pass to each date for coloring and other data
+  useEffect(() => {
+    const fetchRigs = async () => {
+      try {
+        const rigs = await getAllRigs(token);
+        setRigList(rigs);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchRigs();
+  },[]);
 
   const monthButtons = (e) => {
     let newYear;
@@ -74,20 +92,41 @@ const Calendar = ({token}) => {
 
     // find the number of days in the previous month to use for creating startHolders
     const daysLastMonth = new Date(year, month, 0).getUTCDate();
+
+    // special logic to make sure the months have a leading zero if necessary for matching against the database
+    const updateDateNum = (dateNumToCheck) => {
+      let newDateNum;
+      if (parseInt(dateNumToCheck) < 10) {
+        newDateNum = '0' + dateNumToCheck;
+        console.log('updated date num', newDateNum)
+        return newDateNum
+      }
+      return dateNumToCheck;
+    }
+
     for (let i = startHolders; i > 0; i--) {
-      dateHolderArray.push(`${year}-${month}-${daysLastMonth - i + 1}`);
+      let textMonth = updateDateNum(month);
+      dateHolderArray.push(`${year}-${textMonth}-${daysLastMonth - i + 1}`);
     }
     for (let i = 0; i < daysInMonth; i++) {
-      dateHolderArray.push(`${year}-${ (month + 1) % 12 }-${i+1}`);
+      let newMonth = (month + 1) % 12;
+      let textMonth = updateDateNum(newMonth);
+      let textDay = updateDateNum(i+1)
+      dateHolderArray.push(`${year}-${textMonth}-${textDay}`);
     }
     for (let i = 0; i < endHolders ;i++) {
-      dateHolderArray.push(`${year}-${ (month + 2) % 12 }-${i+1}`);
+      let newMonth = (month + 2) % 12;
+      let textMonth = updateDateNum(newMonth);
+      dateHolderArray.push(`${year}-${textMonth}-${i+1}`);
     }
     // return the array of date labels
     return dateHolderArray;
   }
 
-  const testDates = createDateArray(currentYear,currentMonth);
+  const displayDates = createDateArray(currentYear,currentMonth);
+
+  console.log(jobList);
+  console.log(rigList);
 
   return (
     <div className='calendar-container'>
@@ -108,13 +147,14 @@ const Calendar = ({token}) => {
       <div className='month-grid'>
 
         {
-          testDates.map((specificDate,index) => {
+          displayDates.map((specificDate,index) => {
             return (
               <div className='day' key={index}>
                 <SingleDate
                   currentMonth={currentMonth}
                   specificDate={specificDate}
                   jobList={jobList}
+                  rigList={rigList}
                 />
               </div>
             )

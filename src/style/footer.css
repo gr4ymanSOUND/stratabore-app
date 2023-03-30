@@ -10,6 +10,9 @@ footer {
     background-image: linear-gradient(120deg, rgb(158, 158, 158), rgb(180, 180, 180));
     width: 100vw;
     border-top: 3px rgb(224, 194, 22) solid;
+
+    /* some of the admin buttons were floating over the footer because of the hack I needed to add to get them floating over the grids properly */
+    z-index: 15;
 }
 
 .copyright-username {
