@@ -9,7 +9,6 @@ const SingleDate = ({currentMonth, specificDate, jobList, rigList}) => {
   // check if the day starts with a leading zero, and remove it for a cleaner display at the top of the card
   if (dateParts[2][0] == '0') {
     dateParts[2] = dateParts[2].slice(1);
-    console.log('removed a leading zero', dateParts[2])
   }
   // check if the date is in the current month or not, and adjust the label appropriately
   if (dateParts[1] != currentMonth + 1) {
@@ -28,18 +27,20 @@ const SingleDate = ({currentMonth, specificDate, jobList, rigList}) => {
   return (
     <>
       <div>{dateParts[2]}</div>
-      {
-          rigList.map((rig,index) => {
-            return (
-              <div id={rig.licensePlate} key={index}>
-                <DateRig
-                  rig={rig}
-                  dayJobs={dayJobs}
-                />
-              </div>
-            )
-          })
-      }
+      <div className='day-content'>
+        {
+            rigList.map((rig,index) => {
+              return (
+                <div id={rig.licensePlate} key={rig.licensePlate}>
+                  <DateRig
+                    rig={rig}
+                    dayJobs={dayJobs}
+                  />
+                </div>
+              )
+            })
+        }
+      </div>
     </>
   )
 

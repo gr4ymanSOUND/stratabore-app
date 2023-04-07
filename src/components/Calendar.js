@@ -98,7 +98,6 @@ const Calendar = ({token}) => {
       let newDateNum;
       if (parseInt(dateNumToCheck) < 10) {
         newDateNum = '0' + dateNumToCheck;
-        console.log('updated date num', newDateNum)
         return newDateNum
       }
       return dateNumToCheck;
@@ -129,38 +128,40 @@ const Calendar = ({token}) => {
   console.log(rigList);
 
   return (
-    <div className='calendar-container'>
+    <div className='calendar-page'>
       <div className='month-selector'>
         <button id='prevMonth' className='month-arrow' onClick={monthButtons}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
         <div className='current-monthYear'>{monthNames[currentMonth]} {currentYear}</div>
         <button className='month-arrow' id='nextMonth' onClick={monthButtons}><i className="fa fa-arrow-right" aria-hidden="true"></i></button>
       </div>
-      <div className='day-of-week'>
-        <div className='dayName'>Sun</div>
-        <div className='dayName'>Mon</div>
-        <div className='dayName'>Tues</div>
-        <div className='dayName'>Wed</div>
-        <div className='dayName'>Thur</div>
-        <div className='dayName'>Fri</div>
-        <div className='dayName'>Sat</div>
-      </div>
-      <div className='month-grid'>
+      <div className='calendar-container'>
+        <div className='day-of-week'>
+          <div className='dayName'>Sun</div>
+          <div className='dayName'>Mon</div>
+          <div className='dayName'>Tues</div>
+          <div className='dayName'>Wed</div>
+          <div className='dayName'>Thur</div>
+          <div className='dayName'>Fri</div>
+          <div className='dayName'>Sat</div>
+        </div>
+        <div className='month-grid'>
 
-        {
-          displayDates.map((specificDate,index) => {
-            return (
-              <div className='day' key={index}>
-                <SingleDate
-                  currentMonth={currentMonth}
-                  specificDate={specificDate}
-                  jobList={jobList}
-                  rigList={rigList}
-                />
-              </div>
-            )
-          })
-        }
+          {
+            displayDates.map((specificDate,index) => {
+              return (
+                <div className='day' key={specificDate}>
+                  <SingleDate
+                    currentMonth={currentMonth}
+                    specificDate={specificDate}
+                    jobList={jobList}
+                    rigList={rigList}
+                  />
+                </div>
+              )
+            })
+          }
 
+        </div>
       </div>
     </div>
   )

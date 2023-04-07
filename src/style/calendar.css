@@ -1,23 +1,24 @@
-.calendar-container {
-    margin: 3.25rem .5rem 1rem .5rem;
+.calendar-page {
+    margin: 3.5rem .5rem 3rem .5rem;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-evenly;
     align-items: center;
-    height: fit-content;
-    border: 1px red solid;
 }
 
 /* display for the current month/year and buttons for changing the month */
 
 .month-selector {
-  border: 1px green solid;
-  width: 50vw;
+  background-color: rgb(170, 170, 170);
+  width: 45vw;
   min-width: 300px;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
-  padding: .5rem
+  justify-content: space-between;
+  margin: .25rem;
+  padding: .5rem;
+  /* border: 1px black solid; */
+  box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
 }
 
 .month-arrow {
@@ -38,10 +39,17 @@
   font-size: 2rem;
 }
 
+/* combine day labels and actual grid together since I didn't do that before */
+.calendar-container {
+  background-color: rgb(150, 150, 150);
+  box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
+}
+
 /* use a flexbox for the names of the days of the week, to keep it separate totally from the code for generating the data for the grid */
 
 .day-of-week {
-  border: 1px cyan solid;
+  border: 2px black solid;
+  background-color: rgb(140, 140, 140);
   width: 100%;
   display: flex;
   flex-flow: row nowrap;
@@ -49,9 +57,13 @@
 }
 
 .dayName {
-  border: 1px blue solid;
+  border-right: 1px black solid;
   flex: 1;
   text-align: center;
+}
+
+.dayName:last-child {
+  border-right: none;
 }
 
 /* actual month grid */
@@ -64,8 +76,15 @@
   grid-gap: 1px;
   grid-auto-rows: 1fr;
   align-items: stretch;
+
 }
 
 .day {
+  background-color: rgb(170, 170, 170);
   border: 1px black solid;
+}
+
+.day-content {
+  display: flex;
+  flex-flow: row wrap;
 }
