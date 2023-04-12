@@ -70,7 +70,7 @@ header {
     header {
         display: block;
         width: auto;
-        position: sticky;
+        position: fixed;
         top: 0;
     }
 
@@ -84,7 +84,7 @@ header {
 
     #logo {
         height:fit-content;
-        width: 100px;
+        width: 75px;
         margin-right: 0;
         margin-top: 0;
         margin-top: -.25rem;
@@ -92,6 +92,7 @@ header {
     }
 
     .other-nav a {
+        text-align: right;
         font-size: 1.5rem;
         padding: .5rem 1rem .5rem .5rem;
         background-image: none;
@@ -102,6 +103,7 @@ header {
         position: fixed;
         top: 0;
         right: 0;
+        padding: .5rem 1rem .5rem .5rem
     }
 
     .other-nav.open {

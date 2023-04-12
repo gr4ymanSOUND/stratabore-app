@@ -4,6 +4,10 @@ const DateRig = ({rig, dayJobs}) => {
 
   const [detailView, setDetailView] = useState(false);
   
+  const showDetail = (e) => {
+    setDetailView(!detailView);
+  };
+
   // filter the dayJobs for the current rig
   const findRigJobs = (job) => {
     if (job.rigId === rig.id) {
@@ -13,10 +17,11 @@ const DateRig = ({rig, dayJobs}) => {
   };
   const rigJobs = dayJobs.filter(findRigJobs);
 
-  const showDetail = (e) => {
-    setDetailView(!detailView);
-  };
-
+  if (rigJobs.length < 1) {
+    return (
+      <div onClick={showDetail} style={{color: 'darkgrey'}}>{`#${rig.id}[${rigJobs.length}]`}</div>
+    );
+  }
 
   return (
     <>
