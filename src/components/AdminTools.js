@@ -14,8 +14,12 @@ const AdminTools = ({token, user}) => {
       {
         user.isAdmin ? (
           <div className='admin-tools'>
-            <UserDatabase token={token}/>
-            <RigDatabase token={token}/>
+            <div className='tool'>
+              <UserDatabase token={token}/>
+            </div>
+            <div className='tool'>
+              <RigDatabase token={token}/>
+            </div>
           </div>
         ) : null
       }

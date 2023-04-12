@@ -108,9 +108,9 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   return !formType ? null : (
     <>
       <form className='form-container' onSubmit={submitListener}>
-        <div className='job-body'>
+        <div className='job-form'>
           <div className="input-section">
-            <label className="input-label">Job Number</label>
+            <label className="input-label">Job #:</label>
             <input
               type="text"
               value={jobNumber}
@@ -121,7 +121,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             />
           </div>
           <div className="input-section">
-            <label className="input-label">Client</label>
+            <label className="input-label">Client:</label>
             <select 
               id="client"
               name="client"
@@ -135,7 +135,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             </select>
           </div>
           <div className="input-section">
-            <label className="input-label">Location</label>
+            <label className="input-label">Location:</label>
             <input
               type="text"
               value={location}
@@ -146,7 +146,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             />
           </div>
           <div className="input-section">
-            <label className="input-label"># Holes</label>
+            <label className="input-label"># Holes:</label>
             <input
               type="number"
               value={numHoles}
@@ -157,7 +157,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             />
           </div>
           <div className="input-section">
-            <label className="input-label"># Feet</label>
+            <label className="input-label"># Ft:</label>
             <input
               type="number"
               value={numFeet}
@@ -168,7 +168,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             />
           </div>
           <div className="input-section">
-            <label className="input-label">Date</label>
+            <label className="input-label">Date:</label>
             <input
               type="date"
               value={jobDate}
@@ -190,7 +190,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             />
           </div>
           <div className="input-section">
-            <label className="input-label">Status</label>
+            <label className="input-label">Status:</label>
             <select 
               id="jobStatus"
               name="jobStatus"

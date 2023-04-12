@@ -110,7 +110,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
   return !formType ? null : (
     <>
       <form className='form-container' onSubmit={submitListener}>
-        <div className='form-body'>
+        <div className='job-form'>
           <div className="input-section">
             <label className="input-label">UserName</label>
             <input
@@ -155,7 +155,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
               placeholder="user2023@stratabore.com"
             />
           </div>
-          <div className='input-section'>
+          <div className='input-section checkbox'>
             <label className='input-label'>Admin</label>
             <input
               type="checkbox"

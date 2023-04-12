@@ -45,14 +45,7 @@
 }
 
 .data-form {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
   height: 100%;
-}
-
-.job-form {
-  width: 25vw;
 }
 
 .button-list {
@@ -98,7 +91,7 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  height: 600px;
+  height: 500px;
   border: 1px rgb(175, 175, 175) solid;
   box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
   background-color: rgb(175, 175, 175);
