@@ -143,6 +143,7 @@ const Calendar = ({token}) => {
   
   console.log('form type ', formType);
   console.log('current selected ', currentSelected)
+  console.log('unassigned jobs', unassignedJobs);
 
   return (
     <div className='calendar-page'>
@@ -154,11 +155,10 @@ const Calendar = ({token}) => {
         </div>
         <div className="unassigned-joblist">
           <div>Unassigned Jobs: {`${unassignedJobs.length}`}</div>
-          <button id='unassigned' onClick={calendarFormButton}>View Unassigned</button>
           {
             formType === 'edit-job' ? (
               <button id='cancel-edit' onClick={calendarFormButton}>Cancel Edit</button>
-            ) : null
+            ) : <button id='unassigned' onClick={calendarFormButton}>View Unassigned</button>
           }
         </div>
       </div>
@@ -199,7 +199,17 @@ const Calendar = ({token}) => {
       </div>
         <div className='calendar-form'>
           {
-            (formType === 'unassigned') ? <div>viewing unassigned</div> : (
+            (formType === 'unassigned') ? (
+              <div>viewing unassigned
+                {
+                  unassignedJobs.map((job, index) => {
+                    return (
+                      <div>{job.jobNumber}</div>
+                    )
+                  })
+                }
+              </div>
+            ) : (
               <JobForm
                 token={token}
                 formType={formType}
