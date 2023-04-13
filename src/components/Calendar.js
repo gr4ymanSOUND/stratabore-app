@@ -20,7 +20,7 @@ const Calendar = ({token}) => {
   // array to store month names to convert from numbers for label at top of calendar
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-  // uses the token to pull the job list, and 
+  // uses the token to pull the job list 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -55,6 +55,15 @@ const Calendar = ({token}) => {
     fetchRigs();
   },[]);
 
+  // couldn't get form to close after submitting, this does a forced check everytime the form is submitted 
+  useEffect(() => {
+    if (formType === 'reset') {
+      setFormType('');
+      setCurrentSelected({});
+    }
+  },[formType])
+
+  // handles changing which month is displayed
   const monthButtons = (e) => {
     let newYear;
     let newMonth;
@@ -90,9 +99,6 @@ const Calendar = ({token}) => {
     const startHolders = new Date(year, month, 1).getUTCDay();
     const endHolders = 6 - (new Date(year, month + 1, 0).getUTCDay());
 
-    // use the data above to create an array with a label for each date on the grid
-    const dateHolderArray = [];
-
     // find the number of days in the previous month to use for creating startHolders
     const daysLastMonth = new Date(year, month, 0).getUTCDate();
 
@@ -106,6 +112,8 @@ const Calendar = ({token}) => {
       return dateNumToCheck;
     }
 
+    // use the data above to create an array with a label for each date on the grid
+    const dateHolderArray = [];
     for (let i = startHolders; i > 0; i--) {
       let textMonth = updateDateNum(month);
       dateHolderArray.push(`${year}-${textMonth}-${daysLastMonth - i + 1}`);
@@ -144,26 +152,18 @@ const Calendar = ({token}) => {
     let selectedJob;
     if (e.target.id === 'edit-job') {
       if (e.target.dataset) {
-        console.log('dataset', e.target.dataset.jobId)
-
         selectedJob = unassignedJobs.filter((job) => {
           if (job.id == e.target.dataset.jobId) {
             return true;
           }
           return false;
         })
-        console.log('selected job', selectedJob);
         setCurrentSelected(selectedJob[0]);
       }
       setFormType('edit-job')
     }
-    
-    console.log('button clicked', e.target.id);
   }
-  
-  console.log('form type ', formType);
-  console.log('current selected ', currentSelected)
-  console.log('unassigned jobs', unassignedJobs);
+
 
   return (
     <div className='calendar-page'>
@@ -176,8 +176,8 @@ const Calendar = ({token}) => {
         <div className="calendar-form-controller">
           {
             formType === 'edit-job' ? (
-              <button id='cancel-edit' onClick={calendarFormButton}>Cancel Edit</button>
-            ) : <button id='unassigned' onClick={calendarFormButton}>View Unassigned Jobs</button>
+              <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Edit</button>
+            ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobs.length})</button>
           }
         </div>
       </div>
@@ -220,7 +220,6 @@ const Calendar = ({token}) => {
           {
             (formType === 'unassigned') ? (
               <div className='unassigned-joblist'>
-              <div>Unassigned Jobs</div>
                 {
                   unassignedJobs.map((job, index) => {
                     return (
@@ -228,7 +227,7 @@ const Calendar = ({token}) => {
                         <div>{job.jobNumber}</div>
                         <div>{job.location}</div>
                         <div>{job.numHoles} holes, {job.numFeet}ft</div>
-                        <button id='edit-job' data-job-id={job.id} onClick={calendarFormButton}>Edit</button>
+                        <button id='edit-job' data-job-id={job.id} className='calendar-form-button' onClick={calendarFormButton}>Edit</button>
                       </div>
                     )
                   })

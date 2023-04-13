@@ -88,7 +88,6 @@ const UserDatabase = ({token}) => {
 
   return (
     <div className='user-database'>
-      <div>All Users:</div>
       <div className='button-list' >
         {
           (formType == "edit-user" || formType == "add-user" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>

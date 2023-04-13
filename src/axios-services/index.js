@@ -1,10 +1,5 @@
 import axios from 'axios';
 
-// dev server
-// axios.defaults.baseURL = 'http://localhost:4000';
-// prod server
-// axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-
 if (process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 } else {

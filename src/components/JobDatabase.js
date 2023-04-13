@@ -91,9 +91,7 @@ const JobDatabase = ({ token }) => {
   // have to do this so late because only the final re-render seems to capture updated job numbers in state properly for this to access it
   if (!("id" in currentSelected) && currentSelected.jobNumber) {
     const timer = setTimeout(() => {
-      console.log('attempting to re-select job: ', currentSelected.jobNumber);
       gridRef.current.api.forEachNode(function (node) {
-        console.log('node job: ', node.data.jobNumber);
         node.setSelected(node.data.jobNumber === currentSelected.jobNumber);
       });
     })

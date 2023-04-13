@@ -59,64 +59,72 @@
   display: flex;
   flex-flow: row nowrap;
   padding: 0px;
-  width: 15%;
-  min-width: 125px;
-  margin-bottom: -.75rem;
+  margin: 0 .5rem -.75rem 0;
 }
 
-.calendar-form-controller button {
+.calendar-form-button {
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);
   border: none;
-  box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
   padding: .25rem;
-  margin: 0 auto;
 }
 
-.calendar-form-controller button:hover {
+.calendar-form-button:hover {
   background-color: rgb(48, 48, 48);
   color:rgb(224, 194, 22);
+}
+
+.rig-detail-job button {
+  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
 }
 
 /* styles for the unassigned joblist, which is in the same place as the job form */
 
 .unassigned-joblist {
   width: 20vw;
+  height: 100%;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  align-items: center;
 
+  background-color: rgb(205, 205, 205);
+  border: 1px rgb(175, 175, 175) solid;
   padding: .75rem 5px;
 }
 
 .unassigned-job {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  width: 100%;
   font-size: 14px;
 
   background-color: white;
-  border-bottom: 1px black solid;
+  margin-bottom: 2px;
+  border: 1px rgb(170, 170, 170) solid;
+  box-shadow: 1px 1px 4px rgba(100, 100, 100, 0.75);
 }
 
 .unassigned-job > div {
   border-right: 1px solid rgb(150,150,150);
-  padding-right: 10px;
   flex: 1;
 }
 
-.unassigned-job > div:last-child {
+.unassigned-job > div:last-of-type {
   border-right: none;
-  padding-right: none;
 }
 
-/* wraps the calendar and the form */
+
+/* wrappers for the calendar and form together, the calendar and day labels together, and the calender form itself */
 .calendar-container {
   display: flex;
   flex-flow: row nowrap;
 }
 
-/* combine day labels and actual grid together */
+.calendar-form {
+  box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
 .calendar {
   background-color: rgb(150, 150, 150);
   box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);
@@ -173,7 +181,7 @@
   justify-content: center;
 }
 
-/* styles for the individual rig on the calendar */
+/* styles for the individual rig on the calendar for each day */
 
 .day-rig {
   position: relative;

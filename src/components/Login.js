@@ -20,7 +20,6 @@ const Login = ({ setToken, setUser}) => {
         setToken(response.token);
         setUser(response.user);
         localStorage.setItem("userToken", response.token);
-        console.log(response.message, response.user);
 
         // reset state for the form
         setUserName("");

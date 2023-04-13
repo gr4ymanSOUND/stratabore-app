@@ -4,12 +4,24 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
 
   const [detailView, setDetailView] = useState(false);
 
-  // this handles keeping the detail view open when the form opens/closes
+  // this handles keeping the detail view open when the form opens for editing
+  // only hide it if we're actually resetting the form completely
   useEffect(()=>{
     if (formType === 'edit-job' && currentSelected.rigId === rig.id && specificDate === currentSelected.jobDate && rigJobs.length > 0) {
       setDetailView(true);
+    } else  if (formType === '') {
+      setDetailView(false);
     }
   },[formType])
+
+
+  // reset only the form type if canceling the edit view
+  // this will run after the effect above due to the detail view changing
+  useEffect(() => {
+    if (detailView && formType === "cancel-edit") {
+      setFormType('');
+    }
+  }, [detailView])
 
   
   // handles detail view toggling, only if there are jobs for that rig
@@ -69,7 +81,7 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
                   <div key={job.jobNumber} className="rig-detail-job">
                     <div>
                       {job.jobNumber}
-                      <button id='edit-job' onClick={editButton}>Edit</button>
+                      <button id='edit-job' className='calendar-form-button' onClick={editButton}>Edit</button>
                     </div>
                   </div>
                 )

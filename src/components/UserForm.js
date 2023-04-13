@@ -57,7 +57,6 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
     if (formType == 'edit-user') {
       const userId = currentSelected.id;
       const response = await editUser(token, userId, newUser)
-      console.log('edit user submission, id: ', userId, newUser);
     }
     
     //reset form state and close the form after sumbission
@@ -69,8 +68,6 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
     setIsChecked(false);
     setUserStatus('')
     setFormType("reset")
-
-    console.log('new user', newUser)
 
     // sets the edited user data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
     setCurrentSelected(newUser);

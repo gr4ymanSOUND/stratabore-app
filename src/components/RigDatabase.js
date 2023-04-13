@@ -85,11 +85,8 @@ const RigDatabase = ({token}) => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
 
-  console.log('current rig', currentSelected)
-
   return (
     <div className='rig-database'>
-      <div>All Rigs</div>
       <div className='button-list' >
         {
           (formType == "edit-rig" || formType == "add-rig" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>

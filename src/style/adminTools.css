@@ -4,11 +4,24 @@
   justify-content: center;
   align-items: center;
   margin: 4rem auto;
-  /* overflow: hidden; */
 }
 
 .tool {
   width: 80vw;
   max-width: 700px;
-  /* border: 1px red solid; */
+  margin-bottom: 1rem;
+}
+
+.admin-table {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  height: 500px;
+  border: 1px rgb(175, 175, 175) solid;
+  box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
+  background-color: rgb(175, 175, 175);
+
+  overflow: hidden;
 }

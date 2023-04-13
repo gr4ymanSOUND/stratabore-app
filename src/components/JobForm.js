@@ -62,7 +62,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     if (formType == 'edit-job') {
       const jobId = currentSelected.id;
       const response = await editJob(token, jobId, newJob)
-      console.log('edit job submission, id: ', jobId, newJob);
     }
     
     //reset form state and close the form after sumbission

@@ -43,10 +43,8 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       // const response = await addRig();
     }
     if (formType == 'edit-rig') {
-      console.log('current rig id', currentSelected.id)
       const rigId = currentSelected.id;
       const response = await editRig(token, rigId, newRig)
-      console.log('edit rig submission, id: ', rigId, newRig);
     }
     
     //reset form state and close the form after sumbission
@@ -55,8 +53,6 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
     setBoardColor('');
     setRigStatus('');
     setFormType("reset")
-
-    console.log('new rig', newRig)
 
     // sets the edited rig data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
     setCurrentSelected(newRig);
