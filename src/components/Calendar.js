@@ -127,18 +127,38 @@ const Calendar = ({token}) => {
   const displayDates = createDateArray(currentYear,currentMonth);
 
   // deal with unassigned jobs
-  const findUnassignedJobs = (job) => {
+  const unassignedJobs = jobList.filter((job) => {
     if (job.status === "unassigned") {return true}
     return false;
-  }
-  const unassignedJobs = jobList.filter(findUnassignedJobs);
+  });
 
+  // deal with the buttons controlling the calendar form
   const calendarFormButton = (e) => {
-    if (formType === '') {
-      setFormType(e.target.id)
-    } else {
+    if (e.target.id === 'unassigned' && formType === '') {
+      setFormType('unassigned');
+    }
+    if (e.target.id === 'cancel-edit' || e.target.id === 'unassigned' && formType === 'unassigned') {
       setFormType('');
     }
+
+    let selectedJob;
+    if (e.target.id === 'edit-job') {
+      if (e.target.dataset) {
+        console.log('dataset', e.target.dataset.jobId)
+
+        selectedJob = unassignedJobs.filter((job) => {
+          if (job.id == e.target.dataset.jobId) {
+            return true;
+          }
+          return false;
+        })
+        console.log('selected job', selectedJob);
+        setCurrentSelected(selectedJob[0]);
+      }
+      setFormType('edit-job')
+    }
+    
+    console.log('button clicked', e.target.id);
   }
   
   console.log('form type ', formType);
@@ -153,12 +173,11 @@ const Calendar = ({token}) => {
           <div className='current-monthYear'>{monthNames[currentMonth]} {currentYear}</div>
           <button className='month-arrow' id='nextMonth' onClick={monthButtons}><i className="fa fa-arrow-right" aria-hidden="true"></i></button>
         </div>
-        <div className="unassigned-joblist">
-          <div>Unassigned Jobs: {`${unassignedJobs.length}`}</div>
+        <div className="calendar-form-controller">
           {
             formType === 'edit-job' ? (
               <button id='cancel-edit' onClick={calendarFormButton}>Cancel Edit</button>
-            ) : <button id='unassigned' onClick={calendarFormButton}>View Unassigned</button>
+            ) : <button id='unassigned' onClick={calendarFormButton}>View Unassigned Jobs</button>
           }
         </div>
       </div>
@@ -200,11 +219,17 @@ const Calendar = ({token}) => {
         <div className='calendar-form'>
           {
             (formType === 'unassigned') ? (
-              <div>viewing unassigned
+              <div className='unassigned-joblist'>
+              <div>Unassigned Jobs</div>
                 {
                   unassignedJobs.map((job, index) => {
                     return (
-                      <div>{job.jobNumber}</div>
+                      <div key={job.id} className='unassigned-job'>
+                        <div>{job.jobNumber}</div>
+                        <div>{job.location}</div>
+                        <div>{job.numHoles} holes, {job.numFeet}ft</div>
+                        <button id='edit-job' data-job-id={job.id} onClick={calendarFormButton}>Edit</button>
+                      </div>
                     )
                   })
                 }

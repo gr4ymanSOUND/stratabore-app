@@ -6,10 +6,11 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
 
   // this handles keeping the detail view open when the form opens/closes
   useEffect(()=>{
-    if (formType === 'edit-job' && currentSelected.rigId == rig.id && specificDate === currentSelected.jobDate) {
+    if (formType === 'edit-job' && currentSelected.rigId === rig.id && specificDate === currentSelected.jobDate && rigJobs.length > 0) {
       setDetailView(true);
     }
   },[formType])
+
   
   // handles detail view toggling, only if there are jobs for that rig
   const showDetail = (e) => {
@@ -41,8 +42,12 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
   return (
     <>
       <div onClick={showDetail} className="day-rig" style={style}>
-        {/* <div>{rig.id}</div> */}
-        <div className='day-rig-label'>
+        {
+          (rig.status !== 'active' || rigJobs.length < 1) ? (
+            <div className='day-rig-id' style={{color: rig.boardColor}}>{rig.id}</div>
+          ) : null
+        }
+        <div className='day-rig-count'>
           {`${rigJobs.length}`}
         </div>
         {

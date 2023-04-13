@@ -11,8 +11,8 @@
   flex-flow: row nowrap;
   justify-content: space-around;
   width: 100%;
+  margin-bottom: 5px;
   
-  border: 1px red solid;
   position: relative;
 }
 
@@ -27,7 +27,7 @@
   justify-content: space-around;
   margin: .25rem;
   padding: .5rem;
-  box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 1px 7px 1px rgba(0, 0, 0, 0.4);
 }
 
 .month-arrow {
@@ -35,7 +35,7 @@
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);
   border: none;
-  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  box-shadow: 2px 5px 5px -3px rgb(0,0,0, 0.4);
   padding: auto;
 }
 
@@ -46,17 +46,68 @@
 
 .current-monthYear {
   font-size: 2rem;
+  text-shadow: 2px 1px 3px rgba(100, 100, 100, 0.75);
+
 }
 
-/* Unassigned jobs label and buttons */
+/* Unassigned jobs label and buttons to control the unassigned joblist and form */
+
+.calendar-form-controller {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 0px;
+  width: 15%;
+  min-width: 125px;
+  margin-bottom: -.75rem;
+}
+
+.calendar-form-controller button {
+  background-color:rgb(224, 194, 22);
+  color: rgb(48, 48, 48);
+  border: none;
+  box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);
+  padding: .25rem;
+  margin: 0 auto;
+}
+
+.calendar-form-controller button:hover {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
+}
+
+/* styles for the unassigned joblist, which is in the same place as the job form */
 
 .unassigned-joblist {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: 1px green solid;
-  width: 20%;
-  height: 100%;
+  width: 20vw;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+
+  padding: .75rem 5px;
+}
+
+.unassigned-job {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  font-size: 14px;
+
+  background-color: white;
+  border-bottom: 1px black solid;
+}
+
+.unassigned-job > div {
+  border-right: 1px solid rgb(150,150,150);
+  padding-right: 10px;
+  flex: 1;
+}
+
+.unassigned-job > div:last-child {
+  border-right: none;
+  padding-right: none;
 }
 
 /* wraps the calendar and the form */
@@ -87,6 +138,7 @@
   border-right: 2px black solid;
   flex: 1;
   text-align: center;
+  padding: 5px 0px 2px 0px;
 }
 
 .dayName:last-child {
@@ -121,6 +173,8 @@
   justify-content: center;
 }
 
+/* styles for the individual rig on the calendar */
+
 .day-rig {
   position: relative;
   font-size: 10px;
@@ -131,9 +185,15 @@
   margin: 2px;
   padding: 5px;
   min-width: 50px;
+  box-shadow: 2px 1px 6px -3px rgb(50, 50, 50);
+
 }
 
-.day-rig-label {
+.day-rig-id {
+  text-shadow: 1px 1px 1px rgba(100, 100, 100, 0.75);
+}
+
+.day-rig-count {
   background-color: white;
   width: 1.5rem;
   height: 1.5rem;
@@ -181,3 +241,4 @@
   border-bottom: none;
   border-radius: 0px 0px 5px 5px;
 }
+
