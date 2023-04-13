@@ -6,6 +6,16 @@
     align-items: center;
 }
 
+.calendar-header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  width: 100%;
+  
+  border: 1px red solid;
+  position: relative;
+}
+
 /* display for the current month/year and buttons for changing the month */
 
 .month-selector {
@@ -14,10 +24,9 @@
   min-width: 300px;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: .25rem;
   padding: .5rem;
-  /* border: 1px black solid; */
   box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);
 }
 
@@ -39,8 +48,25 @@
   font-size: 2rem;
 }
 
-/* combine day labels and actual grid together since I didn't do that before */
+/* Unassigned jobs label and buttons */
+
+.unassigned-joblist {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 1px green solid;
+  width: 20%;
+  height: 100%;
+}
+
+/* wraps the calendar and the form */
 .calendar-container {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+/* combine day labels and actual grid together */
+.calendar {
   background-color: rgb(150, 150, 150);
   box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);
 }
@@ -74,7 +100,6 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: 1fr;
-  /* grid-gap: 1px; */
   grid-auto-rows: 1fr;
   align-items: stretch;
   border: 1px rgb(175, 175, 175) solid;
@@ -86,7 +111,73 @@
   border: 1px black solid;
 }
 
+.day-label {
+  padding-left: 5px;
+}
+
 .day-content {
   display: flex;
   flex-flow: row wrap;
+  justify-content: center;
+}
+
+.day-rig {
+  position: relative;
+  font-size: 10px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  border-radius: 10px;
+  margin: 2px;
+  padding: 5px;
+  min-width: 50px;
+}
+
+.day-rig-label {
+  background-color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  padding: 2px;
+  margin: 0px 3px;
+
+  font-size: 16px;
+  color: black;
+  text-align: center;
+}
+
+.day-rig-detail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  
+  border-radius: 5px;
+  min-height: 2rem;
+  width: 12rem;
+  z-index: 15;
+}
+
+.rig-info {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+
+  border-radius: 5px 5px 0px 0px;
+  border-bottom: 1px black solid;
+  padding: 2px 3px;
+  background-color: rgb(140, 140, 140);
+  color: white;
+}
+
+.rig-detail-job {
+  padding: 2px 5px;
+  border-bottom: 1px solid rgb(150,150,150);
+  background-color: white;
+}
+
+.rig-detail-job:last-child {
+  border-bottom: none;
+  border-radius: 0px 0px 5px 5px;
 }

@@ -186,7 +186,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               onChange={({ target: { value } }) => setRigId(value)}
               className="form-control"
               id="rigId"
-              placeholder="?"
+              placeholder="1 for Unassigned"
             />
           </div>
           <div className="input-section">
@@ -200,6 +200,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               <option value="pending">Pending</option>
               <option value="complete">Complete</option>
               <option value="canceled">Canceled</option>
+              <option value="unassigned">Unassigned</option>
             </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>

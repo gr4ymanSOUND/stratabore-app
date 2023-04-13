@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
 import SingleDate from './SingleDate';
+import JobForm from './JobForm';
 
 // axios imports
 import { getAllJobs, getAllRigs } from '../axios-services/index';
@@ -13,6 +14,8 @@ const Calendar = ({token}) => {
   const [currentYear, setCurrentYear] = useState('');
   const [jobList, setJobList] = useState([]);
   const [rigList, setRigList] = useState([]);
+  const [formType, setFormType] = useState('');
+  const [currentSelected, setCurrentSelected] = useState({});
 
   // array to store month names to convert from numbers for label at top of calendar
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -121,46 +124,93 @@ const Calendar = ({token}) => {
     // return the array of date labels
     return dateHolderArray;
   }
-
   const displayDates = createDateArray(currentYear,currentMonth);
 
-  console.log(jobList);
-  console.log(rigList);
+  // deal with unassigned jobs
+  const findUnassignedJobs = (job) => {
+    if (job.status === "unassigned") {return true}
+    return false;
+  }
+  const unassignedJobs = jobList.filter(findUnassignedJobs);
+
+  const calendarFormButton = (e) => {
+    if (formType === '') {
+      setFormType(e.target.id)
+    } else {
+      setFormType('');
+    }
+  }
+  
+  console.log('form type ', formType);
+  console.log('current selected ', currentSelected)
 
   return (
     <div className='calendar-page'>
-      <div className='month-selector'>
-        <button id='prevMonth' className='month-arrow' onClick={monthButtons}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
-        <div className='current-monthYear'>{monthNames[currentMonth]} {currentYear}</div>
-        <button className='month-arrow' id='nextMonth' onClick={monthButtons}><i className="fa fa-arrow-right" aria-hidden="true"></i></button>
+      <div className='calendar-header'>
+        <div className='month-selector'>
+          <button id='prevMonth' className='month-arrow' onClick={monthButtons}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
+          <div className='current-monthYear'>{monthNames[currentMonth]} {currentYear}</div>
+          <button className='month-arrow' id='nextMonth' onClick={monthButtons}><i className="fa fa-arrow-right" aria-hidden="true"></i></button>
+        </div>
+        <div className="unassigned-joblist">
+          <div>Unassigned Jobs: {`${unassignedJobs.length}`}</div>
+          <button id='unassigned' onClick={calendarFormButton}>View Unassigned</button>
+          {
+            formType === 'edit-job' ? (
+              <button id='cancel-edit' onClick={calendarFormButton}>Cancel Edit</button>
+            ) : null
+          }
+        </div>
       </div>
       <div className='calendar-container'>
-        <div className='day-of-week'>
-          <div className='dayName'>Sun</div>
-          <div className='dayName'>Mon</div>
-          <div className='dayName'>Tues</div>
-          <div className='dayName'>Wed</div>
-          <div className='dayName'>Thur</div>
-          <div className='dayName'>Fri</div>
-          <div className='dayName'>Sat</div>
-        </div>
-        <div className='month-grid'>
+        <div className='calendar'>
+          <div className='day-of-week'>
+            <div className='dayName'>Sun</div>
+            <div className='dayName'>Mon</div>
+            <div className='dayName'>Tues</div>
+            <div className='dayName'>Wed</div>
+            <div className='dayName'>Thur</div>
+            <div className='dayName'>Fri</div>
+            <div className='dayName'>Sat</div>
+          </div>
+          <div className='month-grid'>
 
+            {
+              displayDates.map((specificDate,index) => {
+                return (
+                  <div className='day' key={specificDate}>
+                    <SingleDate
+                      currentMonth={currentMonth}
+                      specificDate={specificDate}
+                      jobList={jobList}
+                      rigList={rigList}
+                      formType={formType}
+                      setFormType={setFormType}
+                      currentSelected={currentSelected}
+                      setCurrentSelected={setCurrentSelected}
+                    />
+                  </div>
+                )
+              })
+            }
+
+          </div>
+
+      </div>
+        <div className='calendar-form'>
           {
-            displayDates.map((specificDate,index) => {
-              return (
-                <div className='day' key={specificDate}>
-                  <SingleDate
-                    currentMonth={currentMonth}
-                    specificDate={specificDate}
-                    jobList={jobList}
-                    rigList={rigList}
-                  />
-                </div>
-              )
-            })
+            (formType === 'unassigned') ? <div>viewing unassigned</div> : (
+              <JobForm
+                token={token}
+                formType={formType}
+                setFormType={setFormType}
+                jobList={jobList}
+                setJobList={setJobList}
+                currentSelected={currentSelected}
+                setCurrentSelected={setCurrentSelected}
+              />
+            )
           }
-
         </div>
       </div>
     </div>
