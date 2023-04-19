@@ -164,6 +164,9 @@ const Calendar = ({token}) => {
     }
   }
 
+  console.log('form', formType);
+  console.log('current selected', currentSelected);
+
 
   return (
     <div className='calendar-page'>

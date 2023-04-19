@@ -81,3 +81,24 @@
   display: block;
 }
 
+.custom-filter {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10px;
+
+  /* border: 1px red solid; */
+}
+
+.filter-option {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 1.25rem;
+}
+
+input[type='radio'] {
+  margin: 0 4px 0 0;
+}

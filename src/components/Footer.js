@@ -14,7 +14,7 @@ const Footer = ({ user, setUser, token, setToken }) => {
                 <p>&copy; 2022 StrataBore LLC</p>
                 { !user ? null : (
                     <>
-                    <p className="big-vert-line">|</p>
+                    <p className="big-vert-line"></p>
                     <p>Logged in as: <span>{user.userName}</span></p>
                     <button onClick={logOut}>Log Out</button>
                     </>

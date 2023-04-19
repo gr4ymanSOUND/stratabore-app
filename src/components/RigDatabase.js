@@ -117,6 +117,7 @@ const RigDatabase = ({token}) => {
             setFormType={setFormType}
             currentSelected={currentSelected}
             setCurrentSelected={setCurrentSelected}
+            rigList={rigList}
             setRigList={setRigList}
           />
         </div>

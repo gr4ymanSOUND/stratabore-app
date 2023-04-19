@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 import { getAllRigs, editRig, removeRig } from '../axios-services';
 
-const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelected, setRigList}) => {
+const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelected, rigList, setRigList}) => {
 
   const [ licensePlate, setLicensePlate ] = useState('');
   const [ rigType, setRigType ] = useState('');
@@ -16,6 +16,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       setRigType(currentSelected.rigType);
       setBoardColor(currentSelected.boardColor);
       setRigStatus(currentSelected.status);
+
     }
 
     // makes sure the form is empty when it is hidden
@@ -83,6 +84,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
     }
   };
 
+
   return !formType ? null : (
     <>
       <form className='form-container' onSubmit={submitListener}>
@@ -113,19 +115,22 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
           </div>
           <div className="input-section">
             <label className="input-label">Color</label>
-            <select 
-              id="boardColor"
-              name="boardColor"
+            <input 
+              type="text"
               value={boardColor}
               onChange={({ target: { value } }) => setBoardColor(value)}
-            >
+              className="form-control"
+              id="boardColor"
+              placeholder="#FF0000 OR red"
+            />
+              {/* decided to use a text imput instead
               <option value="red">red</option>
               <option value="green">green</option>
               <option value="blue">blue</option>
               <option value="orange">orange</option>
               <option value="purple">purple</option>
               <option value="yellow">yellow</option>
-            </select>
+            </select> */}
           </div>
           <div className="input-section">
             <label className="input-label">Status</label>

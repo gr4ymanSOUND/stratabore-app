@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import JobForm from './JobForm';
+import customFilter from './customFilter';
 
 // AG Grid imports
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
@@ -48,13 +49,17 @@ const JobDatabase = ({ token }) => {
   // Each Column Definition results in one Column.
   const [columnDefs, setColumnDefs] = useState([
     { headerName: 'Job #',field: 'jobNumber', filter: true, width: 130},
-    { field: 'client', filter: true , width: 130},
+    { field: 'client',
+      filter: customFilter, filterParams: {values: ['EWL', 'TER', 'AAA', 'ZZZ']},
+      width: 130},
     { field: 'location', filter: true },
     { headerName: 'Holes', field: 'numHoles', width: 75 },
     { headerName: '# Ft', field: 'numFeet', width: 75 },
     { headerName: 'Date', field: 'jobDate', filter: true, width: 100 },
     { headerName: 'Rig', field: 'rigId', filter: true, width: 60},
-    { headerName: 'Status', field: 'status', filter: true, width: 100 }
+    { headerName: 'Status', field: 'status',
+      filter: customFilter, filterParams: {values: ['pending', 'completed', 'canceled', 'unassigned']},
+      width: 100 }
   ]);
 
   // DefaultColDef sets props common to all Columns

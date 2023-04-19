@@ -5,24 +5,14 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
   const [detailView, setDetailView] = useState(false);
 
   // this handles keeping the detail view open when the form opens for editing
-  // only hide it if we're actually resetting the form completely
   useEffect(()=>{
-    if (formType === 'edit-job' && currentSelected.rigId === rig.id && specificDate === currentSelected.jobDate && rigJobs.length > 0) {
+    if (currentSelected.rigId === rig.id && specificDate === currentSelected.jobDate && rigJobs.length > 0) {
       setDetailView(true);
-    } else  if (formType === '') {
+    }
+    if (rigJobs.length < 1 || currentSelected.status === 'unassigned') {
       setDetailView(false);
     }
   },[formType])
-
-
-  // reset only the form type if canceling the edit view
-  // this will run after the effect above due to the detail view changing
-  useEffect(() => {
-    if (detailView && formType === "cancel-edit") {
-      setFormType('');
-    }
-  }, [detailView])
-
   
   // handles detail view toggling, only if there are jobs for that rig
   const showDetail = (e) => {
@@ -49,6 +39,7 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
     style.border = '1px red solid';
     style.backgroundColor = `darkgray`
   }
+
 
 
   return (
