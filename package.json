@@ -1,5 +1,6 @@
 {
   "name": "stratabore-app",
+  "homepage": "https://stratabore.thatonesite.co/",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

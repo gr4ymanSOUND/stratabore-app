@@ -9,9 +9,14 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
     if (currentSelected.rigId === rig.id && specificDate === currentSelected.jobDate && rigJobs.length > 0) {
       setDetailView(true);
     }
-    if (rigJobs.length < 1 || currentSelected.status === 'unassigned') {
+    if (currentSelected.status === 'unassigned' || rigJobs.length < 1) {
       setDetailView(false);
     }
+    if (formType==='unassigned') {
+      setDetailView(false);
+      setCurrentSelected({});
+    }
+
   },[formType])
   
   // handles detail view toggling, only if there are jobs for that rig

@@ -48,7 +48,7 @@ const RigDatabase = ({token}) => {
 
   // Each Column Definition results in one Column.
   const [columnDefs, setColumnDefs] = useState([
-    { headerName: 'ID', field: 'id' },
+    { headerName: 'Rig ID', field: 'id' },
     { headerName: 'Plate', field: 'licensePlate', filter: true },
     { headerName: 'Type', field: 'rigType', filter: true },
     { headerName: 'Color', field: 'boardColor', filter: true },

@@ -145,7 +145,7 @@ const Calendar = ({token}) => {
     if (e.target.id === 'unassigned' && formType === '') {
       setFormType('unassigned');
     }
-    if (e.target.id === 'cancel-edit' || e.target.id === 'unassigned' && formType === 'unassigned') {
+    if ( e.target.id === 'cancel-edit' || e.target.id === 'unassigned' && formType === 'unassigned') {
       setFormType('');
     }
 
