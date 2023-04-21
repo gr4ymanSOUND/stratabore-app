@@ -37,12 +37,15 @@
 
   height: 84vh;
   width: 95vw;
+  max-width: 1200px;
   border: 1px rgb(175, 175, 175) solid;
   box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
   background-color: rgb(175, 175, 175);
 
   overflow: hidden;
 }
+
+
 
 .data-form {
   height: 100%;
@@ -56,11 +59,20 @@
   justify-self: flex-end;
   align-self: flex-end;
   width: 95%;
+  max-width: 1200px;
   min-height: 1.5rem;
   
   /* hack to put buttons slightly over top of table headers */
   position: relative;
   z-index: 3;
+}
+
+.rig-database .button-list {
+  width: 100%;
+}
+
+.user-database .button-list {
+  width: 100%;
 }
 
 .button-list button {

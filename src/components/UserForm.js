@@ -10,7 +10,7 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
   const [userEmail, setUserEmail] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [userStatus, setUserStatus] = useState('');
+  const [userStatus, setUserStatus] = useState('active');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
@@ -41,6 +41,11 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
   // listens to any submit event - either add or edit
   const submitListener = async (e) => {
     e.preventDefault();
+
+    if (userName=='' || firstName=='' || lastName=='' || userEmail=='') {
+      alert('Please fill in all available fields before submitting');
+      return;
+    }
 
     const newUser = {
       userName: userName,
@@ -170,8 +175,8 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
               value={userStatus}
               onChange={({ target: { value } }) => setUserStatus(value)}
             >
-              <option value="inactive">Inactive</option>
               <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
             </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>

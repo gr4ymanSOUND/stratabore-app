@@ -5,6 +5,7 @@ import Header from './Header';
 import Login from './Login';
 import JobDatabase from './JobDatabase';
 import Calendar from './Calendar';
+import MapView from './MapView';
 import Footer from './Footer';
 import AdminTools from './AdminTools';
 
@@ -50,6 +51,13 @@ const App = () => {
                     element={
                       !token ? <Navigate to="/" replace /> :
                       <Calendar token={token}/>
+                    }
+                  />
+                  <Route 
+                    exact path="/map"
+                    element={
+                      !token ? <Navigate to="/" replace /> :
+                      <MapView token={token}/>
                     }
                   />
                   <Route 

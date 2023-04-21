@@ -5,9 +5,9 @@ import { getAllRigs, editRig, removeRig } from '../axios-services';
 const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelected, rigList, setRigList}) => {
 
   const [ licensePlate, setLicensePlate ] = useState('');
-  const [ rigType, setRigType ] = useState('');
+  const [ rigType, setRigType ] = useState('lil');
   const [ boardColor , setBoardColor ] = useState('');
-  const [ rigStatus, setRigStatus ] = useState('');
+  const [ rigStatus, setRigStatus ] = useState('active');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
@@ -32,6 +32,11 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
   // listens to any submit event - either add or edit
   const submitListener = async (e) => {
     e.preventDefault();
+
+    if (licensePlate=='' || boardColor=='') {
+      alert('Please fill in all available fields before submitting');
+      return;
+    }
 
     const newRig = {
       licensePlate: licensePlate,
@@ -140,9 +145,9 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
               value={rigStatus}
               onChange={({ target: { value } }) => setRigStatus(value)}
             >
-              <option value="inactive">Inactive</option>
-              <option value="repairs">In Repairs</option>
               <option value="active">Active</option>
+              <option value="repairs">In Repairs</option>
+              <option value="inactive">Inactive</option>
             </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>

@@ -142,7 +142,7 @@ const Calendar = ({token}) => {
 
   // deal with the buttons controlling the calendar form
   const calendarFormButton = (e) => {
-    if (e.target.id === 'unassigned' && formType === '') {
+    if (e.target.id === 'unassigned' && formType === '' && unassignedJobs.length > 0) {
       setFormType('unassigned');
     }
     if ( e.target.id === 'cancel-edit' || e.target.id === 'unassigned' && formType === 'unassigned') {

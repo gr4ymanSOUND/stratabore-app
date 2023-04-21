@@ -5,13 +5,13 @@ import { getAllJobs, addJob, cancelJob, editJob } from '../axios-services';
 const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected }) => {
   // state for editable form fields
   const [jobNumber, setJobNumber] = useState('');
-  const [client, setClient] = useState('');
+  const [client, setClient] = useState('EWL');
   const [location, setLocation] = useState('');
   const [numHoles, setNumHoles] = useState('');
   const [numFeet, setNumFeet] = useState('');
   const [jobDate, setJobDate] = useState('');
   const [rigId, setRigId] = useState('');
-  const [jobStatus, setJobStatus] = useState('');
+  const [jobStatus, setJobStatus] = useState('pending');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
@@ -30,13 +30,13 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     // makes sure the form is empty when it is hidden
     if (formType == "") {
       setJobNumber('')
-      setClient('');
+      setClient('EWL');
       setLocation('');
       setNumHoles('');
       setNumFeet('');
       setJobDate('')
-      setRigId('');
-      setJobStatus('');
+      setRigId(1);
+      setJobStatus('pending');
     }
 
   }, [formType, currentSelected])
@@ -44,6 +44,11 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   // listens to any submit event - either add or edit
   const submitListener = async (e) => {
     e.preventDefault();
+
+    if (jobNumber=='' || location=='' || numHoles=='' || numFeet=='') {
+      alert('Please fill in all available fields before submitting');
+      return;
+    }
 
     const newJob = {
       jobNumber: jobNumber,
