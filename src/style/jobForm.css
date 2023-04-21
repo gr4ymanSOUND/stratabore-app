@@ -5,6 +5,10 @@
   background-color: rgb(205, 205, 205);
 }
 
+.admin-form {
+  max-width: 300px;
+}
+
 .form-container button {
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);

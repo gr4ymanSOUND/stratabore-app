@@ -87,7 +87,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
 
   return !formType ? null : (
     <>
-      <form className='form-container' onSubmit={submitListener}>
+      <form className='form-container admin-form' onSubmit={submitListener}>
         <div className='job-form'>
           <div className="input-section">
             <label className="input-label">Plate</label>
