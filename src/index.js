@@ -11,6 +11,7 @@ import './style/calendar.css';
 import './style/jobForm.css';
 import './style/login.css';
 import './style/adminTools.css';
+import './style/mapView.css';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
