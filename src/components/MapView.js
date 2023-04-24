@@ -82,8 +82,6 @@ const MapView = ({token}) => {
     // adds the basic map controls
     map.addControl(L.mapquest.control());
 
-    // went down the wrong path with useLayoutEffect and all useRef for a long time, turns out it wasn't needed; set up the window onload functionality inside a basic useEffect with the joblist as a dependency
-
     if (locationList.length > 0 && rigList.length > 0) {
 
       // this callback is required for the geocode to return the result to be manipulated, otherwise it just loads them on the map
