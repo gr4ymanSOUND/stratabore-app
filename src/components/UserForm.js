@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllUsers, editUser, removeUser } from '../axios-services';
+import { getAllUsers, editUser, removeUser, createUser } from '../axios-services';
 
-const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, setUserList}) => {
+const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSelected, setUserList}) => {
 
   const [userName, setUserName] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -28,27 +29,34 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
     // makes sure the form is empty when it is hidden
     if (formType == "") {
       setUserName('');
+      setUserPassword('');
       setFirstName('');
       setLastName('');
       setUserEmail('');
       setIsAdmin(false);
       setIsChecked(false)
-      setUserStatus('');
+      setUserStatus('active');
     }
 
   }, [formType, currentSelected])
 
   // listens to any submit event - either add or edit
   const submitListener = async (e) => {
+    console.log('formType', formType);
     e.preventDefault();
 
     if (userName=='' || firstName=='' || lastName=='' || userEmail=='') {
       alert('Please fill in all available fields before submitting');
       return;
     }
+    if (formType=='add-user' && userPassword=='') {
+      alert('Please fill in all available fields before submitting');
+      return;
+    }
 
     const newUser = {
       userName: userName,
+      password: userPassword,
       firstName: firstName,
       lastName: lastName,
       email: userEmail,
@@ -57,25 +65,29 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
     }
 
     if (formType == 'add-user') {
-      // const response = await addUser();
+      const response = await createUser(token, newUser);
+      alert(`A new user for ${newUser.firstName} has been created.`);
     }
     if (formType == 'edit-user') {
+      delete newUser.password;
       const userId = currentSelected.id;
       const response = await editUser(token, userId, newUser)
+      alert(`${newUser.userName} has been edited.`);
     }
     
     //reset form state and close the form after sumbission
     setUserName('');
+    setUserPassword('');
     setFirstName('');
     setLastName('');
     setUserEmail('');
     setIsAdmin(false);
     setIsChecked(false);
-    setUserStatus('')
+    setUserStatus('active')
     setFormType("reset")
 
-    // sets the edited user data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
-    setCurrentSelected(newUser);
+    // for this form, we will always unselect after submitting
+    setCurrentSelected({});
 
     // reset the user list and see the newly added/edited data in the spreadsheet
     const newUserList = await getAllUsers(token);
@@ -124,6 +136,22 @@ const UserForm = ({formType, setFormType, currentSelected, setCurrentSelected, s
               placeholder="user2023"
             />
           </div>
+          {
+            formType === 'add-user' ? (
+              <div className="input-section">
+                <label className="input-label">Password</label>
+                <input
+                  type="text"
+                  value={userPassword}
+                  onChange={({ target: { value } }) => setUserPassword(value)}
+                  className="form-control"
+                  id="password"
+                  placeholder="******"
+                />
+              </div>
+            ) : null
+          }
+          
           <div className="input-section">
             <label className="input-label">First Name</label>
             <input

@@ -50,6 +50,23 @@ export async function getAllUsers(token) {
   }
 }
 
+export async function createUser(token, newUserData) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const payload = {
+      newUserData: newUserData
+    }
+    const { data } = await axios.post(`/api/users/create`, payload, auth);
+    return data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export async function editUser(token, userId, newUserData) {
   try {
     const auth = {
@@ -189,6 +206,25 @@ export async function removeRig(token, rigId) {
     return data;
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function createRig(token, newRigData) {
+  console.log('new rig in axios', newRigData);
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const payload = {
+      newRigData: newRigData
+    }
+    console.log('payload in axios', payload)
+    const { data } = await axios.post(`/api/rigs/create`, payload, auth);
+    return data;
+  } catch (error) {
+    console.error(error)
   }
 }
 

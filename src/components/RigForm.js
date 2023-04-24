@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllRigs, editRig, removeRig } from '../axios-services';
+import { getAllRigs, editRig, removeRig, createRig } from '../axios-services';
 
 const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelected, rigList, setRigList}) => {
 
@@ -24,7 +24,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       setLicensePlate('');
       setRigType('');
       setBoardColor('');
-      setRigStatus('');
+      setRigStatus('active');
     }
 
   }, [formType, currentSelected])
@@ -46,7 +46,8 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
     }
 
     if (formType == 'add-rig') {
-      // const response = await addRig();
+      const response = await createRig(token, newRig);
+      alert('Adding Rigs is currently not supported')
     }
     if (formType == 'edit-rig') {
       const rigId = currentSelected.id;
@@ -57,11 +58,11 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
     setLicensePlate('');
     setRigType('');
     setBoardColor('');
-    setRigStatus('');
+    setRigStatus('active');
     setFormType("reset")
 
-    // sets the edited rig data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
-    setCurrentSelected(newRig);
+   // for this form, we will always unselect after submitting
+   setCurrentSelected({});
 
     // reset the rig list and see the newly added/edited data in the spreadsheet
     const newRigList = await getAllRigs(token);
