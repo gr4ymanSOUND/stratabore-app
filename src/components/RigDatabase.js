@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
 import RigForm from './RigForm';
+import customFilter from './CustomFilter';
 
 // AG Grid imports
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
@@ -50,9 +51,11 @@ const RigDatabase = ({token}) => {
   const [columnDefs, setColumnDefs] = useState([
     { headerName: 'Rig ID', field: 'id' },
     { headerName: 'Plate', field: 'licensePlate', filter: true },
-    { headerName: 'Type', field: 'rigType', filter: true },
+    { headerName: 'Type', field: 'rigType',
+      filter: customFilter, filterParams: {values: ['lil', 'mid', 'big']} },
     { headerName: 'Color', field: 'boardColor', filter: true },
-    { headerName: 'Status', field: 'status', filter: true }
+    { headerName: 'Status', field: 'status',
+      filter: customFilter, filterParams: {values: ['active', 'repairs', 'inactive']} }
   ]);
 
   // DefaultColDef sets props common to all Columns

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
 import UserForm from './UserForm';
+import customFilter from './CustomFilter';
+
 
 // AG Grid imports
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component
@@ -52,8 +54,10 @@ const UserDatabase = ({token}) => {
     { headerName: 'First Name', field: 'firstName', filter: true },
     { headerName: 'Last Name', field: 'lastName', filter: true },
     { headerName: 'Email', field: 'email', filter: true },
-    { headerName: 'Admin', field: 'isAdmin', filter: true },
-    { headerName: 'Status', field: 'status', filter: true }
+    { headerName: 'Admin', field: 'isAdmin',
+      filter: customFilter, filterParams: {values: ['true', 'false']} },
+    { headerName: 'Status', field: 'status',
+      filter: customFilter, filterParams: {values: ['active', 'inactive']} }
   ]);
 
   // DefaultColDef sets props common to all Columns

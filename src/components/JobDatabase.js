@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import JobForm from './JobForm';
-import customFilter from './customFilter';
+import customFilter from './CustomFilter';
 
 // AG Grid imports
 import { AgGridReact } from 'ag-grid-react'; // the AG Grid React Component

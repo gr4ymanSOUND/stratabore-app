@@ -1,6 +1,79 @@
-.strata-mapper-box {
-  width: 90vw;
-  height: 530px;
-  margin: 5rem auto;
+.mapview-page {
+  margin: 3.5rem auto;
+  border: 1px blue solid;
+  position: relative;
+}
 
+.mapview-button-list {
+  margin: 0rem auto -.75rem;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  width: 95%;
+  min-height: 1.5rem;
+  
+  border: 1px pink solid;
+  /* hack to put buttons slightly over top of table headers */
+  position: relative;
+  z-index: 3;
+}
+
+.mapview-button-list button {
+  background-color:rgb(224, 194, 22);
+  color: rgb(48, 48, 48);
+  border: none;
+  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  margin: .25rem;
+  padding: .25rem;
+}
+
+.mapview-button-list button:hover {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
+}
+
+.strata-mapper-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0rem auto;
+  width: 95vw;
+  height: 80vh;
+  padding: 10px;
+
+  border: 1px red solid;
+}
+
+.strata-mapper {
+  max-width: 1080px;
+  height: 100%;
+  width: 100%;
+}
+
+.strata-mapper-tool {
+  width: 350px;
+  height: 100%;
+  margin-left: 1rem;
+
+  border: 1px green solid;
+}
+
+.popper {
+  color: red;
+  border: 1px pink solid;
+}
+
+.popper button {
+  background-color:rgb(224, 194, 22);
+  color: rgb(48, 48, 48);
+  border: none;
+  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  margin: .25rem;
+  padding: .25rem;
+}
+.popper button:hover {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
 }
