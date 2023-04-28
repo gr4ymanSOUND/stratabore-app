@@ -1,6 +1,5 @@
 .mapview-page {
   margin: 3.5rem auto;
-  border: 1px blue solid;
   position: relative;
 }
 
@@ -9,10 +8,9 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
-  width: 95%;
+  width: 97%;
   min-height: 1.5rem;
   
-  border: 1px pink solid;
   /* hack to put buttons slightly over top of table headers */
   position: relative;
   z-index: 3;
@@ -39,7 +37,7 @@
   align-items: center;
 
   margin: 0rem auto;
-  width: 95vw;
+  width: 97vw;
   height: 80vh;
   padding: 10px;
 
@@ -53,11 +51,9 @@
 }
 
 .strata-mapper-tool {
-  width: 350px;
+  width: 275px;
   height: 100%;
-  margin-left: 1rem;
-
-  border: 1px green solid;
+  margin-left: .5rem;
 }
 
 .popper {
@@ -76,4 +72,8 @@
 .popper button:hover {
   background-color: rgb(48, 48, 48);
   color:rgb(224, 194, 22);
+}
+
+.mapview-page .form-container {
+  width: 275px;
 }

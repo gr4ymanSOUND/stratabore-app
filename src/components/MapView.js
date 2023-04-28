@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
+import JobForm from './JobForm.js';
+
 import '../mapquest/mapquest.js';
 //import a custom icon image
 import homeIcon from '../mapquest/transparent-home.png';
@@ -12,7 +14,7 @@ const MapView = ({token}) => {
   const [rigList, setRigList] = useState([]);
   const [locationList, setLocationList] = useState([]);
   const [mapObject, setMapObject] = useState({});
-  const [showMapTool, setShowMapTool] = useState(false);
+  const [formType, setFormType] = useState('');
   const [currentSelected, setCurrentSelected] = useState({});
 
   // pull the jobList and use it to set the location list
@@ -88,8 +90,6 @@ const MapView = ({token}) => {
 
       // this callback is required for the geocode to return the result to be manipulated, otherwise it just loads them on the map
       const geocodingCallback = (error, response) => {
-        // this happens before all of the .then statements, may be good to dig down a few layers of the objects and arrays here
-        //use this opportunity to dig deeper into the nested object/array data structures
         return response.results;
       }
 
@@ -125,12 +125,15 @@ const MapView = ({token}) => {
             // [32.88762, -96.89600]
             // custom icon example for office location
 
-            // creating fancier HTMLelement for inside the pop-up - maybe necessary for adding edit this job button
+            // creating fancier HTMLelement for inside the pop-up
+            // can add event listeners here for an edit button (look below the marker creation to see alt method of getting info about the job from watching when the pop-up opens
             const popUpText = document.createElement("div");
             popUpText.className = 'popper'
+            popUpText.id = 'text-div-id'
             popUpText.innerText = 'TESTY JOB';
-            const popUpButton = document.createElement("button")
-            popUpButton.id = 'jobID';
+            const popUpButton = document.createElement("button");
+            // put the jobNumber as the popup ID, for finding the correct job to set in state
+            popUpButton.id = 'AAA-200';
             popUpButton.innerText = 'Edit';
             popUpButton.addEventListener('click', markerEditButton);
             popUpText.appendChild(popUpButton);
@@ -147,6 +150,9 @@ const MapView = ({token}) => {
               icon: smallMarker
             }).addTo(map);
             customMarker.bindPopup(popUp);
+            // can use popupopen and popupclose to get info about the popup, potentially including the job ID
+            // customMarker.on('popupopen', (e)=>{ console.log('pop up openened event', e.popup._content.id)})
+            // customMarker.on('popupclose', (e)=>{ console.log('pop up closed event', e)})
           } 
         })
         .catch((error) => {
@@ -167,38 +173,65 @@ const MapView = ({token}) => {
     return false;
   }
 
-  const toolViewer = (e) => {
-    setShowMapTool(!showMapTool);
+  // button handlers here
+
+  const filterViewer = (e) => {
+    if (formType != 'filter') {
+      setFormType('filter');
+      setCurrentSelected({});
+    } else {
+      setFormType('')
+    }
+  }
+
+  const cancelEdit = (e) => {
+    setFormType('');
+    setCurrentSelected({});
   }
 
   const markerEditButton = (e) => {
-    console.log('success on pop-up button click, editing', e.target.id)
-    setShowMapTool(!showMapTool);
-    // find the job with the id in the target button and set it to currentSelected, which will pass to the jobForm that will replace the filters
-    // update the showMapTool to be string instead of bool, to contain which tool to show or empty for none
-    // setCurrentSelected({});
+    console.log('pop-up button clicked, editing', e.target.id)
+    const currentJob = jobList.find((job) => job.jobNumber === e.target.id);
+    console.log('current job', currentJob);
+    setFormType('edit-job');
+    setCurrentSelected(currentJob);
   }
 
    return (
     <div className='mapview-page'>
       <div className='mapview-button-list'>
-        <button id='show-tool' onClick={toolViewer}>Show Map Tool</button>
+        { formType=='edit-job' ? <button id='cancel-edit' onClick={cancelEdit}>Cancel Edit</button> : null }
+        <button id='show-tool' onClick={filterViewer}>Filters</button>
       </div>
       <div className='strata-mapper-container'>
         <div id="map" className='strata-mapper'></div>
-        { !showMapTool ? null : (
+        { !formType ? null : (
             <div className='strata-mapper-tool'>
-              <p>This sidebar will be collapsable</p>
-              <p>It will default to showing the following filters for the map:</p>
-              <ul>
-                <li>Date/DateRange</li>
-                <li>Client</li>
-                <li>Rig</li>
-                <li>Show Unassigned/Assigned/Both</li>
-              </ul>
-              <p>When a job is selected, an option will appear to edit the job -- hopefully this will work, but I'm not sure if I can access info about the clicked icons on the map</p>
-              <p></p>
-              <p></p>
+              {
+                formType==='edit-job' ? (
+                  <JobForm
+                    token={token}
+                    formType={formType}
+                    setFormType={setFormType}
+                    jobList={jobList}
+                    setJobList={setJobList}
+                    currentSelected={currentSelected}
+                    setCurrentSelected={setCurrentSelected}
+                  />
+                ) : ( 
+                  <div id='mapFilters'>
+                    <p>This sidebar will be collapsable</p>
+                    <p>It will default to showing the following filters for the map:</p>
+                    <ul>
+                      <li>Date/DateRange</li>
+                      <li>Client</li>
+                      <li>Rig</li>
+                      <li>Show Unassigned/Assigned/Both</li>
+                    </ul>
+                    <p>When a job is selected, an option will appear to edit the job -- hopefully this will work, but I'm not sure if I can access info about the clicked icons on the map</p>
+                  </div>
+                )
+              }
             </div>
         )}
       </div>
