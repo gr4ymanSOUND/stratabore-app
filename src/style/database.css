@@ -12,7 +12,6 @@
 /* theme style */
 
 .ag-theme-alpine {
-
   --ag-grid-size: 5px;
 
   --ag-header-column-separator-display: block;
@@ -27,7 +26,6 @@
 }
 
 /* table, buttons, and forms */
-
 
 .job-table {
   display: flex;
@@ -97,8 +95,6 @@
   justify-content: center;
   align-items: flex-start;
   padding: 10px;
-
-  /* border: 1px red solid; */
 }
 
 .filter-option {
