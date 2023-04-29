@@ -40,11 +40,14 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
   if (rigJobs.length < 1) {
     style.backgroundColor = `darkgray`
   }
-  if (rig.status !== 'active') {
+  if (rig.status == 'inactive') {
     style.border = '1px red solid';
     style.backgroundColor = `darkgray`
   }
-
+  if (rig.status == 'repairs') {
+    style.border = '1px green solid';
+    style.backgroundColor = `darkgray`
+  }
 
 
   return (

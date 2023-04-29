@@ -36,7 +36,7 @@ const MapView = ({token}) => {
       }
     }
     fetchJobs();
-  },[rigList]);
+  },[]);
 
   // pull the rigList so we can get the colors and ID for display on jobs
   useEffect(() => {
@@ -99,6 +99,7 @@ const MapView = ({token}) => {
         .then((results) => {
           // can only add markers if there is a map to add them to
           if (Object.keys(mapObject).length != 0) {
+
             // adding a map marker and a pop-up attached to it at for each location in the results
             // can change type and style the individual map marker, will make one style for each rig and apply dynamically
             results.forEach((item, index)=> {
@@ -111,35 +112,34 @@ const MapView = ({token}) => {
                   primaryColor: itemColor,
                   secondaryColor: '#FFFFFF',
                   shadow: true,
-                  size: 'md',
+                  size: 'sm',
                   symbol: itemJob.rigId
                 })
               }).addTo(map);
-              marker.bindPopup(`<b>Job: ${itemJob.jobNumber} </b><br>I am a popup on a regular marker. This is a regular job`);
-              marker.on('click', (e) => {
-                console.log('marker up was clicked', e);
-              })
+              // marker.on('click', (e) => {
+              //   console.log('marker up was clicked', e);
+              // })
+
+              // creating fancier HTMLelement for inside the pop-up
+              // can add event listeners here for an edit button
+              const popUpText = document.createElement("div");
+              popUpText.className = 'popper'
+              popUpText.id = itemJob.id
+              popUpText.innerText = itemJob.jobNumber;
+              const popUpButton = document.createElement("button");
+              // put the jobNumber as the popup ID, for finding the correct job to set in state when the button is clicked
+              popUpButton.id = itemJob.jobNumber;
+              popUpButton.innerText = 'Edit';
+              popUpButton.addEventListener('click', markerEditButton);
+              popUpText.appendChild(popUpButton);
+              const popUp = L.popup().setContent(popUpText);
+              marker.bindPopup(popUp)              
             })
 
             // ['2430 Merrell Rd #103, Dallas, TX 75229']
             // [32.88762, -96.89600]
             // custom icon example for office location
-
-            // creating fancier HTMLelement for inside the pop-up
-            // can add event listeners here for an edit button (look below the marker creation to see alt method of getting info about the job from watching when the pop-up opens
-            const popUpText = document.createElement("div");
-            popUpText.className = 'popper'
-            popUpText.id = 'text-div-id'
-            popUpText.innerText = 'TESTY JOB';
-            const popUpButton = document.createElement("button");
-            // put the jobNumber as the popup ID, for finding the correct job to set in state
-            popUpButton.id = 'AAA-200';
-            popUpButton.innerText = 'Edit';
-            popUpButton.addEventListener('click', markerEditButton);
-            popUpText.appendChild(popUpButton);
-            const popUpContent2 = "<b>StrataBore Office</b><br>I am a popup on a custom marker. This is the main office location";
-            const popUp = L.popup().setContent(popUpText);
-
+            // homeIcon is stored in /mapquest, and imported at the top of the page
             const smallMarker = L.icon({
               iconUrl: homeIcon,
               iconSize: [36, 36],
@@ -149,17 +149,15 @@ const MapView = ({token}) => {
             const customMarker = L.marker([32.88762, -96.89600], {
               icon: smallMarker
             }).addTo(map);
-            customMarker.bindPopup(popUp);
-            // can use popupopen and popupclose to get info about the popup, potentially including the job ID
-            // customMarker.on('popupopen', (e)=>{ console.log('pop up openened event', e.popup._content.id)})
-            // customMarker.on('popupclose', (e)=>{ console.log('pop up closed event', e)})
+            customMarker.bindPopup("<b>StrataBore Office</b>");
           } 
         })
         .catch((error) => {
           console.error(error);
         });      
     }
-  },[jobList])
+  },[rigList, jobList])
+  // the rigList and jobList are dependencies because we need that info for creating the markers
 
   // gross helper function for converting color names to hex codes for the map markers
   // may adapt this list to create a colorpicker for the rigform
@@ -226,9 +224,8 @@ const MapView = ({token}) => {
                       <li>Date/DateRange</li>
                       <li>Client</li>
                       <li>Rig</li>
-                      <li>Show Unassigned/Assigned/Both</li>
+                      <li>Show Unassigned/Assigned or Both</li>
                     </ul>
-                    <p>When a job is selected, an option will appear to edit the job -- hopefully this will work, but I'm not sure if I can access info about the clicked icons on the map</p>
                   </div>
                 )
               }
