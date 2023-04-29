@@ -122,17 +122,35 @@ const MapView = ({token}) => {
 
               // creating fancier HTMLelement for inside the pop-up
               // can add event listeners here for an edit button
-              const popUpText = document.createElement("div");
-              popUpText.className = 'popper'
-              popUpText.id = itemJob.id
-              popUpText.innerText = itemJob.jobNumber;
+              // put the jobNumber as the id on the edit button, for finding the correct job to set in state when the button is clicked
+              const popUpContent = document.createElement("div");
+              popUpContent.className = 'popper';
+
+              const popUpHeader = document.createElement("div");
+              popUpHeader.className = 'popper-header';
+              popUpHeader.innerText = itemJob.jobNumber;
+              popUpContent.appendChild(popUpHeader);
+
               const popUpButton = document.createElement("button");
-              // put the jobNumber as the popup ID, for finding the correct job to set in state when the button is clicked
               popUpButton.id = itemJob.jobNumber;
               popUpButton.innerText = 'Edit';
               popUpButton.addEventListener('click', markerEditButton);
-              popUpText.appendChild(popUpButton);
-              const popUp = L.popup().setContent(popUpText);
+              popUpHeader.appendChild(popUpButton);
+
+              const popUpInfo1 = document.createElement("div");
+              popUpInfo1.className = 'popper-info';
+              popUpInfo1.innerText = `Holes: ${itemJob.numHoles}`
+              const popUpInfo2 = document.createElement("div");
+              popUpInfo2.className = 'popper-info';
+              popUpInfo2.innerText = `Ft: ${itemJob.numFeet}`
+              const popUpInfo3 = document.createElement("div");
+              popUpInfo3.className = 'popper-info';
+              popUpInfo3.innerText = `Date: ${itemJob.jobDate}`
+              popUpContent.appendChild(popUpInfo1);
+              popUpContent.appendChild(popUpInfo2);
+              popUpContent.appendChild(popUpInfo3);
+
+              const popUp = L.popup({className: 'popUp-window'}).setContent(popUpContent);
               marker.bindPopup(popUp)              
             })
 

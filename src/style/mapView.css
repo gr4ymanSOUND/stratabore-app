@@ -53,23 +53,47 @@
   margin-left: .5rem;
 }
 
+.popUp-window {
+  width: fit-content;
+}
+
 .popper {
-  color: red;
-  border: 1px pink solid;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  width: 8rem;
+  
+  /* border: 1px red solid; */
+}
+
+.popper-header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 1rem;
+  font-weight: bold;
+
+  /* border: 1px green solid; */
 }
 
 .popper button {
+  font-size: .75rem;
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);
   border: none;
   box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
-  margin: .25rem;
   padding: .25rem;
 }
 
 .popper button:hover {
   background-color: rgb(48, 48, 48);
   color:rgb(224, 194, 22);
+}
+
+.popper-info {
+
+  /* border: 1px blue solid; */
 }
 
 .mapview-page .form-container {
