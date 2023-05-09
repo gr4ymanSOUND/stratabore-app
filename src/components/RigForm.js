@@ -7,6 +7,8 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
   const [ licensePlate, setLicensePlate ] = useState('');
   const [ rigType, setRigType ] = useState('lil');
   const [ boardColor , setBoardColor ] = useState('');
+  const [ registrationDueDate, setRegistrationDueDate ] = useState('');
+  const [ maintenanceDueDate, setMaintenanceDueDate ] = useState('');
   const [ rigStatus, setRigStatus ] = useState('active');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
@@ -15,6 +17,8 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       setLicensePlate(currentSelected.licensePlate);
       setRigType(currentSelected.rigType);
       setBoardColor(currentSelected.boardColor);
+      setRegistrationDueDate(currentSelected.registrationDueDate);
+      setMaintenanceDueDate(currentSelected.maintenanceDueDate);
       setRigStatus(currentSelected.status);
 
     }
@@ -24,6 +28,8 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       setLicensePlate('');
       setRigType('');
       setBoardColor('');
+      setRegistrationDueDate('');
+      setMaintenanceDueDate('');
       setRigStatus('active');
     }
 
@@ -42,6 +48,8 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       licensePlate: licensePlate,
       rigType: rigType,
       boardColor: boardColor,
+      registrationDueDate: registrationDueDate,
+      maintenanceDueDate: maintenanceDueDate,
       status: rigStatus
     }
 
@@ -58,6 +66,8 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
     setLicensePlate('');
     setRigType('');
     setBoardColor('');
+    setRegistrationDueDate('');
+    setMaintenanceDueDate('');
     setRigStatus('active');
     setFormType("reset")
 
@@ -137,6 +147,28 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
               <option value="purple">purple</option>
               <option value="yellow">yellow</option>
             </select> */}
+          </div>
+          <div className="input-section">
+            <label className="input-label">Registration Due:</label>
+            <input
+              type="date"
+              value={registrationDueDate}
+              onChange={({ target: { value } }) => setRegistrationDueDate(value)}
+              className="form-control"
+              id="registrationDate"
+              placeholder=""
+            />
+          </div>
+          <div className="input-section">
+            <label className="input-label">Maintenance Due:</label>
+            <input
+              type="date"
+              value={maintenanceDueDate}
+              onChange={({ target: { value } }) => setMaintenanceDueDate(value)}
+              className="form-control"
+              id="maintenanceDate"
+              placeholder=""
+            />
           </div>
           <div className="input-section">
             <label className="input-label">Status</label>

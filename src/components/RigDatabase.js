@@ -54,6 +54,8 @@ const RigDatabase = ({token}) => {
     { headerName: 'Type', field: 'rigType',
       filter: customFilter, filterParams: {values: ['lil', 'mid', 'big']} },
     { headerName: 'Color', field: 'boardColor', filter: true },
+    { headerName: 'Registration Due', field: 'registrationDueDate', filter: true},
+    { headerName: 'Maintenance Due', field: 'maintenanceDueDate', filter: true},
     { headerName: 'Status', field: 'status',
       filter: customFilter, filterParams: {values: ['active', 'repairs', 'inactive']} }
   ]);
