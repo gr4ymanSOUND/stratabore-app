@@ -10,8 +10,10 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const [numHoles, setNumHoles] = useState('');
   const [numFeet, setNumFeet] = useState('');
   const [jobDate, setJobDate] = useState('');
+  const [jobLength, setJobLength] = useState(1);
   const [rigId, setRigId] = useState('');
   const [jobStatus, setJobStatus] = useState('pending');
+  const [createdDate, setCreatedDate] = useState('');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
@@ -23,6 +25,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setNumHoles(currentSelected.numHoles);
       setNumFeet(currentSelected.numFeet);
       setJobDate(currentSelected.jobDate);
+      setJobLength(currentSelected.jobLength);
       setRigId(currentSelected.rigId);
       setJobStatus(currentSelected.status);
     }
@@ -61,7 +64,18 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       status: jobStatus
     }
 
+    // if adding a job, get the current date and set it in the createdDate state
     if (formType == 'add-job') {
+      const todayDate = new Date();
+      let monthPart = todayDate.getUTCMonth() + 1;
+      if (monthPart < 10) {
+        monthPart = "0" + monthPart;
+      }
+      let dayPart = todayDate.getUTCDate();
+      if (dayPart < 10) {
+        dayPart = "0" + dayPart;
+      }
+      newJob.createdDate = `${todayDate.getUTCFullYear()}-${monthPart}-${dayPart}`;
       const response = await addJob(token, newJob);
     }
     if (formType == 'edit-job') {
@@ -76,8 +90,10 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setNumHoles('');
     setNumFeet('');
     setJobDate('');
+    setJobLength(1);
     setRigId('');
     setJobStatus('');
+    setCreatedDate('');
     setFormType("reset")
 
     // sets the edited job data into react state as the currently selected row - used on the database page to re-select the row after editing has finished

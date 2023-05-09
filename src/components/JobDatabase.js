@@ -56,10 +56,12 @@ const JobDatabase = ({ token }) => {
     { headerName: 'Holes', field: 'numHoles', width: 75 },
     { headerName: '# Ft', field: 'numFeet', width: 75 },
     { headerName: 'Date', field: 'jobDate', filter: true, width: 100 },
+    { headerName: 'Length', field: 'jobLength', filter: true },
     { headerName: 'Rig', field: 'rigId', filter: true, width: 60},
     { headerName: 'Status', field: 'status',
       filter: customFilter, filterParams: {values: ['pending', 'completed', 'canceled', 'unassigned']},
-      width: 100 }
+      width: 100 },
+    { headerName: 'Created', field: 'createdDate', filter: true }
   ]);
 
   // DefaultColDef sets props common to all Columns
