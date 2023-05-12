@@ -49,6 +49,10 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
     style.backgroundColor = `darkgray`
   }
 
+  // work out something to count up the total of the job lengths and dislpay the counter-bars correctly
+  // also do something to color it differently if overbooked with a length of 3 or more
+  // include logic that tells whether one of the jobs in an overbooked rig is lenght 2, with yet another color or potentially an icon inside the bars
+
 
   return (
     <>
@@ -59,7 +63,21 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
           ) : null
         }
         <div className='day-rig-count'>
-          {`${rigJobs.length}`}
+          {/* {`${rigJobs.length}`} */}
+          {
+            rigJobs.map((job, index) => {
+              if (job.jobLength > 1) {
+                return (
+                  <>
+                  <div className='counter-bar two-length'></div>
+                  </>
+                )
+              }
+              return (
+                <div className='counter-bar'></div>
+              )
+            })
+          }
         </div>
         {
           detailView ? (
@@ -89,6 +107,18 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
             </div>
           ) : null
         }
+        <div className='rig-icons'>
+          {
+            (rig.registrationDueDate == specificDate) ? (
+              <i class="fa fa-id-card-o" aria-hidden="true"></i>
+            ) : null
+          }
+          {
+            (rig.maintenanceDueDate == specificDate) ? (
+              <i class="fa fa-wrench" aria-hidden="true"></i>
+            ) : null
+          }
+        </div>
       </div>
     </>
   )
