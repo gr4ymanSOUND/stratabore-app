@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
 import JobForm from './JobForm.js';
+import MapFilters from './MapFilters';
 
 import '../mapquest/mapquest.js';
 //import a custom icon image
@@ -234,18 +235,16 @@ const MapView = ({token}) => {
                     currentSelected={currentSelected}
                     setCurrentSelected={setCurrentSelected}
                   />
-                ) : ( 
-                  <div id='mapFilters'>
-                    <p>This sidebar will be collapsable</p>
-                    <p>It will default to showing the following filters for the map:</p>
-                    <ul>
-                      <li>Date/DateRange</li>
-                      <li>Client</li>
-                      <li>Rig</li>
-                      <li>Show Unassigned/Assigned or Both</li>
-                    </ul>
-                  </div>
-                )
+                ) : null
+              }
+              {
+                formType==='filter' ? ( 
+                  <MapFilters 
+                    jobList={jobList}
+                    setJobList={setJobList}
+                    rigList={rigList}
+                  />
+                ) : null
               }
             </div>
         )}
