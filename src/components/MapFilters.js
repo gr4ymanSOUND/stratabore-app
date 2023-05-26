@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 const MapFilters = ({jobList, setJobList, rigList}) => {
 
-  const [client, setClient] = useState('');
+  const [client, setClient] = useState('all');
   const [jobStatus, setJobStatus] = useState('all');
   const [rigsToShow, setRigsToShow] = useState([]);
   const [startDate, setStartDate] = useState('');
