@@ -210,7 +210,6 @@ export async function removeRig(token, rigId) {
 }
 
 export async function createRig(token, newRigData) {
-  console.log('new rig in axios', newRigData);
   try {
     const auth = {
       headers: {
@@ -220,11 +219,90 @@ export async function createRig(token, newRigData) {
     const payload = {
       newRigData: newRigData
     }
-    console.log('payload in axios', payload)
     const { data } = await axios.post(`/api/rigs/create`, payload, auth);
     return data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
+// job_rig (job assignment) calls
+
+export async function getAssignedAndUnassignedJobs(token) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const { data } = await axios.get(`api/rig_jobs/all`, auth);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getAssignedJobs(token) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const { data } = await axios.get(`api/rig_jobs/assigned`, auth);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function createJobRig(token, newJobRig) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const payload = {
+      newJobRig: newJobRig
+    }
+    const { data } = await axios.post(`api/rig_jobs`, payload, auth);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function updateJobRig(token, newJobRig) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const payload = {
+      newJobRig: newJobRig
+    }
+    const { data } = await axios.patch(`api/rig_jobs`, payload, auth);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteJobRig(token, rigToDelete) {
+  try {
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const payload = {
+      rigToDelete: rigToDelete
+    }
+    const { data } = await axios.delete(`api/rig_jobs`, payload, auth);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+}
