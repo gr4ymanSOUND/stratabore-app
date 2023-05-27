@@ -4,7 +4,7 @@ import SingleDate from './SingleDate';
 import JobForm from './JobForm';
 
 // axios imports
-import { getAllJobs, getAllRigs } from '../axios-services/index';
+import { getAllJobs, getAllRigs, getAssignedAndUnassignedJobs, getAssignedJobs } from '../axios-services/index';
 
 const Calendar = ({token}) => {
   // will use imported token for pulling data
@@ -24,7 +24,8 @@ const Calendar = ({token}) => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const jobs = await getAllJobs(token);
+        const jobs = await getAssignedAndUnassignedJobs(token);
+        console.log('new joblist format', jobs);
         setJobList(jobs);
       } catch (error) {
         console.log(error);

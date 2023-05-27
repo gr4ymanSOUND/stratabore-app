@@ -235,7 +235,7 @@ export async function getAssignedAndUnassignedJobs(token) {
         Authorization: `Bearer ${token}`
       }
     };
-    const { data } = await axios.get(`api/rig_jobs/all`, auth);
+    const { data } = await axios.get(`api/job_rigs/all`, auth);
     return data;
   } catch (error) {
     console.error(error);
@@ -249,7 +249,7 @@ export async function getAssignedJobs(token) {
         Authorization: `Bearer ${token}`
       }
     };
-    const { data } = await axios.get(`api/rig_jobs/assigned`, auth);
+    const { data } = await axios.get(`api/job_rigs/assigned`, auth);
     return data;
   } catch (error) {
     console.error(error);

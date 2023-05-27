@@ -56,7 +56,7 @@ const JobDatabase = ({ token }) => {
     { headerName: 'Holes', field: 'numHoles', width: 75 },
     { headerName: '# Ft', field: 'numFeet', width: 75 },
     { headerName: 'Length', field: 'jobLength', filter: true, width: 80},
-    { headerName: 'Rig', field: 'rigId', filter: true, width: 60},
+    // { headerName: 'Rig', field: 'rigId', filter: true, width: 60},
     { headerName: 'Book Date', field: 'createdDate', filter: true, width: 100 },
     { headerName: 'Drill Date', field: 'jobDate', filter: true, width: 100 },
     { headerName: 'Status', field: 'status',

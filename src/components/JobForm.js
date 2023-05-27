@@ -198,7 +198,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               placeholder=""
             />
           </div>
-          <div className="input-section">
+          {/* <div className="input-section">
             <label className="input-label">Rig ID:</label>
             <input
               type="number"
@@ -208,7 +208,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               id="rigId"
               placeholder="1 for Unassigned"
             />
-          </div>
+          </div> */}
           <div className="input-section">
             <label className="input-label">Status:</label>
             <select 

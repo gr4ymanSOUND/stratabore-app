@@ -7,7 +7,7 @@ import '../mapquest/mapquest.js';
 //import a custom icon image
 import homeIcon from '../mapquest/transparent-home.png';
 
-import { getAllJobs, getAllRigs } from '../axios-services/index.js';
+import { getAllJobs, getAllRigs, getAssignedJobs } from '../axios-services/index.js';
 
 const MapView = ({token}) => {
 
@@ -22,16 +22,24 @@ const MapView = ({token}) => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const jobs = await getAllJobs(token);
-        
-        let activeJobs = jobs.filter((job)=>{
-          return (job.status === 'pending' || job.status === 'unassigned')
-        });
-        setJobList(activeJobs);
-        const allLocations = activeJobs.map((job)=>{
-          return job.location; 
+        // const jobs = await getAllJobs(token);
+        // let activeJobs = jobs.filter((job)=>{
+        //   return (job.status === 'pending' || job.status === 'unassigned')
+        // });
+        // setJobList(activeJobs);
+        // const allLocations = activeJobs.map((job)=>{
+        //   return job.location; 
+        // });
+        // setLocationList(allLocations);
+
+        const assignedJobs = await getAssignedJobs(token);
+        setJobList(assignedJobs);
+        const allLocations = assignedJobs.map((job)=>{
+          return job.location;
         });
         setLocationList(allLocations);
+
+
       } catch (error) {
         console.error(error);
       }

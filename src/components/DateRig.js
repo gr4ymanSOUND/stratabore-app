@@ -68,13 +68,11 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
             rigJobs.map((job, index) => {
               if (job.jobLength > 1) {
                 return (
-                  <>
-                  <div className='counter-bar two-length'></div>
-                  </>
+                  <div key={job.id} className='counter-bar two-length'></div>
                 )
               }
               return (
-                <div className='counter-bar'></div>
+                <div key={job.id} className='counter-bar'></div>
               )
             })
           }
@@ -110,12 +108,12 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
         <div className='rig-icons'>
           {
             (rig.registrationDueDate == specificDate) ? (
-              <i class="fa fa-id-card-o" aria-hidden="true"></i>
+              <i className="fa fa-id-card-o" aria-hidden="true"></i>
             ) : null
           }
           {
             (rig.maintenanceDueDate == specificDate) ? (
-              <i class="fa fa-wrench" aria-hidden="true"></i>
+              <i className="fa fa-wrench" aria-hidden="true"></i>
             ) : null
           }
         </div>
