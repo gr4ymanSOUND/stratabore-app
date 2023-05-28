@@ -8,7 +8,7 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 
 // axios imports
-import { getAllJobs } from '../axios-services/index';
+import { getAllJobs, getAssignedAndUnassignedJobs } from '../axios-services/index';
 
 const JobDatabase = ({ token }) => {
   //for accessing Grid's API
@@ -23,7 +23,7 @@ const JobDatabase = ({ token }) => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const jobs = await getAllJobs(token);
+        const jobs = await getAssignedAndUnassignedJobs(token);
         setJobList(jobs);
       } catch (error) {
         console.error(error);
@@ -38,7 +38,7 @@ const JobDatabase = ({ token }) => {
       setCurrentSelected({});
       gridRef.current.api.deselectAll();
     }
-    if (formType == "cancel" || formType == "reset") {
+    if (formType == "cancel" || formType == "reset" || formType == "unassigned") {
       setFormType("")
       const buttonTimeout = setTimeout(() => {
         gridRef.current.api.sizeColumnsToFit();
@@ -56,11 +56,11 @@ const JobDatabase = ({ token }) => {
     { headerName: 'Holes', field: 'numHoles', width: 75 },
     { headerName: '# Ft', field: 'numFeet', width: 75 },
     { headerName: 'Length', field: 'jobLength', filter: true, width: 80},
-    // { headerName: 'Rig', field: 'rigId', filter: true, width: 60},
     { headerName: 'Book Date', field: 'createdDate', filter: true, width: 100 },
     { headerName: 'Drill Date', field: 'jobDate', filter: true, width: 100 },
+    { headerName: 'Rig', field: 'rigId', filter: true, width: 60},
     { headerName: 'Status', field: 'status',
-      filter: customFilter, filterParams: {values: ['pending', 'completed', 'canceled', 'unassigned']},
+      filter: customFilter, filterParams: {values: ['pending', 'completed', 'canceled']},
       width: 100 }
   ]);
 
@@ -111,7 +111,11 @@ const JobDatabase = ({ token }) => {
           (formType == "edit-job" || formType == "add-job" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
           :
             <>
-              {Object.keys(currentSelected).length !== 0 ? <button id='edit-job' onClick={buttonListener}>Edit Selected Job</button> : null}
+              {
+                Object.keys(currentSelected).length !== 0 ? (
+                    <button id='edit-job' onClick={buttonListener}>Edit Selected Job</button>
+                ) : null
+              }
               <button id='add-job' onClick={buttonListener}>Add Job</button>
             </>
         }

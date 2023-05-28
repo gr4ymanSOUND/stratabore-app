@@ -13,6 +13,7 @@ const Calendar = ({token}) => {
   const [currentMonth, setCurrentMonth] = useState('');
   const [currentYear, setCurrentYear] = useState('');
   const [jobList, setJobList] = useState([]);
+  const [unassignedJobList, setUnassignedJobList] = useState([]);
   const [rigList, setRigList] = useState([]);
   const [formType, setFormType] = useState('');
   const [currentSelected, setCurrentSelected] = useState({});
@@ -25,7 +26,7 @@ const Calendar = ({token}) => {
     const fetchJobs = async () => {
       try {
         const jobs = await getAssignedAndUnassignedJobs(token);
-        console.log('new joblist format', jobs);
+        // console.log('new joblist format', jobs);
         setJobList(jobs);
       } catch (error) {
         console.log(error);
@@ -33,6 +34,22 @@ const Calendar = ({token}) => {
     }
     fetchJobs();
   }, []);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const unassignedJobs = jobList.filter((job) => {
+          if (job.rigId === null) {return true}
+          return false;
+        });
+        setUnassignedJobList(unassignedJobs);
+        // console.log('unassigned jobs', unassignedJobList);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchJobs();
+  }, [jobList]);
 
   // set the date to current if there's nothing there
   useEffect(() => {
@@ -135,15 +152,9 @@ const Calendar = ({token}) => {
   }
   const displayDates = createDateArray(currentYear,currentMonth);
 
-  // deal with unassigned jobs
-  const unassignedJobs = jobList.filter((job) => {
-    if (job.status === "unassigned") {return true}
-    return false;
-  });
-
   // deal with the buttons controlling the calendar form
   const calendarFormButton = (e) => {
-    if (e.target.id === 'unassigned' && formType === '' && unassignedJobs.length > 0) {
+    if (e.target.id === 'unassigned' && formType === '' && unassignedJobList.length > 0) {
       setFormType('unassigned');
     }
     if ( e.target.id === 'cancel-edit' || e.target.id === 'unassigned' && formType === 'unassigned') {
@@ -153,7 +164,7 @@ const Calendar = ({token}) => {
     let selectedJob;
     if (e.target.id === 'edit-job') {
       if (e.target.dataset) {
-        selectedJob = unassignedJobs.filter((job) => {
+        selectedJob = unassignedJobList.filter((job) => {
           if (job.id == e.target.dataset.jobId) {
             return true;
           }
@@ -165,8 +176,10 @@ const Calendar = ({token}) => {
     }
   }
 
-  console.log('form', formType);
-  console.log('current selected', currentSelected);
+  // console.log('form', formType);
+  // console.log('current selected', currentSelected);
+  // console.log('jobList', jobList)
+  // console.log('unassigned jobs', unassignedJobList);
 
 
   return (
@@ -181,7 +194,7 @@ const Calendar = ({token}) => {
           {
             formType === 'edit-job' ? (
               <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Edit</button>
-            ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobs.length})</button>
+            ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
           }
         </div>
       </div>
@@ -225,12 +238,11 @@ const Calendar = ({token}) => {
             (formType === 'unassigned') ? (
               <div className='unassigned-joblist'>
                 {
-                  unassignedJobs.map((job, index) => {
+                  unassignedJobList.map((job, index) => {
                     return (
                       <div key={job.id} className='unassigned-job'>
                         <div>{job.jobNumber}</div>
                         <div>{job.location}</div>
-                        <div>{job.numHoles} holes, {job.numFeet}ft</div>
                         <button id='edit-job' data-job-id={job.id} className='calendar-form-button' onClick={calendarFormButton}>Edit</button>
                       </div>
                     )

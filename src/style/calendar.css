@@ -83,7 +83,8 @@
 
 .unassigned-joblist {
   width: 20vw;
-  height: 100%;
+  height: 90vh;
+  min-width: 15rem;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -91,6 +92,8 @@
   background-color: rgb(205, 205, 205);
   border: 1px rgb(175, 175, 175) solid;
   padding: .75rem 5px;
+
+  overflow: scroll;
 }
 
 .unassigned-job {
@@ -103,6 +106,10 @@
   margin-bottom: 2px;
   border: 1px rgb(170, 170, 170) solid;
   box-shadow: 1px 1px 4px rgba(100, 100, 100, 0.75);
+}
+
+.unassigned-job > button {
+  margin-left: 1px;
 }
 
 .unassigned-job > div {

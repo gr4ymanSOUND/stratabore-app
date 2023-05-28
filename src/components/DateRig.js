@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
+import { deleteJobRig } from '../axios-services/index';
+
 const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSelected, setCurrentSelected}) => {
 
   const [detailView, setDetailView] = useState(false);
@@ -89,14 +91,23 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
               {
               rigJobs.map((job, index) => {
                 const editButton = (e) => {
+                  e.preventDefault();
                   setFormType(e.target.id);
                   setCurrentSelected(job);
+                }
+                const unassignButton = async (e) => {
+                  e.preventDefault();
+                  const jobToUnassign = { jobId: job.id, rigId: job.rigId }
+                  console.log(jobToUnassign);
+                  // const unassignedJob = await deleteJobRig(jobToUnassign);
+                  setFormType(e.target.id);
                 }
                 return (
                   <div key={job.jobNumber} className="rig-detail-job">
                     <div>
                       {job.jobNumber}
                       <button id='edit-job' className='calendar-form-button' onClick={editButton}>Edit</button>
+                      <button id='unassigned' className='calendar-form-button' onClick={unassignButton}>Unassign</button>
                     </div>
                   </div>
                 )

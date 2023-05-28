@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllJobs, addJob, cancelJob, editJob } from '../axios-services';
+import { getAllJobs, addJob, cancelJob, editJob, createJobRig, getAssignedAndUnassignedJobs, updateJobRig } from '../axios-services';
 
 const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected }) => {
   // state for editable form fields
@@ -24,9 +24,9 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setLocation(currentSelected.location);
       setNumHoles(currentSelected.numHoles);
       setNumFeet(currentSelected.numFeet);
-      setJobDate(currentSelected.jobDate);
+      currentSelected.jobDate ? setJobDate(currentSelected.jobDate) : setJobDate('');
       setJobLength(currentSelected.jobLength);
-      setRigId(currentSelected.rigId);
+      currentSelected.rigId ? setRigId(currentSelected.rigId) : setRigId('')
       setJobStatus(currentSelected.status);
     }
 
@@ -38,7 +38,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setNumHoles('');
       setNumFeet('');
       setJobDate('')
-      setRigId(1);
+      setRigId('');
       setJobStatus('pending');
     }
 
@@ -49,7 +49,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     e.preventDefault();
 
     if (jobNumber=='' || location=='' || numHoles=='' || numFeet=='') {
-      alert('Please fill in all available fields before submitting');
+      alert('Please fill in all required fields before submitting.');
       return;
     }
 
@@ -59,9 +59,14 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       location: location,
       numHoles: numHoles,
       numFeet: numFeet,
-      jobDate: jobDate,
-      rigId: rigId,
       status: jobStatus
+    }
+
+    if (jobDate || rigId) {
+      if (jobDate=='' || rigId=='') {
+        alert('If assigning a Date or Rig, please fill in both.')
+        return
+      }
     }
 
     // if adding a job, get the current date and set it in the createdDate state
@@ -80,7 +85,11 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     }
     if (formType == 'edit-job') {
       const jobId = currentSelected.id;
-      const response = await editJob(token, jobId, newJob)
+      const response = await editJob(token, jobId, newJob);
+    }
+    if (currentSelected.jobDate) {
+      const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate}
+      const assignedJob = await createJobRig(token, newJobRig)
     }
     
     //reset form state and close the form after sumbission
@@ -100,8 +109,14 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setCurrentSelected(newJob);
 
     // reset the job list and see the newly added/edited data in the spreadsheet
-    const newJobList = await getAllJobs(token);
-    setJobList(newJobList);
+    // if we're assigning a job, we are coming from the calendar and will need to load a different joblist
+    if (assignedJob) {
+      const newJobList = await getAssignedAndUnassignedJobs(token)
+      setJobList(newJobList);
+    } else {
+      const newJobList = await getAllJobs(token);
+      setJobList(newJobList);
+    }
 
   };
 
@@ -124,6 +139,15 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setJobList(newJobList);
     }
   };
+
+  // listens to the unassign button
+  const unassignButton = async (e) => {
+    e.preventDefault();
+    const jobToUnassign = { jobId: currentSelected.jobId, rigId: rigId }
+    console.log(jobToUnassign);
+    // const unassignedJob = await deleteJobRig(jobToUnassign);
+    setFormType('unassigned');
+  }
 
   return !formType ? null : (
     <>
@@ -187,28 +211,35 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               placeholder="20"
             />
           </div>
-          <div className="input-section">
-            <label className="input-label">Date:</label>
-            <input
-              type="date"
-              value={jobDate}
-              onChange={({ target: { value } }) => setJobDate(value)}
-              className="form-control"
-              id="jobDate"
-              placeholder=""
-            />
-          </div>
-          {/* <div className="input-section">
-            <label className="input-label">Rig ID:</label>
-            <input
-              type="number"
-              value={rigId}
-              onChange={({ target: { value } }) => setRigId(value)}
-              className="form-control"
-              id="rigId"
-              placeholder="1 for Unassigned"
-            />
-          </div> */}
+          {
+            // for now, we're not allowing you to set a rig and date when creating a new job
+            formType === 'edit-job' ? (
+            <>
+              <div className="input-section">
+                <label className="input-label">Date:</label>
+                <input
+                  type="date"
+                  value={jobDate}
+                  onChange={({ target: { value } }) => setJobDate(value)}
+                  className="form-control"
+                  id="jobDate"
+                  placeholder=""
+                />
+              </div>
+              <div className="input-section">
+                <label className="input-label">Rig ID:</label>
+                <input
+                  type="text"
+                  value={rigId}
+                  onChange={({ target: { value } }) => setRigId(value)}
+                  className="form-control"
+                  id="rigId"
+                  placeholder="1 for Unassigned"
+                />
+              </div>
+            </>
+            ) : null
+          }
           <div className="input-section">
             <label className="input-label">Status:</label>
             <select 
@@ -220,11 +251,15 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               <option value="pending">Pending</option>
               <option value="complete">Complete</option>
               <option value="canceled">Canceled</option>
-              <option value="unassigned">Unassigned</option>
             </select>
           </div>
           <button className="submit-button" type='submit'>Save and Submit</button>
-          {(formType === "edit-job") ? <button id='cancel-job' onClick={cancelListener}>Cancel Job</button> : null}
+          {
+          formType === "edit-job" ? <button id='cancel-job' onClick={cancelListener}>Cancel Job</button> : null
+          }
+          {
+          currentSelected.rigId ? <button id='unnassign-job' onClick={unassignButton}>Unassign Job</button> : null
+          }
         </div>
       </form>
     </>
