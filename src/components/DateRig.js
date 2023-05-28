@@ -98,9 +98,11 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
                 const unassignButton = async (e) => {
                   e.preventDefault();
                   const jobToUnassign = { jobId: job.id, rigId: job.rigId }
-                  console.log(jobToUnassign);
-                  // const unassignedJob = await deleteJobRig(jobToUnassign);
-                  setFormType(e.target.id);
+                  if (confirm(`Are you sure you want to unassign this job? \n ${jobToUnassign}`)) {
+                    console.log(jobToUnassign);
+                    // const unassignedJob = await deleteJobRig(jobToUnassign);
+                    setFormType(e.target.id);
+                  }
                 }
                 return (
                   <div key={job.jobNumber} className="rig-detail-job">

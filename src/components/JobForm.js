@@ -48,9 +48,17 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const submitListener = async (e) => {
     e.preventDefault();
 
-    if (jobNumber=='' || location=='' || numHoles=='' || numFeet=='') {
+    if (!jobNumber || !location || !numHoles || !numFeet) {
       alert('Please fill in all required fields before submitting.');
       return;
+    }
+
+    if (jobDate || rigId) {
+      if (!jobDate || !rigId) {
+        alert('If assigning a Date or Rig, please fill in both. If you are trying to unassign or cancel the job, please use the other buttons.')
+        return
+      }
+
     }
 
     const newJob = {
@@ -60,13 +68,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       numHoles: numHoles,
       numFeet: numFeet,
       status: jobStatus
-    }
-
-    if (jobDate || rigId) {
-      if (jobDate=='' || rigId=='') {
-        alert('If assigning a Date or Rig, please fill in both.')
-        return
-      }
     }
 
     // if adding a job, get the current date and set it in the createdDate state
@@ -87,9 +88,33 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       const jobId = currentSelected.id;
       const response = await editJob(token, jobId, newJob);
     }
-    if (currentSelected.jobDate) {
-      const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate}
-      const assignedJob = await createJobRig(token, newJobRig)
+
+    // if there is a jobDate or rigId stored in the rig form, we need to do checks and create or edit the assignment
+    if (jobDate || rigId) {
+      console.log('a rig or date exists for this submission, check if the selected job has one stored in the db')
+      console.log(currentSelected.jobDate, jobDate);
+      console.log(currentSelected.rigId, rigId);
+
+      // if the job was unassigned, create a new job_rig record
+      if (!currentSelected.jobDate && !currentSelected.rigId) {
+        const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate };
+        const assignedJob = await createJobRig(token, newJobRig);
+      }
+
+      // if there is a rig on the currentselected already, then it already has an assignment. that means we need to compare the dates and rigs to see if they were updated
+      if (currentSelected.rigId) {
+        // is the rig different
+        if (rigId != currentSelected.rigId) {
+          if (confirm (`You are trying to change the assigned rig on this job. This will create a new job assignment with the date and rig supplied in the form. Continue?`)) {
+            const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate }
+            const assignedJob = await createJobRig(token, newJobRig);
+          }
+        } else  if (currentSelected.jobDate != jobDate) {
+          // rig isn't different, so update the assignment with a new date
+          const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate };
+          const assignedJob = await updateJobRig(token, newJobRig);
+        }
+      }
     }
     
     //reset form state and close the form after sumbission
@@ -109,14 +134,8 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setCurrentSelected(newJob);
 
     // reset the job list and see the newly added/edited data in the spreadsheet
-    // if we're assigning a job, we are coming from the calendar and will need to load a different joblist
-    if (assignedJob) {
-      const newJobList = await getAssignedAndUnassignedJobs(token)
-      setJobList(newJobList);
-    } else {
-      const newJobList = await getAllJobs(token);
-      setJobList(newJobList);
-    }
+    const newJobList = await getAssignedAndUnassignedJobs(token)
+    setJobList(newJobList);
 
   };
 
@@ -144,9 +163,12 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const unassignButton = async (e) => {
     e.preventDefault();
     const jobToUnassign = { jobId: currentSelected.jobId, rigId: rigId }
-    console.log(jobToUnassign);
-    // const unassignedJob = await deleteJobRig(jobToUnassign);
-    setFormType('unassigned');
+    if (confirm(`Are you sure you want to unassign this job? \n ${jobToUnassign}`)) {
+      console.log(jobToUnassign);
+      // const unassignedJob = await deleteJobRig(jobToUnassign);
+      setCurrentSelected({});
+      setFormType('unassigned');
+    }
   }
 
   return !formType ? null : (
@@ -229,12 +251,11 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               <div className="input-section">
                 <label className="input-label">Rig ID:</label>
                 <input
-                  type="text"
+                  type="number"
                   value={rigId}
                   onChange={({ target: { value } }) => setRigId(value)}
                   className="form-control"
                   id="rigId"
-                  placeholder="1 for Unassigned"
                 />
               </div>
             </>
