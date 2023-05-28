@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 import { deleteJobRig } from '../axios-services/index';
 
-const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSelected, setCurrentSelected}) => {
+const DateRig = ({ token, specificDate, rig, dayJobs, formType, setFormType, currentSelected, setCurrentSelected}) => {
 
   const [detailView, setDetailView] = useState(false);
 
@@ -98,9 +98,9 @@ const DateRig = ({specificDate, rig, dayJobs, formType, setFormType, currentSele
                 const unassignButton = async (e) => {
                   e.preventDefault();
                   const jobToUnassign = { jobId: job.id, rigId: job.rigId }
-                  if (confirm(`Are you sure you want to unassign this job? \n ${jobToUnassign}`)) {
+                  if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}`)) {
                     console.log(jobToUnassign);
-                    // const unassignedJob = await deleteJobRig(jobToUnassign);
+                    const unassignedJob = await deleteJobRig(token, jobToUnassign);
                     setFormType(e.target.id);
                   }
                 }

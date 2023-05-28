@@ -266,7 +266,7 @@ export async function createJobRig(token, newJobRig) {
     const payload = {
       newJobRig: newJobRig
     }
-    const { data } = await axios.post(`api/rig_jobs`, payload, auth);
+    const { data } = await axios.post(`api/job_rigs`, payload, auth);
     return data;
   } catch (error) {
     console.error(error);
@@ -283,24 +283,24 @@ export async function updateJobRig(token, newJobRig) {
     const payload = {
       newJobRig: newJobRig
     }
-    const { data } = await axios.patch(`api/rig_jobs`, payload, auth);
+    const { data } = await axios.patch(`api/job_rigs`, payload, auth);
     return data;
   } catch (error) {
     console.error(error);
   }
 }
 
-export async function deleteJobRig(token, rigToDelete) {
+export async function deleteJobRig(token, jobToUnassign) {
   try {
-    const auth = {
+    // delete axios calls have to send the payload and auth differently, found this answer on stackoverflow
+    const { data } = await axios.delete(`api/job_rigs/`, {
       headers: {
-        Authorization: `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
+      },
+      data: {
+        'jobToUnassign': jobToUnassign
       }
-    };
-    const payload = {
-      rigToDelete: rigToDelete
-    }
-    const { data } = await axios.delete(`api/rig_jobs`, payload, auth);
+    });
     return data;
   } catch (error) {
     console.error(error);

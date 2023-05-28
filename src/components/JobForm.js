@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllJobs, addJob, cancelJob, editJob, createJobRig, getAssignedAndUnassignedJobs, updateJobRig } from '../axios-services';
+import { getAllJobs, addJob, cancelJob, editJob, createJobRig, getAssignedAndUnassignedJobs, updateJobRig, deleteJobRig } from '../axios-services';
 
 const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected }) => {
   // state for editable form fields
@@ -91,10 +91,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
     // if there is a jobDate or rigId stored in the rig form, we need to do checks and create or edit the assignment
     if (jobDate || rigId) {
-      console.log('a rig or date exists for this submission, check if the selected job has one stored in the db')
-      console.log(currentSelected.jobDate, jobDate);
-      console.log(currentSelected.rigId, rigId);
-
       // if the job was unassigned, create a new job_rig record
       if (!currentSelected.jobDate && !currentSelected.rigId) {
         const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate };
@@ -103,7 +99,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
       // if there is a rig on the currentselected already, then it already has an assignment. that means we need to compare the dates and rigs to see if they were updated
       if (currentSelected.rigId) {
-        // is the rig different
+        // is the rig different?
         if (rigId != currentSelected.rigId) {
           if (confirm (`You are trying to change the assigned rig on this job. This will create a new job assignment with the date and rig supplied in the form. Continue?`)) {
             const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate }
@@ -162,12 +158,17 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   // listens to the unassign button
   const unassignButton = async (e) => {
     e.preventDefault();
+
     const jobToUnassign = { jobId: currentSelected.jobId, rigId: rigId }
-    if (confirm(`Are you sure you want to unassign this job? \n ${jobToUnassign}`)) {
+
+    if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}`)) {
       console.log(jobToUnassign);
-      // const unassignedJob = await deleteJobRig(jobToUnassign);
-      setCurrentSelected({});
+      const unassignedJob = await deleteJobRig(token, jobToUnassign);
       setFormType('unassigned');
+
+      // reload the joblist to reflect the changes in the spreadsheet
+      const newJobList = await getAssignedAndUnassignedJobs(token)
+      setJobList(newJobList);
     }
   }
 

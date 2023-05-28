@@ -216,6 +216,7 @@ const Calendar = ({token}) => {
                 return (
                   <div className='day' key={specificDate}>
                     <SingleDate
+                      token={token}
                       currentMonth={currentMonth}
                       specificDate={specificDate}
                       jobList={jobList}
