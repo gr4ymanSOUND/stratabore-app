@@ -106,9 +106,14 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             const assignedJob = await createJobRig(token, newJobRig);
           }
         } else  if (currentSelected.jobDate != jobDate) {
-          // rig isn't different, so update the assignment with a new date
-          const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate };
-          const assignedJob = await updateJobRig(token, newJobRig);
+          // rig isn't different, so update the assignment with a new date or create a new assignment for the same job and rig on a new date
+          if (confirm (`You are trying to change the date on this job assignment. If you want to assign this job to a second day, click OK.`)) {
+            const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate }
+            const assignedJob = await createJobRig(token, newJobRig);
+          } else if (confirm (`If you want to move this job to a new date, click OK. Click Cancel to cancel editing the job`)) {
+            const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate };
+            const assignedJob = await updateJobRig(token, newJobRig);
+          }
         }
       }
     }
@@ -162,7 +167,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     const jobToUnassign = { jobId: currentSelected.jobId, rigId: rigId }
 
     if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}`)) {
-      console.log(jobToUnassign);
       const unassignedJob = await deleteJobRig(token, jobToUnassign);
       setFormType('unassigned');
 

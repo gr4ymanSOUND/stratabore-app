@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { deleteJobRig } from '../axios-services/index';
+import { deleteJobRig, getAssignedAndUnassignedJobs } from '../axios-services/index';
 
-const DateRig = ({ token, specificDate, rig, dayJobs, formType, setFormType, currentSelected, setCurrentSelected}) => {
+const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setFormType, currentSelected, setCurrentSelected}) => {
 
   const [detailView, setDetailView] = useState(false);
 
@@ -99,9 +99,11 @@ const DateRig = ({ token, specificDate, rig, dayJobs, formType, setFormType, cur
                   e.preventDefault();
                   const jobToUnassign = { jobId: job.id, rigId: job.rigId }
                   if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}`)) {
-                    console.log(jobToUnassign);
                     const unassignedJob = await deleteJobRig(token, jobToUnassign);
                     setFormType(e.target.id);
+                    // reload the joblist to reflect the changes in the spreadsheet
+                    const newJobList = await getAssignedAndUnassignedJobs(token)
+                    setJobList(newJobList);
                   }
                 }
                 return (

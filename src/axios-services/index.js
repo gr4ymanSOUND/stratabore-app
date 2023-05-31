@@ -293,7 +293,7 @@ export async function updateJobRig(token, newJobRig) {
 export async function deleteJobRig(token, jobToUnassign) {
   try {
     // delete axios calls have to send the payload and auth differently, found this answer on stackoverflow
-    const { data } = await axios.delete(`api/job_rigs/`, {
+    const { data } = await axios.delete(`api/job_rigs`, {
       headers: {
         'Authorization': `Bearer ${token}`
       },

@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 import DateRig from './DateRig';
 
-const SingleDate = ({token, currentMonth, specificDate, jobList, rigList, formType, setFormType, currentSelected, setCurrentSelected}) => {
-  
+const SingleDate = ({token, currentMonth, specificDate, jobList, setJobList, rigList, formType, setFormType, currentSelected, setCurrentSelected}) => {
+
   // split the date string into parts to create the date labels
   // check if the day starts with a leading zero, and remove it for a cleaner display at the top of the card
   // check if the date is in the current month or not, and adjust the label appropriately
@@ -15,7 +15,6 @@ const SingleDate = ({token, currentMonth, specificDate, jobList, rigList, formTy
     dateParts[2] = `(${dateParts[2]})`;
   }
 
-  // filter to find the list of jobs for this particular date
   const dayJobs = jobList.filter((job) => {
     if (job.jobDate === specificDate && (job.status === 'pending' || job.status === 'completed')) {
       return true;
@@ -36,6 +35,7 @@ const SingleDate = ({token, currentMonth, specificDate, jobList, rigList, formTy
                     specificDate={specificDate}
                     rig={rig}
                     dayJobs={dayJobs}
+                    setJobList={setJobList}
                     formType={formType}
                     setFormType={setFormType}
                     currentSelected={currentSelected}

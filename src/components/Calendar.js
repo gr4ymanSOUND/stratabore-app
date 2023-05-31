@@ -35,6 +35,7 @@ const Calendar = ({token}) => {
     fetchJobs();
   }, []);
 
+  // set up the unassigned jobs when the joblist changes
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -220,6 +221,7 @@ const Calendar = ({token}) => {
                       currentMonth={currentMonth}
                       specificDate={specificDate}
                       jobList={jobList}
+                      setJobList={setJobList}
                       rigList={rigList}
                       formType={formType}
                       setFormType={setFormType}
