@@ -1,17 +1,25 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-const MapFilters = ({jobList, setJobList, rigList}) => {
+const MapFilters = ({filterState, setFilterState, jobList, setJobList, rigList}) => {
 
-  const [client, setClient] = useState('all');
   const [jobStatus, setJobStatus] = useState('all');
-  const [rigsToShow, setRigsToShow] = useState([]);
+  const [client, setClient] = useState('all');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [rigsToShow, setRigsToShow] = useState([]);
 
   // use state to fitler the joblist and set it to state
   const filterSubmit = (e) => {
     e.preventDefault();
-    alert("These filters don't work yet!")
+    
+    const newFilterState = {
+      jobStatus: jobStatus,
+      client: client,
+      startDate: startDate,
+      endDate: endDate,
+      rigsToShow: rigsToShow,
+    }
+    setFilterState(newFilterState);
   }
 
   const handleMultiSelect = (selectedItems) => {
@@ -35,9 +43,11 @@ const MapFilters = ({jobList, setJobList, rigList}) => {
             value={jobStatus}
             onChange={({ target: { value } }) => setJobStatus(value)}
           >
-            <option value="pending">Pending</option>
+            <option value="pending">All Pending</option>
+            <option value="assigned">Assigned</option>
             <option value="unassigned">Unassigned</option>
-            <option value="all">All</option>
+            <option value="complete">Complete</option>
+            <option value="canceled">Canceled</option>
           </select>
         </div>        
         <div className="input-section">

@@ -7,10 +7,17 @@ import '../mapquest/mapquest.js';
 //import a custom icon image
 import homeIcon from '../mapquest/transparent-home.png';
 
-import { getAllJobs, getAllRigs, getAssignedJobs } from '../axios-services/index.js';
+import { getAllJobs, getAllRigs, getAssignedAndUnassignedJobs } from '../axios-services/index.js';
 
 const MapView = ({token}) => {
 
+  const [filterState, setFilterState] = useState({
+    jobStatus: 'pending',
+    client: 'all',
+    startDate: '',
+    endDate: '',
+    rigsToShow: [],
+  });
   const [jobList, setJobList] = useState([]);
   const [rigList, setRigList] = useState([]);
   const [locationList, setLocationList] = useState([]);
@@ -18,34 +25,66 @@ const MapView = ({token}) => {
   const [formType, setFormType] = useState('');
   const [currentSelected, setCurrentSelected] = useState({});
 
+  // helper functions for filtering the joblist
+  const statusFilter = (job) => {
+    if (filterState.jobStatus == 'assigned') {
+      return job.rigId != null;
+    }
+    if (filterState.jobStatus == 'unassigned') {
+      return job.rigId == null;
+    }
+    return filterState.jobStatus == job.status;
+  }
+  const clientFilter = (job) => {
+    if (filterState.client == 'all') {
+      return true;
+    }
+    return job.client == filterState.client;
+  }
+  const rigFilter = (job) => {
+    if (filterState.rigsToShow.length == rigList.length || filterState.rigsToShow.length == 0) {
+      return true;
+    }
+    for (let i = 0; i < filterState.rigsToShow.length; i++) {
+      if (job.rigId == filterState.rigsToShow[i]) {
+        return job.rigId == filterState.rigsToShow[i];
+      }
+    }
+  }
+
   // pull the jobList and use it to set the location list
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        // const jobs = await getAllJobs(token);
-        // let activeJobs = jobs.filter((job)=>{
-        //   return (job.status === 'pending' || job.status === 'unassigned')
-        // });
-        // setJobList(activeJobs);
-        // const allLocations = activeJobs.map((job)=>{
-        //   return job.location; 
-        // });
-        // setLocationList(allLocations);
+        const allJobs = await getAssignedAndUnassignedJobs(token);
+        // use the filterState and helper functions to array.filter this joblist
+        const filteredJobs = allJobs.filter((job) => {
+          return statusFilter(job) && clientFilter(job) && rigFilter(job);
+        })
 
-        const assignedJobs = await getAssignedJobs(token);
-        setJobList(assignedJobs);
-        const allLocations = assignedJobs.map((job)=>{
+        setJobList(filteredJobs);
+        const allLocations = filteredJobs.map((job)=>{
           return job.location;
         });
         setLocationList(allLocations);
-
-
       } catch (error) {
         console.error(error);
       }
     }
     fetchJobs();
-  },[]);
+  },[filterState]);
+
+  // filter the joblist when the filterstate changes, also when the joblist changes due to editing a job we'll need to update again
+  // useEffect(() => {
+  //   const filteredJobs = jobList.filter((job) => {
+  //     return statusFilter(job) && clientFilter(job) && rigFilter(job);
+  //   })
+  //   setJobList(filteredJobs);
+  //   const allLocations = filteredJobs.map((job)=>{
+  //     return job.location;
+  //   });
+  //   setLocationList(allLocations);
+  // },[filterState])
 
   // pull the rigList so we can get the colors and ID for display on jobs
   useEffect(() => {
@@ -114,7 +153,12 @@ const MapView = ({token}) => {
             results.forEach((item, index)=> {
               const itemJob = jobList[index];
               const itemRig = rigList[itemJob.rigId - 1];
-              const itemColor = colourNameToHex(itemRig.boardColor);
+              let itemColor = '';
+              if(!itemRig) {
+                itemColor = colourNameToHex('gray');
+              } else {
+                itemColor = colourNameToHex(itemRig.boardColor);
+              }
               const latlong = item.locations[0].latLng;
               const marker = L.marker(latlong, {
                 icon: L.mapquest.icons.marker({
@@ -222,6 +266,14 @@ const MapView = ({token}) => {
     setCurrentSelected(currentJob);
   }
 
+  console.log('filter state', filterState);
+  console.log('jobList', jobList);
+  // const filteredlist = jobList.filter(statusFilter).filter(clientFilter).filter(rigFilter);
+  const filteredlist = jobList.filter((job) => {
+    return statusFilter(job) && clientFilter(job) && rigFilter(job);
+  })
+  console.log('filtered jobs', filteredlist)
+
    return (
     <div className='mapview-page'>
       <div className='mapview-button-list'>
@@ -247,7 +299,9 @@ const MapView = ({token}) => {
               }
               {
                 formType==='filter' ? ( 
-                  <MapFilters 
+                  <MapFilters
+                    filterState={filterState}
+                    setFilterState={setFilterState}
                     jobList={jobList}
                     setJobList={setJobList}
                     rigList={rigList}
