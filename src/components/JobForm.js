@@ -67,6 +67,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       location: location,
       numHoles: numHoles,
       numFeet: numFeet,
+      jobLength: jobLength,
       status: jobStatus
     }
 
@@ -238,6 +239,19 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               placeholder="20"
             />
           </div>
+          <div className="input-section">
+            <label className="input-label">Length:</label>
+            <input
+              type="number"
+              value={jobLength}
+              onChange={({ target: { value } }) => setJobLength(value)}
+              className="form-control"
+              id="length"
+              min='0.1'
+              max='1'
+              step='0.1'
+            />
+          </div>
           {
             // for now, we're not allowing you to set a rig and date when creating a new job
             formType === 'edit-job' ? (
@@ -261,6 +275,8 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
                   onChange={({ target: { value } }) => setRigId(value)}
                   className="form-control"
                   id="rigId"
+                  min='0'
+                  max='6'
                 />
               </div>
             </>

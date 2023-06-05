@@ -244,6 +244,11 @@
   height: 70%;
 }
 
+.full-length {
+  height: 100%;
+  background-color: rgb(156, 6, 6);
+}
+
 .counter-bar:last-child {
   margin-top: 0;
 }
@@ -278,6 +283,10 @@
   padding: 2px 5px;
   border-bottom: 1px solid rgb(150,150,150);
   background-color: white;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .rig-detail-job:last-child {

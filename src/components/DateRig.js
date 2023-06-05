@@ -68,9 +68,14 @@ const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setF
           {/* {`${rigJobs.length}`} */}
           {
             rigJobs.map((job, index) => {
-              if (job.jobLength > 1) {
+              if (job.jobLength > 0.4 && job.jobLength < 1) {
                 return (
                   <div key={job.id} className='counter-bar two-length'></div>
+                )
+              }
+              if (job.jobLength >= 1.0) {
+                return (
+                  <div key={job.id} className='counter-bar full-length'></div>
                 )
               }
               return (
@@ -110,6 +115,8 @@ const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setF
                   <div key={job.jobNumber} className="rig-detail-job">
                     <div>
                       {job.jobNumber}
+                    </div>
+                    <div>
                       <button id='edit-job' className='calendar-form-button' onClick={editButton}>Edit</button>
                       <button id='unassigned' className='calendar-form-button' onClick={unassignButton}>Unassign</button>
                     </div>
