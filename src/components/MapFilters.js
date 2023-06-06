@@ -2,16 +2,16 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 const MapFilters = ({filterState, setFilterState, jobList, setJobList, rigList}) => {
 
-  const [jobStatus, setJobStatus] = useState('all');
-  const [client, setClient] = useState('all');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [rigsToShow, setRigsToShow] = useState([]);
+  const [jobStatus, setJobStatus] = useState(filterState.jobStatus);
+  const [client, setClient] = useState(filterState.client);
+  const [startDate, setStartDate] = useState(filterState.startDate);
+  const [endDate, setEndDate] = useState(filterState.endDate);
+  const [rigsToShow, setRigsToShow] = useState(filterState.rigsToShow);
 
   // use state to fitler the joblist and set it to state
   const filterSubmit = (e) => {
     e.preventDefault();
-    
+
     const newFilterState = {
       jobStatus: jobStatus,
       client: client,

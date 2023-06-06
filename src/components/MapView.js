@@ -74,17 +74,6 @@ const MapView = ({token}) => {
     fetchJobs();
   },[filterState]);
 
-  // filter the joblist when the filterstate changes, also when the joblist changes due to editing a job we'll need to update again
-  // useEffect(() => {
-  //   const filteredJobs = jobList.filter((job) => {
-  //     return statusFilter(job) && clientFilter(job) && rigFilter(job);
-  //   })
-  //   setJobList(filteredJobs);
-  //   const allLocations = filteredJobs.map((job)=>{
-  //     return job.location;
-  //   });
-  //   setLocationList(allLocations);
-  // },[filterState])
 
   // pull the rigList so we can get the colors and ID for display on jobs
   useEffect(() => {
@@ -113,121 +102,121 @@ const MapView = ({token}) => {
   },[])
 
   // loads the map and creates the markers
-  useEffect(()=> {
-    // api key
-    L.mapquest.key = 'AoG5ccarCeCc9nGAZ4H4f8Bs61rR2DLt';
+  // useEffect(()=> {
+  //   // api key
+  //   L.mapquest.key = 'AoG5ccarCeCc9nGAZ4H4f8Bs61rR2DLt';
       
-    // a quick check if a map already exists, and removing it first before creating the new one
-    // needed this because the useEffect re-render was causing conflicts with the map already existing
-    let map;
-    if(Object.keys(mapObject).length != 0) {
-      mapObject.remove();
-    }
-    // initializes the map object itself
-    map = L.mapquest.map('map', {
-      center: [32.77822, -96.79512],
-      layers: L.mapquest.tileLayer('map'),
-      zoom: 10
-    });
-    setMapObject(map);
+  //   // a quick check if a map already exists, and removing it first before creating the new one
+  //   // needed this because the useEffect re-render was causing conflicts with the map already existing
+  //   let map;
+  //   if(Object.keys(mapObject).length != 0) {
+  //     mapObject.remove();
+  //   }
+  //   // initializes the map object itself
+  //   map = L.mapquest.map('map', {
+  //     center: [32.77822, -96.79512],
+  //     layers: L.mapquest.tileLayer('map'),
+  //     zoom: 10
+  //   });
+  //   setMapObject(map);
     
-    // adds the basic map controls
-    map.addControl(L.mapquest.control());
+  //   // adds the basic map controls
+  //   map.addControl(L.mapquest.control());
 
-    if (locationList.length > 0 && rigList.length > 0) {
+  //   if (locationList.length > 0 && rigList.length > 0) {
 
-      // this callback is required for the geocode to return the result to be manipulated, otherwise it just loads them on the map
-      const geocodingCallback = (error, response) => {
-        return response.results;
-      }
+  //     // this callback is required for the geocode to return the result to be manipulated, otherwise it just loads them on the map
+  //     const geocodingCallback = (error, response) => {
+  //       return response.results;
+  //     }
 
-      // api call for geocoding, send an array of comma-separated addresses to find the lat/lng
-      L.mapquest.geocoding().geocode([...locationList], geocodingCallback)
-        // add map markers based on the geocode results
-        .then((results) => {
-          // can only add markers if there is a map to add them to
-          if (Object.keys(mapObject).length != 0) {
+  //     // api call for geocoding, send an array of comma-separated addresses to find the lat/lng
+  //     L.mapquest.geocoding().geocode([...locationList], geocodingCallback)
+  //       // add map markers based on the geocode results
+  //       .then((results) => {
+  //         // can only add markers if there is a map to add them to
+  //         if (Object.keys(mapObject).length != 0) {
 
-            // adding a map marker and a pop-up attached to it at for each location in the results
-            // can change type and style the individual map marker, will make one style for each rig and apply dynamically
-            results.forEach((item, index)=> {
-              const itemJob = jobList[index];
-              const itemRig = rigList[itemJob.rigId - 1];
-              let itemColor = '';
-              if(!itemRig) {
-                itemColor = colourNameToHex('gray');
-              } else {
-                itemColor = colourNameToHex(itemRig.boardColor);
-              }
-              const latlong = item.locations[0].latLng;
-              const marker = L.marker(latlong, {
-                icon: L.mapquest.icons.marker({
-                  primaryColor: itemColor,
-                  secondaryColor: '#FFFFFF',
-                  shadow: true,
-                  size: 'sm',
-                  symbol: itemJob.rigId
-                })
-              }).addTo(map);
-              // marker.on('click', (e) => {
-              //   console.log('marker up was clicked', e);
-              // })
+  //           // adding a map marker and a pop-up attached to it at for each location in the results
+  //           // can change type and style the individual map marker, will make one style for each rig and apply dynamically
+  //           results.forEach((item, index)=> {
+  //             const itemJob = jobList[index];
+  //             const itemRig = rigList[itemJob.rigId - 1];
+  //             let itemColor = '';
+  //             if(!itemRig) {
+  //               itemColor = colourNameToHex('gray');
+  //             } else {
+  //               itemColor = colourNameToHex(itemRig.boardColor);
+  //             }
+  //             const latlong = item.locations[0].latLng;
+  //             const marker = L.marker(latlong, {
+  //               icon: L.mapquest.icons.marker({
+  //                 primaryColor: itemColor,
+  //                 secondaryColor: '#FFFFFF',
+  //                 shadow: true,
+  //                 size: 'sm',
+  //                 symbol: itemJob.rigId
+  //               })
+  //             }).addTo(map);
+  //             // marker.on('click', (e) => {
+  //             //   console.log('marker up was clicked', e);
+  //             // })
 
-              // creating fancier HTMLelement for inside the pop-up
-              // can add event listeners here for an edit button
-              // put the jobNumber as the id on the edit button, for finding the correct job to set in state when the button is clicked
-              const popUpContent = document.createElement("div");
-              popUpContent.className = 'popper';
+  //             // creating fancier HTMLelement for inside the pop-up
+  //             // can add event listeners here for an edit button
+  //             // put the jobNumber as the id on the edit button, for finding the correct job to set in state when the button is clicked
+  //             const popUpContent = document.createElement("div");
+  //             popUpContent.className = 'popper';
 
-              const popUpHeader = document.createElement("div");
-              popUpHeader.className = 'popper-header';
-              popUpHeader.innerText = itemJob.jobNumber;
-              popUpContent.appendChild(popUpHeader);
+  //             const popUpHeader = document.createElement("div");
+  //             popUpHeader.className = 'popper-header';
+  //             popUpHeader.innerText = itemJob.jobNumber;
+  //             popUpContent.appendChild(popUpHeader);
 
-              const popUpButton = document.createElement("button");
-              popUpButton.id = itemJob.jobNumber;
-              popUpButton.innerText = 'Edit';
-              popUpButton.addEventListener('click', markerEditButton);
-              popUpHeader.appendChild(popUpButton);
+  //             const popUpButton = document.createElement("button");
+  //             popUpButton.id = itemJob.jobNumber;
+  //             popUpButton.innerText = 'Edit';
+  //             popUpButton.addEventListener('click', markerEditButton);
+  //             popUpHeader.appendChild(popUpButton);
 
-              const popUpInfo1 = document.createElement("div");
-              popUpInfo1.className = 'popper-info';
-              popUpInfo1.innerText = `Holes: ${itemJob.numHoles}`
-              const popUpInfo2 = document.createElement("div");
-              popUpInfo2.className = 'popper-info';
-              popUpInfo2.innerText = `Ft: ${itemJob.numFeet}`
-              const popUpInfo3 = document.createElement("div");
-              popUpInfo3.className = 'popper-info';
-              popUpInfo3.innerText = `Date: ${itemJob.jobDate}`
-              popUpContent.appendChild(popUpInfo1);
-              popUpContent.appendChild(popUpInfo2);
-              popUpContent.appendChild(popUpInfo3);
+  //             const popUpInfo1 = document.createElement("div");
+  //             popUpInfo1.className = 'popper-info';
+  //             popUpInfo1.innerText = `Holes: ${itemJob.numHoles}`
+  //             const popUpInfo2 = document.createElement("div");
+  //             popUpInfo2.className = 'popper-info';
+  //             popUpInfo2.innerText = `Ft: ${itemJob.numFeet}`
+  //             const popUpInfo3 = document.createElement("div");
+  //             popUpInfo3.className = 'popper-info';
+  //             popUpInfo3.innerText = `Date: ${itemJob.jobDate}`
+  //             popUpContent.appendChild(popUpInfo1);
+  //             popUpContent.appendChild(popUpInfo2);
+  //             popUpContent.appendChild(popUpInfo3);
 
-              const popUp = L.popup({className: 'popUp-window'}).setContent(popUpContent);
-              marker.bindPopup(popUp)              
-            })
+  //             const popUp = L.popup({className: 'popUp-window'}).setContent(popUpContent);
+  //             marker.bindPopup(popUp)              
+  //           })
 
-            // ['2430 Merrell Rd #103, Dallas, TX 75229']
-            // [32.88762, -96.89600]
-            // custom icon example for office location
-            // homeIcon is stored in /mapquest, and imported at the top of the page
-            const smallMarker = L.icon({
-              iconUrl: homeIcon,
-              iconSize: [36, 36],
-              iconAnchor: [18, 36],
-              popupAnchor: [1, -36]
-            });
-            const customMarker = L.marker([32.88762, -96.89600], {
-              icon: smallMarker
-            }).addTo(map);
-            customMarker.bindPopup("<b>StrataBore Office</b>");
-          } 
-        })
-        .catch((error) => {
-          console.error(error);
-        });      
-    }
-  },[rigList, jobList])
+  //           // ['2430 Merrell Rd #103, Dallas, TX 75229']
+  //           // [32.88762, -96.89600]
+  //           // custom icon example for office location
+  //           // homeIcon is stored in /mapquest, and imported at the top of the page
+  //           const smallMarker = L.icon({
+  //             iconUrl: homeIcon,
+  //             iconSize: [36, 36],
+  //             iconAnchor: [18, 36],
+  //             popupAnchor: [1, -36]
+  //           });
+  //           const customMarker = L.marker([32.88762, -96.89600], {
+  //             icon: smallMarker
+  //           }).addTo(map);
+  //           customMarker.bindPopup("<b>StrataBore Office</b>");
+  //         } 
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });      
+  //   }
+  // },[rigList, jobList])
   // the rigList and jobList are dependencies because we need that info for creating the markers
 
   // gross helper function for converting color names to hex codes for the map markers
@@ -266,9 +255,9 @@ const MapView = ({token}) => {
     setCurrentSelected(currentJob);
   }
 
+// console checks for filter work
   console.log('filter state', filterState);
   console.log('jobList', jobList);
-  // const filteredlist = jobList.filter(statusFilter).filter(clientFilter).filter(rigFilter);
   const filteredlist = jobList.filter((job) => {
     return statusFilter(job) && clientFilter(job) && rigFilter(job);
   })
