@@ -12,11 +12,14 @@ const Calendar = ({token}) => {
   // current month and year for filtering the job list while generating the date components
   const [currentMonth, setCurrentMonth] = useState('');
   const [currentYear, setCurrentYear] = useState('');
+
+  // main content state
   const [jobList, setJobList] = useState([]);
   const [unassignedJobList, setUnassignedJobList] = useState([]);
   const [rigList, setRigList] = useState([]);
   const [formType, setFormType] = useState('');
   const [currentSelected, setCurrentSelected] = useState({});
+  const [detailView, setDetailView] = useState({});
 
   // array to store month names to convert from numbers for label at top of calendar
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -177,10 +180,11 @@ const Calendar = ({token}) => {
     }
   }
 
-  // console.log('form', formType);
-  // console.log('current selected', currentSelected);
+  console.log('form', formType);
+  console.log('current selected', currentSelected);
   // console.log('jobList', jobList)
   // console.log('unassigned jobs', unassignedJobList);
+  console.log('detail view', detailView);
 
 
   return (
@@ -227,6 +231,8 @@ const Calendar = ({token}) => {
                       setFormType={setFormType}
                       currentSelected={currentSelected}
                       setCurrentSelected={setCurrentSelected}
+                      detailView={detailView}
+                      setDetailView={setDetailView}
                     />
                   </div>
                 )

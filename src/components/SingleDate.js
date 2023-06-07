@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 import DateRig from './DateRig';
 
-const SingleDate = ({token, currentMonth, specificDate, jobList, setJobList, rigList, formType, setFormType, currentSelected, setCurrentSelected}) => {
+const SingleDate = ({token, currentMonth, specificDate, jobList, setJobList, rigList, formType, setFormType, currentSelected, setCurrentSelected, detailView, setDetailView}) => {
 
   // split the date string into parts to create the date labels
   // check if the day starts with a leading zero, and remove it for a cleaner display at the top of the card
@@ -40,6 +40,8 @@ const SingleDate = ({token, currentMonth, specificDate, jobList, setJobList, rig
                     setFormType={setFormType}
                     currentSelected={currentSelected}
                     setCurrentSelected={setCurrentSelected}
+                    detailView={detailView}
+                    setDetailView={setDetailView}
                   />
                 </div>
               )

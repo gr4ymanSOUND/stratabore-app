@@ -2,33 +2,12 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 import { deleteJobRig, getAssignedAndUnassignedJobs } from '../axios-services/index';
 
-const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setFormType, currentSelected, setCurrentSelected}) => {
+const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setFormType, currentSelected, setCurrentSelected, detailView, setDetailView}) => {
 
-  const [detailView, setDetailView] = useState(false);
-
-  // this handles keeping the detail view open when the form opens for editing
-  useEffect(()=>{
-    if (currentSelected.rigId === rig.id && specificDate === currentSelected.jobDate && rigJobs.length > 0) {
-      setDetailView(true);
-    }
-    if (currentSelected.status === 'unassigned' || rigJobs.length < 1) {
-      setDetailView(false);
-    }
-    if (formType==='unassigned') {
-      setDetailView(false);
-      setCurrentSelected({});
-    }
-
-  },[formType])
-  
-  // handles detail view toggling, only if there are jobs for that rig
-  const showDetail = (e) => {
-    if (rigJobs.length > 0 ){
-      setDetailView(!detailView);
-    }
-  };
+  const [showDetail, setShowDetail] = useState(false);
 
   // filter the dayJobs for the current rig
+  // putting this in state doesn't appear to be necessary, and also ends up causing too many re-renders
   const findRigJobs = (job) => {
     if (job.rigId === rig.id) {
       return true;
@@ -36,6 +15,43 @@ const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setF
     return false;
   };
   const rigJobs = dayJobs.filter(findRigJobs);
+
+  // calendar holds the detailView state so that only 1 can be viewed at a time
+  // this checks whether the current DateRig component is selected and sets the showDetail state
+  useEffect(()=>{
+    if (detailView.date === specificDate && detailView.id === rig.id && rigJobs.length > 0) {
+      setShowDetail(true);
+    } else {
+      setShowDetail(false)
+    }
+  },[detailView]);
+
+  // this handles keeping the detail view open when the form opens for editing
+  useEffect(()=>{
+    if (currentSelected.rigId === rig.id && specificDate === currentSelected.jobDate && rigJobs.length > 0) {
+      setDetailView({date: specificDate, id: rig.id});
+      setShowDetail(true);
+    }
+    if (formType ==='unassigned') {
+      setDetailView({});
+      setShowDetail(false);
+      setCurrentSelected({});
+    }
+    if (rigJobs.length < 1) {
+      setShowDetail(false);
+    }
+  },[formType])
+  
+  // handles detail view toggling, only if there are jobs for that rig
+  // sets the detailView state
+  const showDetailButton = (e) => {
+    if (!showDetail && rigJobs.length > 0) {
+      setDetailView({date: specificDate, id: rig.id});
+      setShowDetail(true);
+    } else {
+      setShowDetail(false);
+    }
+  };
 
   // logic to determine which coloring option to use for the rig, depending on the number of jobs and rig status
   const style = {backgroundColor: `${rig.boardColor}`, border: 'none'};
@@ -51,21 +67,15 @@ const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setF
     style.backgroundColor = `darkgray`
   }
 
-  // work out something to count up the total of the job lengths and dislpay the counter-bars correctly
-  // also do something to color it differently if overbooked with a length of 3 or more
-  // include logic that tells whether one of the jobs in an overbooked rig is lenght 2, with yet another color or potentially an icon inside the bars
-
-
   return (
     <>
-      <div onClick={showDetail} className="day-rig" style={style}>
+      <div onClick={showDetailButton} className="day-rig" style={style}>
         {
           (rig.status !== 'active' || rigJobs.length < 1) ? (
             <div className='day-rig-id' style={{color: rig.boardColor}}>{rig.id}</div>
           ) : null
         }
         <div className='day-rig-count'>
-          {/* {`${rigJobs.length}`} */}
           {
             rigJobs.map((job, index) => {
               if (job.jobLength > 0.4 && job.jobLength < 1) {
@@ -85,8 +95,8 @@ const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setF
           }
         </div>
         {
-          detailView ? (
-            <div onClick={showDetail} className="day-rig-detail" style={style}>
+          showDetail ? (
+            <div onClick={showDetailButton} className="day-rig-detail" style={style}>
               <div className='rig-info' >
                 <div>ID: {rig.id}</div>
                 <div>{rig.licensePlate}</div>
