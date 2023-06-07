@@ -112,8 +112,8 @@ const DateRig = ({ token, specificDate, rig, dayJobs, setJobList, formType, setF
                 }
                 const unassignButton = async (e) => {
                   e.preventDefault();
-                  const jobToUnassign = { jobId: job.id, rigId: job.rigId }
-                  if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}`)) {
+                  const jobToUnassign = { jobId: job.id, rigId: job.rigId, jobDate: job.jobDate }
+                  if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}, Date: ${jobToUnassign.jobDate}`)) {
                     const unassignedJob = await deleteJobRig(token, jobToUnassign);
                     setFormType(e.target.id);
                     // reload the joblist to reflect the changes in the spreadsheet

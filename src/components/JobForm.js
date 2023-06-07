@@ -112,8 +112,12 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate }
             const assignedJob = await createJobRig(token, newJobRig);
           } else if (confirm (`If you want to move this job to a new date, click OK. Click Cancel to cancel editing the job`)) {
+            // patching didn't work with the db because all 3 fields are combined to make the unique primary key
+            // need to delete first, then create the new one
+            const jobToUnassign = { jobId: currentSelected.id, rigId: currentSelected.rigId, jobDate: currentSelected.jobDate };
+            const deletedJob = await deleteJobRig(token, jobToUnassign);
             const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate };
-            const assignedJob = await updateJobRig(token, newJobRig);
+            const assignedJob = await createJobRig(token, newJobRig);
           }
         }
       }
@@ -165,9 +169,9 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const unassignButton = async (e) => {
     e.preventDefault();
 
-    const jobToUnassign = { jobId: currentSelected.jobId, rigId: rigId }
+    const jobToUnassign = { jobId: currentSelected.jobId, rigId: rigId , jobDate: currentSelected.jobDate}
 
-    if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}`)) {
+    if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}, Date: ${jobToUnassign.jobDate}`)) {
       const unassignedJob = await deleteJobRig(token, jobToUnassign);
       setFormType('unassigned');
 
