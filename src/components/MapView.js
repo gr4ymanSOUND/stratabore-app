@@ -6,6 +6,7 @@ import MapFilters from './MapFilters';
 import '../mapquest/mapquest.js';
 //import a custom icon image
 import homeIcon from '../mapquest/transparent-home.png';
+import { statusFilter, clientFilter, rigFilter } from './mapFilterHelpers.js';
 
 import { getAllJobs, getAllRigs, getAssignedAndUnassignedJobs } from '../axios-services/index.js';
 
@@ -25,48 +26,21 @@ const MapView = ({token}) => {
   const [formType, setFormType] = useState('');
   const [currentSelected, setCurrentSelected] = useState({});
 
-  // helper functions for filtering the joblist
-  const statusFilter = (job) => {
-    if (filterState.jobStatus == 'assigned') {
-      return job.rigId != null;
-    }
-    if (filterState.jobStatus == 'unassigned') {
-      return job.rigId == null;
-    }
-    return filterState.jobStatus == job.status;
-  }
-  const clientFilter = (job) => {
-    if (filterState.client == 'all') {
-      return true;
-    }
-    return job.client == filterState.client;
-  }
-  const rigFilter = (job) => {
-    if (filterState.rigsToShow.length == rigList.length || filterState.rigsToShow.length == 0) {
-      return true;
-    }
-    for (let i = 0; i < filterState.rigsToShow.length; i++) {
-      if (job.rigId == filterState.rigsToShow[i]) {
-        return job.rigId == filterState.rigsToShow[i];
-      }
-    }
-  }
-
   // pull the jobList and use it to set the location list
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const allJobs = await getAssignedAndUnassignedJobs(token);
+
         // use the filterState and helper functions to array.filter this joblist
         const filteredJobs = allJobs.filter((job) => {
-          return statusFilter(job) && clientFilter(job) && rigFilter(job);
+          return statusFilter(job, filterState) && clientFilter(job, filterState) && rigFilter(job, filterState, rigList);
         })
-
         setJobList(filteredJobs);
-        const allLocations = filteredJobs.map((job)=>{
+        const filteredLocations = filteredJobs.map((job)=>{
           return job.location;
         });
-        setLocationList(allLocations);
+        setLocationList(filteredLocations);
       } catch (error) {
         console.error(error);
       }
@@ -88,136 +62,138 @@ const MapView = ({token}) => {
     fetchRigs();
   }, []);
 
+  // >>>>>>>>>>>NEW JUN 10<<<<<<<<<<<<
+  // it looks like recent changes to force the map to wait on certain state has fixed the need for this, so I'm commenting it out for now
   // messy hack to force the page to re-load and get the map actually working with no errors on page
   // this is required because the mapquest API depends on window.onload being called
   // to get around this, I was able to put all the onload functionality inside another useEffect that has dependencies, but that gives me errors when navigating from the Admin tab only for some reason so I'm opting to keep it in for now
-  useEffect(() => {
-    const reloadCount = sessionStorage.getItem('reloadCount');
-    if(reloadCount < 1) {
-      sessionStorage.setItem('reloadCount', String(reloadCount + 1));
-      window.location.reload();
-    } else {
-      sessionStorage.removeItem('reloadCount');
-    }
-  },[])
+  // useEffect(() => {
+  //   const reloadCount = sessionStorage.getItem('reloadCount');
+  //   if(reloadCount < 1) {
+  //     sessionStorage.setItem('reloadCount', String(reloadCount + 1));
+  //     window.location.reload();
+  //   } else {
+  //     sessionStorage.removeItem('reloadCount');
+  //   }
+  // },[])
 
   // loads the map and creates the markers
-  // useEffect(()=> {
-  //   // api key
-  //   L.mapquest.key = 'AoG5ccarCeCc9nGAZ4H4f8Bs61rR2DLt';
+  useEffect(()=> {
+    // api key
+    L.mapquest.key = 'AoG5ccarCeCc9nGAZ4H4f8Bs61rR2DLt';
       
-  //   // a quick check if a map already exists, and removing it first before creating the new one
-  //   // needed this because the useEffect re-render was causing conflicts with the map already existing
-  //   let map;
-  //   if(Object.keys(mapObject).length != 0) {
-  //     mapObject.remove();
-  //   }
-  //   // initializes the map object itself
-  //   map = L.mapquest.map('map', {
-  //     center: [32.77822, -96.79512],
-  //     layers: L.mapquest.tileLayer('map'),
-  //     zoom: 10
-  //   });
-  //   setMapObject(map);
+    // a quick check if a map already exists, and removing it first before creating the new one
+    // needed this because the useEffect re-render was causing conflicts with the map already existing
+    let map;
+    if(Object.keys(mapObject).length != 0) {
+      mapObject.remove();
+    }
+    // initializes the map object itself
+    map = L.mapquest.map('map', {
+      center: [32.77822, -96.79512],
+      layers: L.mapquest.tileLayer('map'),
+      zoom: 10
+    });
+    setMapObject(map);
     
-  //   // adds the basic map controls
-  //   map.addControl(L.mapquest.control());
+    // adds the basic map controls
+    map.addControl(L.mapquest.control());
 
-  //   if (locationList.length > 0 && rigList.length > 0) {
+    if (locationList.length > 0 && rigList.length > 0) {
 
-  //     // this callback is required for the geocode to return the result to be manipulated, otherwise it just loads them on the map
-  //     const geocodingCallback = (error, response) => {
-  //       return response.results;
-  //     }
+      // this callback is required for the geocode to return the result to be manipulated, otherwise it just loads them on the map
+      const geocodingCallback = (error, response) => {
+        return response.results;
+      }
 
-  //     // api call for geocoding, send an array of comma-separated addresses to find the lat/lng
-  //     L.mapquest.geocoding().geocode([...locationList], geocodingCallback)
-  //       // add map markers based on the geocode results
-  //       .then((results) => {
-  //         // can only add markers if there is a map to add them to
-  //         if (Object.keys(mapObject).length != 0) {
+      // api call for geocoding, send an array of comma-separated addresses to find the lat/lng
+      L.mapquest.geocoding().geocode([...locationList], geocodingCallback)
+        // add map markers based on the geocode results
+        .then((results) => {
+          // can only add markers if there is a map to add them to
+          if (Object.keys(mapObject).length != 0) {
 
-  //           // adding a map marker and a pop-up attached to it at for each location in the results
-  //           // can change type and style the individual map marker, will make one style for each rig and apply dynamically
-  //           results.forEach((item, index)=> {
-  //             const itemJob = jobList[index];
-  //             const itemRig = rigList[itemJob.rigId - 1];
-  //             let itemColor = '';
-  //             if(!itemRig) {
-  //               itemColor = colourNameToHex('gray');
-  //             } else {
-  //               itemColor = colourNameToHex(itemRig.boardColor);
-  //             }
-  //             const latlong = item.locations[0].latLng;
-  //             const marker = L.marker(latlong, {
-  //               icon: L.mapquest.icons.marker({
-  //                 primaryColor: itemColor,
-  //                 secondaryColor: '#FFFFFF',
-  //                 shadow: true,
-  //                 size: 'sm',
-  //                 symbol: itemJob.rigId
-  //               })
-  //             }).addTo(map);
-  //             // marker.on('click', (e) => {
-  //             //   console.log('marker up was clicked', e);
-  //             // })
+            // adding a map marker and a pop-up attached to it at for each location in the results
+            // can change type and style the individual map marker, will make one style for each rig and apply dynamically
+            results.forEach((item, index)=> {
+              const itemJob = jobList[index];
+              const itemRig = rigList[itemJob.rigId - 1];
+              let itemColor = '';
+              if(!itemRig) {
+                itemColor = colourNameToHex('gray');
+              } else {
+                itemColor = colourNameToHex(itemRig.boardColor);
+              }
+              const latlong = item.locations[0].latLng;
+              const marker = L.marker(latlong, {
+                icon: L.mapquest.icons.marker({
+                  primaryColor: itemColor,
+                  secondaryColor: '#FFFFFF',
+                  shadow: true,
+                  size: 'sm',
+                  symbol: itemJob.rigId
+                })
+              }).addTo(map);
+              // marker.on('click', (e) => {
+              //   console.log('marker up was clicked', e);
+              // })
 
-  //             // creating fancier HTMLelement for inside the pop-up
-  //             // can add event listeners here for an edit button
-  //             // put the jobNumber as the id on the edit button, for finding the correct job to set in state when the button is clicked
-  //             const popUpContent = document.createElement("div");
-  //             popUpContent.className = 'popper';
+              // creating fancier HTMLelement for inside the pop-up
+              // can add event listeners here for an edit button
+              // put the jobNumber as the id on the edit button, for finding the correct job to set in state when the button is clicked
+              const popUpContent = document.createElement("div");
+              popUpContent.className = 'popper';
 
-  //             const popUpHeader = document.createElement("div");
-  //             popUpHeader.className = 'popper-header';
-  //             popUpHeader.innerText = itemJob.jobNumber;
-  //             popUpContent.appendChild(popUpHeader);
+              const popUpHeader = document.createElement("div");
+              popUpHeader.className = 'popper-header';
+              popUpHeader.innerText = itemJob.jobNumber;
+              popUpContent.appendChild(popUpHeader);
 
-  //             const popUpButton = document.createElement("button");
-  //             popUpButton.id = itemJob.jobNumber;
-  //             popUpButton.innerText = 'Edit';
-  //             popUpButton.addEventListener('click', markerEditButton);
-  //             popUpHeader.appendChild(popUpButton);
+              const popUpButton = document.createElement("button");
+              popUpButton.id = itemJob.jobNumber;
+              popUpButton.innerText = 'Edit';
+              popUpButton.addEventListener('click', markerEditButton);
+              popUpHeader.appendChild(popUpButton);
 
-  //             const popUpInfo1 = document.createElement("div");
-  //             popUpInfo1.className = 'popper-info';
-  //             popUpInfo1.innerText = `Holes: ${itemJob.numHoles}`
-  //             const popUpInfo2 = document.createElement("div");
-  //             popUpInfo2.className = 'popper-info';
-  //             popUpInfo2.innerText = `Ft: ${itemJob.numFeet}`
-  //             const popUpInfo3 = document.createElement("div");
-  //             popUpInfo3.className = 'popper-info';
-  //             popUpInfo3.innerText = `Date: ${itemJob.jobDate}`
-  //             popUpContent.appendChild(popUpInfo1);
-  //             popUpContent.appendChild(popUpInfo2);
-  //             popUpContent.appendChild(popUpInfo3);
+              const popUpInfo1 = document.createElement("div");
+              popUpInfo1.className = 'popper-info';
+              popUpInfo1.innerText = `Holes: ${itemJob.numHoles}`
+              const popUpInfo2 = document.createElement("div");
+              popUpInfo2.className = 'popper-info';
+              popUpInfo2.innerText = `Ft: ${itemJob.numFeet}`
+              const popUpInfo3 = document.createElement("div");
+              popUpInfo3.className = 'popper-info';
+              popUpInfo3.innerText = `Date: ${itemJob.jobDate}`
+              popUpContent.appendChild(popUpInfo1);
+              popUpContent.appendChild(popUpInfo2);
+              popUpContent.appendChild(popUpInfo3);
 
-  //             const popUp = L.popup({className: 'popUp-window'}).setContent(popUpContent);
-  //             marker.bindPopup(popUp)              
-  //           })
+              const popUp = L.popup({className: 'popUp-window'}).setContent(popUpContent);
+              marker.bindPopup(popUp)              
+            })
 
-  //           // ['2430 Merrell Rd #103, Dallas, TX 75229']
-  //           // [32.88762, -96.89600]
-  //           // custom icon example for office location
-  //           // homeIcon is stored in /mapquest, and imported at the top of the page
-  //           const smallMarker = L.icon({
-  //             iconUrl: homeIcon,
-  //             iconSize: [36, 36],
-  //             iconAnchor: [18, 36],
-  //             popupAnchor: [1, -36]
-  //           });
-  //           const customMarker = L.marker([32.88762, -96.89600], {
-  //             icon: smallMarker
-  //           }).addTo(map);
-  //           customMarker.bindPopup("<b>StrataBore Office</b>");
-  //         } 
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });      
-  //   }
-  // },[rigList, jobList])
-  // the rigList and jobList are dependencies because we need that info for creating the markers
+            // ['2430 Merrell Rd #103, Dallas, TX 75229']
+            // [32.88762, -96.89600]
+            // custom icon example for office location
+            // homeIcon is stored in /mapquest, and imported at the top of the page
+            const smallMarker = L.icon({
+              iconUrl: homeIcon,
+              iconSize: [36, 36],
+              iconAnchor: [18, 36],
+              popupAnchor: [1, -36]
+            });
+            const customMarker = L.marker([32.88762, -96.89600], {
+              icon: smallMarker
+            }).addTo(map);
+            customMarker.bindPopup("<b>StrataBore Office</b>");
+          } 
+        })
+        .catch((error) => {
+          console.error(error);
+        });      
+    }
+  },[rigList, locationList])
+  // the rigList and locationList are dependencies because we need that info for creating the markers
 
   // gross helper function for converting color names to hex codes for the map markers
   // may adapt this list to create a colorpicker for the rigform
@@ -258,10 +234,7 @@ const MapView = ({token}) => {
 // console checks for filter work
   console.log('filter state', filterState);
   console.log('jobList', jobList);
-  const filteredlist = jobList.filter((job) => {
-    return statusFilter(job) && clientFilter(job) && rigFilter(job);
-  })
-  console.log('filtered jobs', filteredlist)
+  console.log('location list', locationList);
 
    return (
     <div className='mapview-page'>
@@ -283,6 +256,10 @@ const MapView = ({token}) => {
                     setJobList={setJobList}
                     currentSelected={currentSelected}
                     setCurrentSelected={setCurrentSelected}
+                    locationList={locationList}
+                    setLocationList={setLocationList}
+                    filterState={filterState}
+                    rigList={rigList}
                   />
                 ) : null
               }

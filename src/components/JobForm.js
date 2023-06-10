@@ -2,7 +2,10 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 import { getAllJobs, addJob, cancelJob, editJob, createJobRig, getAssignedAndUnassignedJobs, updateJobRig, deleteJobRig } from '../axios-services';
 
-const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected }) => {
+import { statusFilter, clientFilter, rigFilter } from './mapFilterHelpers';
+
+
+const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, setCurrentSelected, locationList, setLocationList, filterState, rigList }) => {
   // state for editable form fields
   const [jobNumber, setJobNumber] = useState('');
   const [client, setClient] = useState('EWL');
@@ -139,9 +142,23 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     // sets the edited job data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
     setCurrentSelected(newJob);
 
-    // reset the job list and see the newly added/edited data in the spreadsheet
+    // pull the new jobList to use in the if/else below
     const newJobList = await getAssignedAndUnassignedJobs(token)
-    setJobList(newJobList);
+
+    // if there is a locationList being passed in, we are in the map view and need to do things a bit differently by setting the locationList as well
+    if (locationList) {
+      const filteredJobs = newJobList.filter((job) => {
+        return statusFilter(job, filterState) && clientFilter(job, filterState) && rigFilter(job, filterState, rigList);
+      })
+      setJobList(filteredJobs);
+      const filteredLocations = filteredJobs.map((job)=>{
+        return job.location;
+      });
+      setLocationList(filteredLocations);
+    } else {
+      // the main condition will be this one in the else statement - this takes care of setting the joblist for both the calendar and database view
+      setJobList(newJobList);
+    }
 
   };
 
