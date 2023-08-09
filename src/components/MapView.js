@@ -6,7 +6,7 @@ import MapFilters from './MapFilters';
 import '../mapquest/mapquest.js';
 //import a custom icon image
 import homeIcon from '../mapquest/transparent-home.png';
-import { statusFilter, clientFilter, rigFilter } from './mapFilterHelpers.js';
+import { statusFilter, clientFilter, rigFilter, dateFilter } from './mapFilterHelpers.js';
 
 import { getAllJobs, getAllRigs, getAssignedAndUnassignedJobs } from '../axios-services/index.js';
 
@@ -34,7 +34,7 @@ const MapView = ({token}) => {
 
         // use the filterState and helper functions to array.filter this joblist
         const filteredJobs = allJobs.filter((job) => {
-          return statusFilter(job, filterState) && clientFilter(job, filterState) && rigFilter(job, filterState, rigList);
+          return statusFilter(job, filterState) && clientFilter(job, filterState) && rigFilter(job, filterState, rigList) && dateFilter(job, filterState);
         })
         setJobList(filteredJobs);
         const filteredLocations = filteredJobs.map((job)=>{

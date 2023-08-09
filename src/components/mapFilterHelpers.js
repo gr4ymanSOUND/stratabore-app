@@ -26,3 +26,20 @@ export function rigFilter(job, filterState, rigList) {
     }
   }
 }
+
+export function dateFilter(job, filterState) {
+  if (!filterState.startDate && !filterState.endDate) {
+    console.log('both empty')
+    return true;
+  }
+  if (!filterState.startDate && filterState.endDate) {
+    console.log('start empty')
+    return job.jobDate <= filterState.endDate;
+  }
+  if (filterState.startDate && !filterState.endDate) {
+    console.log('end empty')
+    return job.jobDate >= filterState.tartDate;
+  }
+  console.log('both filled')
+  return job.jobDate >= filterState.startDate && jobDate <= filterState.endDate;
+}
