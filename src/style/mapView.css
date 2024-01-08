@@ -1,14 +1,15 @@
 .mapview-page {
-  margin: 4rem auto;
+  margin: 3.75rem auto;
   position: relative;
+  height: calc(100% - 4.2rem - 6vh);
 }
 
 .mapview-button-list {
-  margin: -.75rem auto;
+  margin: -.75rem 4rem -.75rem 0;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
-  width: 95%;
+  /* width: 85%; */
   min-height: 1.5rem;
   
   /* hack to put buttons slightly over top of table headers */
@@ -37,12 +38,12 @@
   align-items: center;
 
   margin: 0rem auto;
-  width: 95vw;
-  height: 80vh;
+  height: 100%;
+  width: 100%;
+
 }
 
 .strata-mapper {
-  max-width: 1080px;
   height: 100%;
   width: 100%;
 }
@@ -50,7 +51,7 @@
 .strata-mapper-tool {
   width: 275px;
   height: 100%;
-  margin-left: .5rem;
+  margin-left: 1px;
 }
 
 .popUp-window {
