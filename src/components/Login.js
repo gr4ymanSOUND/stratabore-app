@@ -58,7 +58,7 @@ const Login = ({ setToken, setUser}) => {
                             placeholder="********"
                         />
                     </div>
-                    <button className="login-button" type='submit'>Login</button>
+                    <button className="login-button" type='submit'>Log In</button>
                 </div>
             </form>
         </div>

@@ -1,12 +1,12 @@
 /* Database Page */
 
 .database {
-  margin: 4rem auto 1rem auto;
+  margin: 3.85rem auto 1rem auto;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-evenly;
   align-items: center;
-  height: fit-content;
+  height: 85%;
 }
 
 /* theme style */
@@ -33,9 +33,9 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  height: 84vh;
-  width: 95vw;
-  max-width: 1200px;
+  height: 100%;
+  width: 97%;
+  /* max-width: 1200px; */
   border: 1px rgb(175, 175, 175) solid;
   box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
   background-color: rgb(175, 175, 175);
@@ -48,7 +48,7 @@
 }
 
 .button-list {
-  margin: -.75rem auto;
+  margin: -.75rem auto -1rem auto;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
@@ -61,6 +61,12 @@
   /* hack to put buttons slightly over top of table headers */
   position: relative;
   z-index: 3;
+}
+
+/* download icon image */
+#download {
+  height: auto;
+  width: 14px;
 }
 
 .rig-database .button-list {

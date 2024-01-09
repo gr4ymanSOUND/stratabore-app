@@ -250,7 +250,7 @@ const Calendar = ({token}) => {
                   unassignedJobList.map((job, index) => {
                     return (
                       <div key={job.id} className='unassigned-job'>
-                        <div>{job.jobNumber}</div>
+                        <div className='job-num'>{job.jobNumber}</div>
                         <div>{job.location}</div>
                         <button id='edit-job' data-job-id={job.id} className='calendar-form-button' onClick={calendarFormButton}>Edit</button>
                       </div>

@@ -9,6 +9,12 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 
 // axios imports
 import { getAllJobs, getAssignedAndUnassignedJobs } from '../axios-services/index';
+import { CHART_TOOL_PANEL_ALLOW_LIST } from 'ag-grid-community';
+
+// importing CSV download helpers
+import Papa from 'papaparse';
+import FileSaver from 'file-saver';
+
 
 const JobDatabase = ({ token }) => {
   //for accessing Grid's API
@@ -83,6 +89,17 @@ const JobDatabase = ({ token }) => {
     })
   }, []);
 
+  // 
+  const downloadJobList = async (e) => {
+    const d = new Date();
+    let dateString = `${d.getFullYear()}-${d.getUTCMonth() + 1}-${d.getDate()}`
+
+    const csvFileData = Papa.unparse(jobList);
+    const blob = new Blob([csvFileData], { type: 'text/csv;charset=utf-8' });
+    FileSaver.saveAs(blob, `StrataBore_jobList_${dateString}.csv`);
+
+  }
+
   // resizes the columns inside the grid to fit the grid/window size (is called when the grid/window gets resized)
   const onGridReady = useCallback((params) => {
     params.api.sizeColumnsToFit();
@@ -117,6 +134,9 @@ const JobDatabase = ({ token }) => {
                 ) : null
               }
               <button id='add-job' onClick={buttonListener}>Add Job</button>
+              <button id='download-list' onClick={downloadJobList}>
+              <img id="download" src={require("../img/download_icon.png")} alt="download" />
+              </button>
             </>
         }
       </div>

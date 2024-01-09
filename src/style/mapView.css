@@ -5,7 +5,7 @@
 }
 
 .mapview-button-list {
-  margin: -.75rem 4rem -.75rem 0;
+  margin: -.7rem 4rem -1rem 0;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
@@ -14,7 +14,7 @@
   
   /* hack to put buttons slightly over top of table headers */
   position: relative;
-  z-index: 1000;
+  z-index: 500;
 }
 
 .mapview-button-list button {
@@ -39,8 +39,7 @@
 
   margin: 0rem auto;
   height: 100%;
-  width: 100%;
-
+  width: 99%;
 }
 
 .strata-mapper {
@@ -52,6 +51,11 @@
   width: 275px;
   height: 100%;
   margin-left: 1px;
+}
+
+.mapview-page .form-container {
+  width: 275px;
+  padding-top: 1rem;
 }
 
 .popUp-window {
@@ -92,11 +96,7 @@
   color:rgb(224, 194, 22);
 }
 
-.popper-info {
+/* .popper-info {
 
-  /* border: 1px blue solid; */
-}
-
-.mapview-page .form-container {
-  width: 275px;
-}
+  border: 1px blue solid;
+} */

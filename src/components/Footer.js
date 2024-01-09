@@ -4,7 +4,7 @@ const Footer = ({ user, setUser, token, setToken }) => {
 
     const logOut = () => {
         setToken(null);
-        setUser(null);
+        setUser({});
         localStorage.removeItem('userToken');
     }
 
@@ -12,7 +12,7 @@ const Footer = ({ user, setUser, token, setToken }) => {
         <footer>
             <div className="copyright-username">
                 <p>&copy; 2022 StrataBore LLC</p>
-                { !user ? null : (
+                { !Object.keys(user).length ? null : (
                     <>
                     <p className="big-vert-line"></p>
                     <p>Logged in as: <span>{user.userName}</span></p>
