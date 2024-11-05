@@ -1,24 +1,13 @@
 import axios from 'axios';
 
+import * as Syntax from './syntaxUtil.js'
+
 // if (process.env.NODE_ENV === 'production') {
 //   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 // } else {
 //   axios.defaults.baseURL = 'http://localhost:4000';
 // }
-  axios.defaults.baseURL = 'http://localhost:4000';
-
-const userDataSyntaxChange = (userObject) => {
-  userObject.is_admin ? userObject.is_admin = true : userObject.is_admin = false;
-  return {
-    id: userObject.id,
-    firstName: userObject.first_name,
-    lastName: userObject.last_name,
-    userName: userObject.username,
-    email: userObject.email,
-    isAdmin: userObject.is_admin,
-    status: userObject.status,
-  }
-}
+axios.defaults.baseURL = 'http://localhost:4000';
 
 
 // user calls
@@ -33,7 +22,7 @@ export async function loginUser(userName, password) {
       }
     )
 
-    const dataSyntaxChange = userDataSyntaxChange(data.user);
+    const dataSyntaxChange = Syntax.userSyntaxFrontEnd(data.user);
 
     const loggedInData = {
       ...data,
@@ -54,7 +43,7 @@ export async function getMe(token) {
       }
     };
     const { data } = await axios.get(`/boringApi/users/me`, auth);
-    const dataSyntaxChange = userDataSyntaxChange(data);
+    const dataSyntaxChange = Syntax.userSyntaxFrontEnd(data);
     return dataSyntaxChange;
   } catch (error) {
     console.error(error)
@@ -70,7 +59,7 @@ export async function getAllUsers(token) {
     };
     const { data } = await axios.get(`/boringApi/users/`, auth);
     const userListBoolFix = data.map((user) => {
-      return userDataSyntaxChange(user);
+      return Syntax.userSyntaxFrontEnd(user);
     });
     return userListBoolFix;
   } catch (error) {
@@ -85,8 +74,11 @@ export async function createUser(token, newUserData) {
         Authorization: `Bearer ${token}`
       }
     };
+    const backEndUserData = userSyntaxBackEnd(newUserData);
+    delete backEndUserData.id;
+    backEndUserData.password = newUserData.password;
     const payload = {
-      newUserData: newUserData
+      newUserData: backEndUserData
     }
     const { data } = await axios.post(`/boringApi/users/create`, payload, auth);
     return data;
@@ -102,8 +94,11 @@ export async function editUser(token, userId, newUserData) {
         Authorization: `Bearer ${token}`
       }
     };
+    const backEndUserData = userSyntaxBackEnd(newUserData);
+    delete backEndUserData.id;
+    backEndUserData.password = newUserData.password;
     const payload = {
-      newUserData: newUserData
+      newUserData: backEndUserData
     }
     const { data } = await axios.patch(`/boringApi/users/${userId}`, payload, auth);
     return data;
