@@ -38,6 +38,8 @@ const JobDatabase = ({ token }) => {
     fetchJobs();
   }, []);
 
+  // console.log('JobDatabase component jobList', jobList);
+
   // effect to deal with formtype changes
   useEffect(() => {
     if (formType == "add-job") {

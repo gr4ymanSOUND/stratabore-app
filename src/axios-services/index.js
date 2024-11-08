@@ -21,14 +21,11 @@ export async function loginUser(userName, password) {
         password: password
       }
     )
-
     const dataSyntaxChange = Syntax.userSyntaxFrontEnd(data.user);
-
     const loggedInData = {
       ...data,
       user: dataSyntaxChange
     };
-    // console.log('data from axios call after syntax change', loggedInData)
     return loggedInData;
   } catch (error) {
     console.error(error)
@@ -58,10 +55,10 @@ export async function getAllUsers(token) {
       }
     };
     const { data } = await axios.get(`/boringApi/users/`, auth);
-    const userListBoolFix = data.map((user) => {
+    const userListSyntaxFix = data.map((user) => {
       return Syntax.userSyntaxFrontEnd(user);
     });
-    return userListBoolFix;
+    return userListSyntaxFix;
   } catch (error) {
     console.error(error)
   }
@@ -74,14 +71,16 @@ export async function createUser(token, newUserData) {
         Authorization: `Bearer ${token}`
       }
     };
-    const backEndUserData = userSyntaxBackEnd(newUserData);
+    const backEndUserData = Syntax.userSyntaxBackEnd(newUserData);
     delete backEndUserData.id;
     backEndUserData.password = newUserData.password;
     const payload = {
       newUserData: backEndUserData
     }
     const { data } = await axios.post(`/boringApi/users/create`, payload, auth);
-    return data;
+    console.log('new user data after creation', data);
+    const frontEndUserData = Syntax.userSyntaxFrontEnd(data);
+    return frontEndUserData;
   } catch (error) {
     console.error(error)
   }
@@ -94,14 +93,15 @@ export async function editUser(token, userId, newUserData) {
         Authorization: `Bearer ${token}`
       }
     };
-    const backEndUserData = userSyntaxBackEnd(newUserData);
+    const backEndUserData = Syntax.userSyntaxBackEnd(newUserData);
     delete backEndUserData.id;
     backEndUserData.password = newUserData.password;
     const payload = {
       newUserData: backEndUserData
     }
     const { data } = await axios.patch(`/boringApi/users/${userId}`, payload, auth);
-    return data;
+    const frontEndUserData = Syntax.userSyntaxFrontEnd(data);
+    return frontEndUserData;
   } catch (error) {
     console.error(error)
   }
@@ -115,7 +115,8 @@ export async function removeUser(token, userId) {
       }
     };
     const { data } = await axios.delete(`/boringApi/users/${userId}`, auth);
-    return data;
+    const frontEndUserData = Syntax.userSyntaxFrontEnd(data);
+    return frontEndUserData;
   } catch (error) {
     console.error(error);
   }
@@ -131,7 +132,10 @@ export async function getAllJobs(token) {
       }
     };
     const { data } = await axios.get(`/boringApi/jobs`, auth);
-    return data;
+    const frontEndJobList = data.map((backEndJob) => {
+      return Syntax.jobSyntaxFrontEnd(user);
+    });
+    return frontEndJobList;
   } catch (error) {
     console.error(error);
   }
@@ -144,11 +148,13 @@ export async function addJob(token, newJob) {
         Authorization: `Bearer ${token}`
       }
     };
+    const backEndJob = Syntax.jobSyntaxBackEnd(newJob);
     const payload = {
-      newJob: newJob
+      newJob: backEndJob
     }
     const { data } = await axios.post(`/boringApi/jobs/create`, payload, auth);
-    return data;
+    const frontEndJob = Syntax.jobSyntaxFrontEnd(data);
+    return frontEndJob;  
   } catch (error) {
     console.error(error);
   }
@@ -162,7 +168,8 @@ export async function cancelJob(token, jobId) {
       }
     };
     const { data } = await axios.delete(`/boringApi/jobs/${jobId}`, auth);
-    return data;
+    const frontEndJob = Syntax.jobSyntaxFrontEnd(data);
+    return frontEndJob;
   } catch (error) {
     console.error(error);
   }
@@ -175,11 +182,13 @@ export async function editJob(token, jobId, newJobData) {
         Authorization: `Bearer ${token}`
       }
     };
+    const backEndJob = Syntax.jobSyntaxBackEnd(newJobData);
     const payload = {
-      newJobData: newJobData
+      newJob: backEndJob
     }
     const { data } = await axios.patch(`/boringApi/jobs/${jobId}`, payload, auth);
-    return data;
+    const frontEndJob = Syntax.jobSyntaxFrontEnd(data);
+    return frontEndJob; 
   } catch (error) {
     console.error(error);
   }
@@ -195,7 +204,10 @@ export async function getAllRigs(token) {
       }
     };
     const { data } = await axios.get(`/boringApi/rigs`, auth);
-    return data;
+    const frontEndRigList = data.map((rig) => {
+      return Syntax.rigSyntaxFrontEnd(rig);
+    });
+    return frontEndRigList;
   } catch (error) {
     console.error(error);
   }
@@ -208,11 +220,13 @@ export async function editRig(token, rigId, newRigData) {
         Authorization: `Bearer ${token}`
       }
     };
+    const backEndRig = Syntax.rigSyntaxBackEnd(newRigData);
     const payload = {
-      newRigData: newRigData
+      newRigData: backEndRig
     }
     const { data } = await axios.patch(`/boringApi/rigs/${rigId}`, payload, auth);
-    return data;
+    const frontEndRig = Syntax.rigSyntaxBackEnd(data);
+    return frontEndRig;
   } catch (error) {
     console.error(error)
   }
@@ -226,7 +240,8 @@ export async function removeRig(token, rigId) {
       }
     };
     const { data } = await axios.delete(`/boringApi/rigs/${rigId}`, auth);
-    return data;
+    const frontEndRig = Syntax.rigSyntaxBackEnd(data);
+    return frontEndRig;
   } catch (error) {
     console.error(error);
   }
@@ -239,11 +254,13 @@ export async function createRig(token, newRigData) {
         Authorization: `Bearer ${token}`
       }
     };
+    const backEndRig = Syntax.rigSyntaxBackEnd(newRigData);
     const payload = {
-      newRigData: newRigData
+      newRigData: backEndRig
     }
     const { data } = await axios.post(`/boringApi/rigs/create`, payload, auth);
-    return data;
+    const frontEndRig = Syntax.rigSyntaxBackEnd(data);
+    return frontEndRig;
   } catch (error) {
     console.error(error);
   }
@@ -259,7 +276,10 @@ export async function getAssignedAndUnassignedJobs(token) {
       }
     };
     const { data } = await axios.get(`/boringApi/assignments/all`, auth);
-    return data;
+    const frontEndAssignments = data.map((assignment) => {
+      return Syntax.assignmentSyntaxFrontEnd(assignment);
+    });
+    return frontEndAssignments;
   } catch (error) {
     console.error(error);
   }
@@ -273,7 +293,10 @@ export async function getAssignedJobs(token) {
       }
     };
     const { data } = await axios.get(`/boringApi/assignments/assigned`, auth);
-    return data;
+    const frontEndAssignments = data.map((assignment) => {
+      return Syntax.assignmentSyntaxFrontEnd(assignment);
+    });
+    return frontEndAssignments;
   } catch (error) {
     console.error(error);
   }
@@ -286,11 +309,13 @@ export async function createJobRig(token, newJobRig) {
         Authorization: `Bearer ${token}`
       }
     };
+    const backEndAssignment = Syntax.assignmentSyntaxBackEnd(newJobRig);
     const payload = {
-      newJobRig: newJobRig
+      newJobRig: backEndAssignment
     }
     const { data } = await axios.post(`/boringApi/assignments/assign`, payload, auth);
-    return data;
+    const frontEndAssignment = Syntax.assignmentSyntaxFrontEnd(data);
+    return frontEndAssignment;
   } catch (error) {
     console.error(error);
   }
@@ -303,11 +328,13 @@ export async function updateJobRig(token, newJobRig) {
         Authorization: `Bearer ${token}`
       }
     };
+    const backEndAssignment = Syntax.assignmentSyntaxBackEnd(newJobRig);
     const payload = {
-      newJobRig: newJobRig
+      newJobRig: backEndAssignment
     }
     const { data } = await axios.patch(`/boringApi/assignments/update`, payload, auth);
-    return data;
+    const frontEndAssignment = Syntax.assignmentSyntaxFrontEnd(data);
+    return frontEndAssignment;
   } catch (error) {
     console.error(error);
   }
@@ -315,15 +342,17 @@ export async function updateJobRig(token, newJobRig) {
 
 export async function deleteJobRig(token, jobToUnassign) {
   try {
+    const backEndAssignment = Syntax.assignmentSyntaxBackEnd(jobToUnassign);
     // delete axios calls have to send the payload and auth differently, found this answer on stackoverflow
     const { data } = await axios.delete(`/boringApi/assignments/unassign`, {
       headers: {
         'Authorization': `Bearer ${token}`
       },
       data: {
-        'jobToUnassign': jobToUnassign
+        'jobToUnassign': backEndAssignment
       }
     });
+    console.log('delete assignment axios return data', data);
     return data;
   } catch (error) {
     console.error(error);

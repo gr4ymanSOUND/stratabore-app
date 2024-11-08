@@ -55,7 +55,6 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
 
     if (formType == 'add-rig') {
       const response = await createRig(token, newRig);
-      alert('Adding Rigs is currently not supported')
     }
     if (formType == 'edit-rig') {
       const rigId = currentSelected.id;

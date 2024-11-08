@@ -1,4 +1,7 @@
-// helper function to translate the back-end user object's syntax to the front-end syntax
+// helper functions to translate the back-end object's syntax to the front-end syntax
+
+//Users
+
 const userSyntaxFrontEnd = (userObject) => {
   userObject.is_admin ? userObject.is_admin = true : userObject.is_admin = false;
   return {
@@ -13,7 +16,6 @@ const userSyntaxFrontEnd = (userObject) => {
 }
 
 const userSyntaxBackEnd = (userObject) => {
-  // userObject.isAdmin ? userObject.isAdmin = 1 : userObject.isAdmin = 0;
   return {
     id: userObject.id,
     first_name: userObject.firstName,
@@ -25,4 +27,107 @@ const userSyntaxBackEnd = (userObject) => {
   }
 }
 
-export {userSyntaxBackEnd, userSyntaxFrontEnd};
+//Rigs
+
+const rigSyntaxFrontEnd = (rigObject) => {
+  return {
+    id: rigObject.id,
+    licensePlate: rigObject.license_plate,
+    rigType: rigObject.rig_type,
+    boardColor: rigObject.board_color,
+    registrationDueDate: rigObject.registration_due,
+    maintenanceDueDate: rigObject.maintenance_due,
+    status: rigObject.status,
+  }
+}
+
+const rigSyntaxBackEnd = (rigObject) => {
+  return {
+    id: rigObject.id,
+    license_plate: rigObject.licensePlate,
+    rig_type: rigObject.rigType,
+    board_color: rigObject.boardColor,
+    registration_due: rigObject.registrationDueDate,
+    maintenance_due: rigObject.maintenanceDueDate,
+    status: rigObject.status,
+  }
+}
+
+//Jobs
+
+const jobSyntaxFrontEnd = (jobObject) => {
+  return {
+    id: jobObject.id,
+    jobNumber: jobObject.job_number,
+    client: jobObject.client,
+    location: jobObject.location,
+    numHoles: jobObject.num_holes,
+    numFeet: jobObject.num_feet,
+    jobLength: jobObject.job_length,
+    status: jobObject.status,
+    createdDate: jobObject.created_date,
+  }
+}
+
+const jobSyntaxBackEnd = (jobObject) => {
+  return {
+    id: jobObject.id,
+    job_number: jobObject.jobNumber,
+    client: jobObject.client,
+    location: jobObject.location,
+    num_holes: jobObject.numHoles,
+    num_feet: jobObject.numFeet,
+    job_length: jobObject.jobLength,
+    status: jobObject.status,
+    created_date: jobObject.createdDate,
+  }
+}
+
+//assignment
+
+const assignmentSyntaxBackEnd = (assignmentObject) => {
+  return {
+    id: assignmentObject.id,
+    client:  assignmentObject.client,
+    job_number: assignmentObject.jobNumber, 
+    created_date:  assignmentObject.createdDate,
+    job_date:  assignmentObject.jobDate,
+    job_length:  assignmentObject.jobLength,
+    location:  assignmentObject.location,
+    num_feet:  assignmentObject.numFeet,
+    num_holes:  assignmentObject.numHoles,
+    job_id:  assignmentObject.jobId,
+    rig_id:  assignmentObject.rigId,
+    status:  assignmentObject.status,
+  }
+}
+
+const assignmentSyntaxFrontEnd = (assignmentObject) => {
+  return {
+    id: assignmentObject.id,
+    client:  assignmentObject.client,
+    jobNumber: assignmentObject.job_number, 
+    createdDate:  assignmentObject.created_date,
+    jobDate:  assignmentObject.job_date,
+    jobLength:  assignmentObject.job_length,
+    location:  assignmentObject.location,
+    numFeet:  assignmentObject.num_feet,
+    numHoles:  assignmentObject.num_holes,
+    jobId:  assignmentObject.job_id,
+    rigId:  assignmentObject.rig_id,
+    status:  assignmentObject.status,
+  }
+}
+
+
+export {
+  userSyntaxBackEnd, 
+  userSyntaxFrontEnd,
+  rigSyntaxFrontEnd,
+  rigSyntaxBackEnd,
+  jobSyntaxFrontEnd,
+  jobSyntaxBackEnd,
+  assignmentSyntaxFrontEnd,
+  assignmentSyntaxBackEnd
+};
+

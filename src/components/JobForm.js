@@ -18,6 +18,8 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const [jobStatus, setJobStatus] = useState('pending');
   const [createdDate, setCreatedDate] = useState('');
 
+  console.log('current selected', currentSelected);
+
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
 
@@ -118,6 +120,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             // patching didn't work with the db because all 3 fields are combined to make the unique primary key
             // need to delete first, then create the new one
             const jobToUnassign = { jobId: currentSelected.id, rigId: currentSelected.rigId, jobDate: currentSelected.jobDate };
+            console.log('jobform job to unassign', jobToUnassign)
             const deletedJob = await deleteJobRig(token, jobToUnassign);
             const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate };
             const assignedJob = await createJobRig(token, newJobRig);
@@ -177,7 +180,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setFormType("reset")
 
       // reset the job list to include the changes
-      const newJobList = await getAllJobs(token);
+      const newJobList = await getAssignedAndUnassignedJobs(token);
       setJobList(newJobList);
     }
   };
@@ -191,7 +194,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}, Date: ${jobToUnassign.jobDate}`)) {
       const unassignedJob = await deleteJobRig(token, jobToUnassign);
       setFormType('unassigned');
-
+      alert(unassignedJob)
       // reload the joblist to reflect the changes in the spreadsheet
       const newJobList = await getAssignedAndUnassignedJobs(token)
       setJobList(newJobList);
