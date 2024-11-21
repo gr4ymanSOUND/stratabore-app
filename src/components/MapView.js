@@ -80,7 +80,7 @@ const MapView = ({token}) => {
   // loads the map and creates the markers
   useEffect(()=> {
     // api key
-    L.mapquest.key = 'AoG5ccarCeCc9nGAZ4H4f8Bs61rR2DLt';
+    L.mapquest.key = 'SboTAEZ9t8caAhRqQ3GSGWNmmcCz1Ag8';
       
     // a quick check if a map already exists, and removing it first before creating the new one
     // needed this because the useEffect re-render was causing conflicts with the map already existing

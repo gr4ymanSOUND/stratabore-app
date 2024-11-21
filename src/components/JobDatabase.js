@@ -38,8 +38,6 @@ const JobDatabase = ({ token }) => {
     fetchJobs();
   }, []);
 
-  // console.log('JobDatabase component jobList', jobList);
-
   // effect to deal with formtype changes
   useEffect(() => {
     if (formType == "add-job") {
@@ -56,16 +54,16 @@ const JobDatabase = ({ token }) => {
 
   // Each Column Definition results in one Column.
   const [columnDefs, setColumnDefs] = useState([
-    { headerName: 'Job #',field: 'jobNumber', filter: true, width: 130},
+    { headerName: 'Job #',field: 'jobNumber', filter: true, minWidth: 100, width: 100},
     { field: 'client',
       filter: customFilter, filterParams: {values: ['EWL', 'TER', 'AAA', 'ZZZ']},
-      width: 130},
+      minWidth: 90, width: 90},
     { field: 'location', filter: true },
-    { headerName: 'Holes', field: 'numHoles', width: 75 },
-    { headerName: '# Ft', field: 'numFeet', width: 75 },
+    { headerName: 'Holes', field: 'numHoles', width: 70 },
+    { headerName: '# Ft', field: 'numFeet', width: 70 },
     { headerName: 'Length', field: 'jobLength', filter: true, width: 80},
     { headerName: 'Book Date', field: 'createdDate', filter: true, width: 100 },
-    { headerName: 'Drill Date', field: 'jobDate', filter: true, width: 100 },
+    { headerName: 'Drill Date', field: 'jobDate', filter: true, minWidth: 110,width: 110 },
     { headerName: 'Rig', field: 'rigId', filter: true, width: 60},
     { headerName: 'Status', field: 'status',
       filter: customFilter, filterParams: {values: ['pending', 'completed', 'canceled']},
@@ -74,7 +72,7 @@ const JobDatabase = ({ token }) => {
 
   // DefaultColDef sets props common to all Columns
   const defaultColDef = useMemo(() => ({
-    sortable: true
+    sortable: true,
   }));
 
   // sets the currently selected row into React State
@@ -104,18 +102,18 @@ const JobDatabase = ({ token }) => {
 
   // resizes the columns inside the grid to fit the grid/window size (is called when the grid/window gets resized)
   const onGridReady = useCallback((params) => {
-    params.api.sizeColumnsToFit();
+    gridRef.current.api.sizeColumnsToFit();
     window.addEventListener('resize', function () {
       setTimeout(function () {
         params.api.sizeColumnsToFit();
       });
     });
-    gridRef.current.api.sizeColumnsToFit();
   }, []);
 
-  // only run this if there is a "currentSelected" object that does not have an ID, but run it after the final render every time
-  // have to do this so late because only the final re-render seems to capture updated job numbers in state properly for this to access it
-  if (!("id" in currentSelected) && currentSelected.jobNumber) {
+  // only run this if there is a "currentSelected", but run it after the final render every time
+  // // have to do this so late because only the final re-render seems to capture updated job numbers in state properly for this to access it
+
+  if (currentSelected.jobNumber) {
     const timer = setTimeout(() => {
       gridRef.current.api.forEachNode(function (node) {
         node.setSelected(node.data.jobNumber === currentSelected.jobNumber);

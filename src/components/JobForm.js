@@ -143,6 +143,8 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setFormType("reset")
 
     // sets the edited job data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
+    newJob.id = currentSelected.id;
+    console.log('newJob after adding id after submission', newJob)
     setCurrentSelected(newJob);
 
     // pull the new jobList to use in the if/else below

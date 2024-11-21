@@ -29,6 +29,8 @@ const App = () => {
 
   //contains the routes for each main page
     return (
+      <div className='main-container'>
+
         <BrowserRouter>
             <Header token={token}/>
               <Routes>
@@ -74,6 +76,8 @@ const App = () => {
               setToken={setToken}
             />
         </BrowserRouter>
+        
+      </div>
     )
   }
 

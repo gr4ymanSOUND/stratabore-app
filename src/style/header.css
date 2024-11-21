@@ -4,15 +4,14 @@
 header {
     display: block;
     width: auto;
-    position: fixed;
-    top: 0;
     z-index: 100;
+
 }
 
 #logo {
     height: auto;
-    width: 80px;
-    margin-bottom: -.7rem;
+    width: 90px;
+    margin-bottom: -1rem;
     margin-top: -.3rem;
     margin-left: 2rem;
 }

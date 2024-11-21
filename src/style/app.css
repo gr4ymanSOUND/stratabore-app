@@ -21,14 +21,16 @@ body {
     margin: 0;
     padding: 0;
     display: inline-block;
-    /* min-width: 100dvw;
-    min-height: 100dvh; */
     width: 100dvw;
     height: 100dvh;
-
 } 
 
-
+.main-container {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+}
 
 
 

@@ -1,16 +1,18 @@
 .admin-tools {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  margin: 4rem auto;
-  padding-bottom: 2rem;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
 }
 
 .tool {
-  width: 80vw;
-  max-width: 800px;
-  margin-bottom: 1rem;
+  width: 90vw;
+  max-width: 900px;
+  margin: 0rem auto 1rem auto;
 }
 
 .admin-table {
@@ -24,5 +26,4 @@
   box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
   background-color: rgb(175, 175, 175);
 
-  overflow: hidden;
 }

@@ -29,7 +29,7 @@ export default forwardRef((props, ref) => {
 
   return (
     <div className='custom-filter'>
-      <label for='off'className='filter-option'>
+      <label htmlFor='off'className='filter-option'>
         <input
           name='off'
           type='radio' 
