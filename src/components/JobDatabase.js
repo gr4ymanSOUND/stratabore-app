@@ -136,6 +136,7 @@ const JobDatabase = ({ token }) => {
               <button id='add-job' onClick={buttonListener}>Add Job</button>
               <button id='download-list' onClick={downloadJobList}>
               <img id="download" src={require("../img/download_icon.png")} alt="download" />
+              {/* <i id='download' className="fa-solid fa-file-arrow-down"></i> */}
               </button>
             </>
         }
