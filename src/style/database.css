@@ -3,31 +3,37 @@
 .database {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
+  /* background-color: rgb(170, 170, 170); */
 }
 
 /* theme style */
 
 .ag-theme-alpine {
   --ag-grid-size: 5px;
-
   --ag-row-height: 1.75rem;
-  --ag-header-height: 2.5rem;
+  --ag-header-height: 2.75rem;
+
+  --ag-borders: none;
+  --ag-cell-horizontal-border: dashed rgb(170, 170, 170);
+  --ag-odd-row-background-color: rgb(240, 240, 240);
 
   --ag-header-column-separator-display: block;
   --ag-header-column-separator-color: black;
   --ag-header-background-color: rgb(170, 170, 170);
-
-  --ag-cell-horizontal-border: solid lightgray;
 }
 
 .ag-header-cell-label {
   justify-content: center;
   align-items: flex-end;
-  padding-bottom: 5px;
+
+}
+
+.ag-header-cell {
+  border-bottom: 1px black solid;
 }
 
 /* table, buttons, and forms */
@@ -38,15 +44,14 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  height: 99%;
+  height: 100%;
   width: 100%;
   /* max-width: 1200px; */
-  border: 1px rgb(175, 175, 175) solid;
-  box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
-  background-color: rgb(175, 175, 175);
+  /* border: 1px rgb(175, 175, 175) solid; */
+  /* box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4); */
+  /* background-color: rgb(175, 175, 175); */
 
   overflow: hidden;
-
 }
 
 .data-form {
@@ -54,33 +59,33 @@
 }
 
 .button-list {
-  margin: 0rem 2rem -.75rem 0rem;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: flex-end;
-  justify-self: flex-end;
+  justify-content: center;
+  align-items: flex-end;
   align-self: flex-end;
-  width: 100%;
-  min-height: 1.5rem;
-  
+  width: 300px;
+  margin-bottom: -1rem;
+  /* background-color: rgb(170, 170, 170); */
   /* hack to put buttons slightly over top of table headers */
   position: relative;
   z-index: 3;
-
 }
 
-/* download icon image */
-#download {
-  height: auto;
-  width: 14px;
+.database .button-list button {
+  margin-left: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .rig-database .button-list {
   width: 100%;
+  font-size: 1rem;
 }
 
 .user-database .button-list {
   width: 100%;
+  font-size: 1rem;
+
 }
 
 .button-list button {
@@ -90,6 +95,7 @@
   box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
   margin: .25rem;
   padding: .25rem;
+
 }
 
 .button-list button:hover {

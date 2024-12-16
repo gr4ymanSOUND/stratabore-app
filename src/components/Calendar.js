@@ -9,13 +9,19 @@ import { getAllJobs, getAllRigs, getAssignedAndUnassignedJobs, getAssignedJobs }
 const Calendar = ({token}) => {
   // will use imported token for pulling data
 
+  // creating a date object to set the current date on startup
+  const d = new Date();
+
   // current month and year for filtering the job list while generating the date components
-  const [currentMonth, setCurrentMonth] = useState('');
-  const [currentYear, setCurrentYear] = useState('');
+  const [currentMonth, setCurrentMonth] = useState(d.getUTCMonth());
+  const [currentYear, setCurrentYear] = useState(d.getUTCFullYear());
 
   // main content state
   const [jobList, setJobList] = useState([]);
-  const [unassignedJobList, setUnassignedJobList] = useState([]);
+  const unassignedJobList = jobList.filter((job) => {
+    if (job.rigId === null) {return true}
+      return false;
+  });
   const [rigList, setRigList] = useState([]);
   const [formType, setFormType] = useState('');
   const [currentSelected, setCurrentSelected] = useState({});
@@ -29,40 +35,14 @@ const Calendar = ({token}) => {
     const fetchJobs = async () => {
       try {
         const jobs = await getAssignedAndUnassignedJobs(token);
-        // console.log('new joblist format', jobs);
         setJobList(jobs);
       } catch (error) {
         console.log(error);
       }
     }
     fetchJobs();
+    console.log('job render');
   }, []);
-
-  // set up the unassigned jobs when the joblist changes
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const unassignedJobs = jobList.filter((job) => {
-          if (job.rigId === null) {return true}
-          return false;
-        });
-        setUnassignedJobList(unassignedJobs);
-        // console.log('unassigned jobs', unassignedJobList);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchJobs();
-  }, [jobList]);
-
-  // set the date to current if there's nothing there
-  useEffect(() => {
-    if (!currentMonth) {
-      const d = new Date();
-      setCurrentMonth(d.getUTCMonth());
-      setCurrentYear(d.getUTCFullYear());
-    }
-  },[]);
 
   // get the rig list to pass to each date for coloring and other data
   useEffect(() => {
@@ -75,6 +55,8 @@ const Calendar = ({token}) => {
       }
     }
     fetchRigs();
+    console.log('rig render');
+
   },[]);
 
   // couldn't get form to close after submitting, this does a forced check everytime the form is submitted 

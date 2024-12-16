@@ -6,7 +6,7 @@ import Login from './Login';
 import JobDatabase from './JobDatabase';
 import Calendar from './Calendar';
 import MapView from './MapView';
-import Footer from './Footer';
+// import Footer from './Footer';
 import AdminTools from './AdminTools';
 
 import { getMe } from '../axios-services';
@@ -32,7 +32,12 @@ const App = () => {
       <div className='main-container'>
 
         <BrowserRouter>
-            <Header token={token}/>
+            <Header 
+              token={token}
+              user={user}
+              setUser={setUser}
+              setToken={setToken}
+            />
               <Routes>
                   <Route 
                     exact path="/"
@@ -70,11 +75,11 @@ const App = () => {
                     }
                   />
               </Routes>
-            <Footer 
+            {/* <Footer 
               user={user}
               setUser={setUser}
               setToken={setToken}
-            />
+            /> */}
         </BrowserRouter>
         
       </div>

@@ -83,6 +83,7 @@ const JobDatabase = ({ token }) => {
   // sets the formType when any button is clicked
   // also resizes the grid to show all columns when the form is added/removed in the sidebar
   const buttonListener = useCallback((e) => {
+    console.log('button clicked', e.target.id)
     setFormType(e.target.id);
     const buttonResizeTrigger = setTimeout(() => {
       gridRef.current.api.sizeColumnsToFit();
@@ -130,12 +131,16 @@ const JobDatabase = ({ token }) => {
             <>
               {
                 Object.keys(currentSelected).length !== 0 ? (
-                    <button id='edit-job' onClick={buttonListener}>Edit Selected Job</button>
+                    <button id='edit-job' onClick={buttonListener}>
+                      <i id='edit-job' className="fa-solid fa-pen-to-square"></i>
+                    </button>
                 ) : null
               }
-              <button id='add-job' onClick={buttonListener}>Add Job</button>
+              <button id='add-job' onClick={buttonListener}>
+                <i id='add-job' className="fa-solid fa-plus"></i>
+              </button>
               <button id='download-list' onClick={downloadJobList}>
-              <i id='download' className="fa-solid fa-file-arrow-down"></i>
+                <i className="fa-solid fa-file-arrow-down"></i>
               </button>
             </>
         }
