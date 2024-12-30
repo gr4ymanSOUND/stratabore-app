@@ -12,7 +12,7 @@
 .tool {
   width: 90vw;
   max-width: 900px;
-  margin: 0rem auto 1rem auto;
+  margin: .5rem auto 1rem auto;
 }
 
 .admin-table {
@@ -25,5 +25,32 @@
   border: 1px rgb(175, 175, 175) solid;
   box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
   background-color: rgb(175, 175, 175);
+
+}
+
+.admin-tools .button-list {
+  margin-top: .5rem;
+  justify-content: center;
+}
+
+.button-list.tool-selector {
+  align-self: flex-start;
+}
+
+.tool-button {
+  font-size: 2rem;
+}
+
+.rig-database .button-list {
+  width: 300px;
+  font-size: 1rem;
+  justify-self: flex-end;
+
+}
+
+.user-database .button-list {
+  width: 300px;
+  font-size: 1rem;
+  justify-self: flex-end;
 
 }
