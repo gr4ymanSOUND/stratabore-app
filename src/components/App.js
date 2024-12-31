@@ -8,6 +8,9 @@ import Calendar from './Calendar';
 import MapView from './MapView';
 // import Footer from './Footer';
 import AdminTools from './AdminTools';
+import UserDatabase from './UserDatabase';
+import RigDatabase from './RigDatabase';
+
 
 import { getMe } from '../axios-services';
 
@@ -73,7 +76,22 @@ const App = () => {
                       !token ? <Navigate to="/" replace /> :
                       <AdminTools token={token} user={user}/>
                     }
-                  />
+                  >
+                    <Route 
+                      path="users"
+                      element={
+                        !token ? <Navigate to="/" replace /> :
+                        <UserDatabase token={token} />
+                      }
+                    />
+                    <Route 
+                      path="rigs"
+                      element={
+                        !token ? <Navigate to="/" replace /> :
+                        <RigDatabase token={token} />
+                      }
+                    />
+                  </Route>
               </Routes>
             {/* <Footer 
               user={user}

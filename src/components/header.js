@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Header = ({ user, setUser, token, setToken }) => {
 
@@ -18,7 +18,6 @@ const Header = ({ user, setUser, token, setToken }) => {
       const userPop = () => {
         console.log('user icon click');
       }
-
     return (
         <header>
             <img id="logo" src={require("../img/stratabore-logo-transparent.png")} alt="Logo" />
@@ -27,19 +26,19 @@ const Header = ({ user, setUser, token, setToken }) => {
               { !token ? null : (
                   <>
                   <div className={`other-nav ${isNavOpen ? "open" : ""}`}>
-                      <Link title='Database' to="/database">
+                      <NavLink activeClassName='active'  title='Database' to="/database">
                         <i className="fa-solid fa-list"></i>
-                      </Link>
-                      <Link title='Calendar' to="/calendar">
+                      </NavLink>
+                      <NavLink activeClassName='active'  title='Calendar' to="/calendar">
                         <i className="fa-regular fa-calendar-check"></i>
-                      </Link>
-                      <Link title='Map View' to="/map">
+                      </NavLink>
+                      <NavLink activeClassName='active'  title='Map View' to="/map">
                         <i className="fa-solid fa-map-location-dot"></i>
-                      </Link>
+                      </NavLink>
                       { !user.isAdmin ? null : (
-                        <Link title='Admin Settings' to="/admin">
+                        <NavLink activeClassName='active'  title='Admin Settings' to="/admin">
                         <i className="fa-solid fa-gear"></i>                    
-                      </Link>
+                      </NavLink>
                       )}
                   </div>
                   <div className="icon" onClick={openNav}>

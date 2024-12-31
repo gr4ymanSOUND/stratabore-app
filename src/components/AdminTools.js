@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { Link, NavLink, Outlet} from 'react-router-dom';
 
 // tool component imports
 import UserDatabase from './UserDatabase';
@@ -22,23 +23,29 @@ const AdminTools = ({token, user}) => {
   return (
     <>
     <div className='admin-tools'>
+
       <div className="button-list tool-selector">
-        <button id='usertool' className='tool-button' onClick={toolSelectButton}>
+        <NavLink activeClassName='active' to='/admin/users'>
           <i id='usertool' className="fa-solid fa-users"></i>
-        </button>
-        <button className='tool-button' id='rigtool' onClick={toolSelectButton}>
+        </NavLink>
+        <NavLink activeClassName='active' to='/admin/rigs'>
           <i id='rigtool' className="fa-solid fa-truck-field"></i>
-        </button>
+        </NavLink>
       </div>
+
+{/* 
+      <div className="button-list tool-selector">
+        <Link to='/admin/users'>
+          <i id='usertool' className="fa-solid fa-users"></i>
+        </Link>
+        <Link to='/admin/rigs'>
+          <i id='rigtool' className="fa-solid fa-truck-field"></i>
+        </Link>
+      </div> */}
+
       <div className='tool'>
-        {
-          whichTool == "usertool" ? (
-                <UserDatabase token={token}/>
-          ) : (
-                <RigDatabase token={token}/>
-          )
-        }
-        </div>
+        <Outlet />
+      </div>
     </div>
     </>
 )

@@ -37,8 +37,25 @@
   align-self: flex-start;
 }
 
-.tool-button {
+.tool-selector a {
   font-size: 2rem;
+
+  background-color:rgb(224, 194, 22);
+  color: rgb(48, 48, 48);
+  border: none;
+  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  margin: .25rem;
+  padding: .5rem;
+}
+
+.tool-selector a:hover {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
+}
+
+.tool-selector .active {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
 }
 
 .rig-database .button-list {

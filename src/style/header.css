@@ -48,6 +48,12 @@ header {
     text-shadow: 2px 1px 5px gray;
 }
 
+.other-nav .active {
+  background-color: rgb(224, 194, 22);
+  color: rgb(50, 50, 50);
+  text-shadow: 2px 1px 5px gray;
+}
+
 .navbar .icon {
     display: none;
     padding: 1rem;
