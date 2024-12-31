@@ -60,14 +60,22 @@
 
 .rig-database .button-list {
   width: 300px;
-  font-size: 1rem;
   justify-self: flex-end;
-
 }
 
 .user-database .button-list {
   width: 300px;
-  font-size: 1rem;
   justify-self: flex-end;
+}
+
+.user-database .button-list button {
+  font-size: 1.25rem;
+  margin-left: 1.5rem;
+
+}
+
+.rig-database .button-list button {
+  font-size: 1.25rem;
+  margin-left: 1.5rem;
 
 }
