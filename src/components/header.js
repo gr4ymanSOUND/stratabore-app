@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 const Header = ({ user, setUser, token, setToken }) => {
 
     const [ isNavOpen, setIsNavOpen ] = useState(false);
+    const [ isUserOpen, setIsUserOpen ] = useState(false);
   
       const openNav = () => {
         setIsNavOpen(isNavOpen => !isNavOpen);
@@ -17,7 +18,15 @@ const Header = ({ user, setUser, token, setToken }) => {
 
       const userPop = () => {
         console.log('user icon click');
+        setIsUserOpen(isUserOpen => !isUserOpen)
       }
+
+      const closePop = () => {
+        setIsUserOpen(false);
+      }
+
+      console.log('user open?', isUserOpen)
+
     return (
         <header>
             <img id="logo" src={require("../img/stratabore-logo-transparent.png")} alt="Logo" />
@@ -26,17 +35,33 @@ const Header = ({ user, setUser, token, setToken }) => {
               { !token ? null : (
                   <>
                   <div className={`other-nav ${isNavOpen ? "open" : ""}`}>
-                      <NavLink activeClassName='active'  title='Database' to="/database">
+                      <NavLink 
+                        className={({ isActive }) => (isActive ? "active" : "")}  
+                        title='Database' 
+                        to="/database"
+                      >
                         <i className="fa-solid fa-list"></i>
                       </NavLink>
-                      <NavLink activeClassName='active'  title='Calendar' to="/calendar">
+                      <NavLink
+                        className={({ isActive }) => (isActive ? "active" : "")}
+                        title='Calendar' 
+                        to="/calendar"
+                      >
                         <i className="fa-regular fa-calendar-check"></i>
                       </NavLink>
-                      <NavLink activeClassName='active'  title='Map View' to="/map">
+                      <NavLink 
+                        className={({ isActive }) => (isActive ? "active" : "")}
+                        title='Map View' 
+                        to="/map"
+                      >
                         <i className="fa-solid fa-map-location-dot"></i>
                       </NavLink>
                       { !user.isAdmin ? null : (
-                        <NavLink activeClassName='active'  title='Admin Settings' to="/admin">
+                        <NavLink 
+                        className={({ isActive }) => (isActive ? "active" : "")}
+                          title='Admin Settings' 
+                          to="/admin"
+                        >
                         <i className="fa-solid fa-gear"></i>                    
                       </NavLink>
                       )}
@@ -50,14 +75,19 @@ const Header = ({ user, setUser, token, setToken }) => {
             </nav>
             <div className="side-footer">
                 { !Object.keys(user).length ? null : (
-                    <>
-                    <button id='footer-user' title={user.userName} onClick={userPop}>
-                      <i className="fa-solid fa-user"></i>
-                    </button>
-                    <button title='Log Out' onClick={logOut}>
-                      <i className="fa-solid fa-right-from-bracket"></i>
-                    </button>
-                    </>
+                    <div className="user-footer">
+                      <button id='user-icon' title={user.userName} onClick={userPop}>
+                        <i className="fa-solid fa-user"></i>
+                      </button>
+                      <div className={isUserOpen ? "user-pop open" : "user-pop"}>
+                        <NavLink className="username" to='/admin/editself'>
+                          <div onClick={closePop}>{user.userName}</div>
+                        </NavLink>
+                        <button title='Log Out' onClick={logOut}>
+                          <i className="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                      </div>
+                    </div>
                 )}
               <p>&copy; 2022</p>
             </div>

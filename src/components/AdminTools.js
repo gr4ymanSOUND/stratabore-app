@@ -25,10 +25,16 @@ const AdminTools = ({token, user}) => {
     <div className='admin-tools'>
 
       <div className="button-list tool-selector">
-        <NavLink activeClassName='active' to='/admin/users'>
+        <NavLink 
+          className={({ isActive }) => (isActive ? "active" : "")}
+          to='/admin/users'
+        >
           <i id='usertool' className="fa-solid fa-users"></i>
         </NavLink>
-        <NavLink activeClassName='active' to='/admin/rigs'>
+        <NavLink 
+          className={({ isActive }) => (isActive ? "active" : "")}
+          to='/admin/rigs'
+        >
           <i id='rigtool' className="fa-solid fa-truck-field"></i>
         </NavLink>
       </div>

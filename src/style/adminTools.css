@@ -11,7 +11,7 @@
 
 .tool {
   width: 90vw;
-  max-width: 900px;
+  max-width: 1000px;
   margin: .5rem auto 1rem auto;
 }
 
@@ -21,7 +21,7 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  height: 375px;
+  height: 80vh;
   border: 1px rgb(175, 175, 175) solid;
   box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
   background-color: rgb(175, 175, 175);

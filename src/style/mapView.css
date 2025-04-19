@@ -13,7 +13,7 @@
   justify-content: center;
   align-self: flex-end;
   min-height: 1.5rem;
-  width: 275px;
+  width: 300px;
   /* hack to put buttons slightly over top of table headers */
   position: relative;
   z-index: 500;
@@ -52,13 +52,12 @@
 }
 
 .strata-mapper-tool {
-  width: 275px;
+  width: 350px;
   height: 100%;
   margin-left: 1px;
 }
 
 .mapview-page .form-container {
-  width: 275px;
   padding-top: 2rem;
 }
 

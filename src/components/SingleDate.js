@@ -16,11 +16,13 @@ const SingleDate = ({token, currentMonth, specificDate, jobList, setJobList, rig
   }
 
   const dayJobs = jobList.filter((job) => {
-    if (job.jobDate === specificDate && (job.status === 'pending' || job.status === 'completed')) {
+    if (job.jobDate === specificDate && job.status != 'canceled') {
       return true;
     }
     return false;
   });
+
+  if (dayJobs.length != 0) {console.log('day jobs', specificDate, dayJobs);}
 
   return (
     <>

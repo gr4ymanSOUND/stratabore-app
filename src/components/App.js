@@ -10,6 +10,7 @@ import MapView from './MapView';
 import AdminTools from './AdminTools';
 import UserDatabase from './UserDatabase';
 import RigDatabase from './RigDatabase';
+import EditSelf from './EditSelf';
 
 
 import { getMe } from '../axios-services';
@@ -89,6 +90,13 @@ const App = () => {
                       element={
                         !token ? <Navigate to="/" replace /> :
                         <RigDatabase token={token} />
+                      }
+                    />
+                    <Route 
+                      path="editself"
+                      element={
+                        !token ? <Navigate to="/" replace /> :
+                        <EditSelf token={token} user={user} setUser={setUser} />
                       }
                     />
                   </Route>
