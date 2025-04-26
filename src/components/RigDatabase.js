@@ -15,7 +15,7 @@ import { getAllRigs } from '../axios-services';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
 
-const RigDatabase = ({token}) => {
+const RigDatabase = ({token, user}) => {
   //for accessing Grid's API
   const gridRef = useRef();
 

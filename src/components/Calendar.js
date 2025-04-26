@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import SingleDate from './SingleDate';
 import JobForm from './JobForm';
+import DetailView from './DetailView';
 
 // axios imports
-import { getAllJobs, getAllRigs, getAssignedAndUnassignedJobs, getAssignedJobs } from '../axios-services/index';
+import { getAllRigs, getAssignedAndUnassignedJobs } from '../axios-services/index';
 
 const Calendar = ({token}) => {
   // will use imported token for pulling data
@@ -26,6 +27,7 @@ const Calendar = ({token}) => {
   const [formType, setFormType] = useState('');
   const [currentSelected, setCurrentSelected] = useState({});
   const [detailView, setDetailView] = useState({});
+  const [showDetail, setShowDetail] = useState(false);
 
   // array to store month names to convert from numbers for label at top of calendar
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -162,11 +164,11 @@ const Calendar = ({token}) => {
     }
   }
 
-  console.log('form', formType);
-  console.log('current selected', currentSelected);
+  // console.log('form', formType);
+  // console.log('current selected', currentSelected);
   // console.log('jobList', jobList)
   // console.log('unassigned jobs', unassignedJobList);
-  console.log('detail view', detailView);
+  console.log('detail view in calendar', detailView);
 
 
   return (
@@ -196,8 +198,15 @@ const Calendar = ({token}) => {
             <div className='dayName'>Fri</div>
             <div className='dayName'>Sat</div>
           </div>
+          {
+            showDetail ? ( 
+            <DetailView
+              detailView={detailView}
+              setFormType={setFormType}
+              setCurrentSelected={setCurrentSelected}
+            />) : null
+          }
           <div className='month-grid'>
-
             {
               displayDates.map((specificDate,index) => {
                 return (
@@ -213,6 +222,8 @@ const Calendar = ({token}) => {
                       setFormType={setFormType}
                       currentSelected={currentSelected}
                       setCurrentSelected={setCurrentSelected}
+                      showDetail={showDetail}
+                      setShowDetail={setShowDetail}
                       detailView={detailView}
                       setDetailView={setDetailView}
                     />

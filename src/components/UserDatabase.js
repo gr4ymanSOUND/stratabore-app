@@ -16,7 +16,7 @@ import { getAllUsers } from '../axios-services';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
 
-const UserDatabase = ({token}) => {
+const UserDatabase = ({token, user}) => {
   //for accessing Grid's API
   const gridRef = useRef();
 

@@ -75,21 +75,32 @@ const App = () => {
                     exact path="/admin"
                     element={
                       !token ? <Navigate to="/" replace /> :
-                      <AdminTools token={token} user={user}/>
+                      <AdminTools/>
                     }
                   >
+                    {/* Redirect from /admin to /admin/users */}
+                    <Route 
+                      index 
+                      element={
+                        user.isAdmin ? (
+                          <Navigate to="users" replace />
+                        ) : (
+                          <Navigate to="editself" replace />
+                        )
+                      }
+                    />
                     <Route 
                       path="users"
                       element={
                         !token ? <Navigate to="/" replace /> :
-                        <UserDatabase token={token} />
+                        <UserDatabase token={token} user={user}/>
                       }
                     />
                     <Route 
                       path="rigs"
                       element={
                         !token ? <Navigate to="/" replace /> :
-                        <RigDatabase token={token} />
+                        <RigDatabase token={token} user={user}/>
                       }
                     />
                     <Route 
