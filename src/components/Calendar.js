@@ -173,6 +173,16 @@ const Calendar = ({token}) => {
 
   return (
     <div className='calendar-page'>
+      {
+        showDetail ? ( 
+        <DetailView
+          setDetailView={setDetailView}
+          detailView={detailView}
+          setFormType={setFormType}
+          setCurrentSelected={setCurrentSelected}
+          setShowDetail={setShowDetail}
+        />) : null
+      }
       <div className='calendar-header'>
         <div className='month-selector'>
           <button id='prevMonth' className='month-arrow' onClick={monthButtons}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -198,14 +208,7 @@ const Calendar = ({token}) => {
             <div className='dayName'>Fri</div>
             <div className='dayName'>Sat</div>
           </div>
-          {
-            showDetail ? ( 
-            <DetailView
-              detailView={detailView}
-              setFormType={setFormType}
-              setCurrentSelected={setCurrentSelected}
-            />) : null
-          }
+          
           <div className='month-grid'>
             {
               displayDates.map((specificDate,index) => {

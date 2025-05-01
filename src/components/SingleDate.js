@@ -34,19 +34,16 @@ const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailVie
   const showDetailButton = (e) => {
     e.preventDefault();
 
-    const detailID = e.target.id;
-    const detailRig = rigList.filter((rig) => rig.id == detailID)[0]
+    const detailID = e.currentTarget.id;
+    const detailRig = rigList.find((rig) => rig.id == detailID);
     console.log('detail id', detailID);
     console.log('detail rig', detailRig);
 
-    if (!showDetail) {
-      setDetailView({date: specificDate, rig: detailRig, dayJobs: dayJobs});
-      setShowDetail(true);
-    } else {
-      setDetailView({});
-      setShowDetail(false);
-    };
+    setDetailView({date: specificDate, rig: detailRig, dayJobs: dayJobs});
+
+    !showDetail ? setShowDetail(true): null;
   }
+
 
   return (
     <>

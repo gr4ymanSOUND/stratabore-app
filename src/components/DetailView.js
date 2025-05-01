@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 
 
-const DetailView = ({detailView, setFormType, setCurrentSelected}) => {
+const DetailView = ({detailView, setDetailView, setFormType, setCurrentSelected, setShowDetail}) => {
 
   console.log('detail view in component', detailView);
 
@@ -18,29 +18,37 @@ const DetailView = ({detailView, setFormType, setCurrentSelected}) => {
     setDetailJobs(rigJobs);
   },[detailView]);
 
-  const showDetailButton = (e) => {
+  const style = {backgroundColor: `${detailView.rig.boardColor}`, border: 'none'};
+  if (detailJobs.length < 1) {
+    style.backgroundColor = `darkgray`
+  }
+  if (detailView.rig.status == 'inactive') {
+    style.border = '1px red solid';
+    style.backgroundColor = `darkgray`
+  }
+  if (detailView.rig.status == 'repairs') {
+    style.border = '1px green solid';
+    style.backgroundColor = `darkgray`
+  }
+
+
+  // add actual button to the detail view for closing the window
+  const closeDetailButton = (e) => {
     e.preventDefault();
-
-    const detailID = e.target.id;
-    console.log('detail id', detailID);
-
-    if (!showDetail) {
-      setDetailView({date: specificDate, id: detailID});
-      setShowDetail(true);
-    } else {
-      setShowDetail(false);
-      
-    };
+    setShowDetail(false);
+    setDetailView({});
   }
 
 
   return(
-    <div onClick={showDetailButton} className="day-rig-detail">
+    <div className="rig-detail-container">
+      <div className='detail-box' style={style}>
       <div className='rig-info' >
         <div>ID: {detailView.rig.id}</div>
         <div>{detailView.rig.licensePlate}</div>
         <div>{detailView.rig.rigType}</div>
         <div>{detailView.rig.status}</div>
+        <button id='close-view' className='calendar-form-button' onClick={closeDetailButton}>X</button>
       </div>
       {
         detailJobs.map((job, index) => {
@@ -73,6 +81,7 @@ const DetailView = ({detailView, setFormType, setCurrentSelected}) => {
         )
       })
       }
+      </div>
     </div>
   )
 }
