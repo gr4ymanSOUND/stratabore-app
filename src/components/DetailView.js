@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 
 
-const DetailView = ({detailView, setDetailView, setFormType, setCurrentSelected, setShowDetail}) => {
+const DetailView = ({detailView, setDetailView, formType, setFormType, setCurrentSelected, setShowDetail}) => {
 
   console.log('detail view in component', detailView);
+  console.log('formtype in detail view', formType);
 
   const [detailJobs, setDetailJobs] = useState([]);
 
@@ -18,17 +19,21 @@ const DetailView = ({detailView, setDetailView, setFormType, setCurrentSelected,
     setDetailJobs(rigJobs);
   },[detailView]);
 
-  const style = {backgroundColor: `${detailView.rig.boardColor}`, border: 'none'};
+  const boxStyle = {backgroundColor: `${detailView.rig.boardColor}`, border: 'none'};
+  const containerStyle = {width: '100%'}
   if (detailJobs.length < 1) {
-    style.backgroundColor = `darkgray`
+    boxStyle.backgroundColor = `darkgray`
   }
   if (detailView.rig.status == 'inactive') {
-    style.border = '1px red solid';
-    style.backgroundColor = `darkgray`
+    boxStyle.border = '1px red solid';
+    boxStyle.backgroundColor = `darkgray`
   }
   if (detailView.rig.status == 'repairs') {
-    style.border = '1px green solid';
-    style.backgroundColor = `darkgray`
+    boxStyle.border = '1px green solid';
+    boxStyle.backgroundColor = `darkgray`
+  }
+  if (formType !== ''){
+    containerStyle.width = 'calc(100% - 325px)';
   }
 
 
@@ -41,8 +46,8 @@ const DetailView = ({detailView, setDetailView, setFormType, setCurrentSelected,
 
 
   return(
-    <div className="rig-detail-container">
-      <div className='detail-box' style={style}>
+    <div className="rig-detail-container" style={containerStyle}>
+      <div className='detail-box' style={boxStyle}>
       <div className='rig-info' >
         <div>ID: {detailView.rig.id}</div>
         <div>{detailView.rig.licensePlate}</div>
@@ -54,19 +59,8 @@ const DetailView = ({detailView, setDetailView, setFormType, setCurrentSelected,
         detailJobs.map((job, index) => {
         const editButton = (e) => {
           e.preventDefault();
-          setFormType(e.target.id);
+          setFormType(e.currentTarget.id);
           setCurrentSelected(job);
-        }
-        const unassignButton = async (e) => {
-          e.preventDefault();
-          const jobToUnassign = { jobId: job.id, rigId: job.rigId, jobDate: job.jobDate }
-          if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}, Date: ${jobToUnassign.jobDate}`)) {
-            const unassignedJob = await deleteJobRig(token, jobToUnassign);
-            setFormType(e.target.id);
-            // reload the joblist to reflect the changes in the spreadsheet
-            const newJobList = await getAssignedAndUnassignedJobs(token)
-            setJobList(newJobList);
-          }
         }
         return (
           <div key={job.jobNumber} className="rig-detail-job">
@@ -74,8 +68,9 @@ const DetailView = ({detailView, setDetailView, setFormType, setCurrentSelected,
               {job.jobNumber}
             </div>
             <div>
-              <button id='edit-job' className='calendar-form-button' onClick={editButton}>Edit</button>
-              <button id='unassigned' className='calendar-form-button' onClick={unassignButton}>Unassign</button>
+              <button id='edit-job' className='calendar-form-button' onClick={editButton}>
+                      <i id='edit-job' className="fa-solid fa-pen-to-square"></i>
+              </button>
             </div>
           </div>
         )

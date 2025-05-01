@@ -10,12 +10,21 @@ import { getAllRigs, getAssignedAndUnassignedJobs } from '../axios-services/inde
 const Calendar = ({token}) => {
   // will use imported token for pulling data
 
-  // creating a date object to set the current date on startup
-  const d = new Date();
+  // creating a date object to set the current date on startup, adjusted to central time
+  const getCentralTime = () => {
+    const now = new Date();
+    // Central Time is UTC-6 or UTC-5 depending on Daylight Saving Time
+    const centralOffset = -6; // Base offset for Central Standard Time (CST)
+    const isDST = now.getTimezoneOffset() < 300; // Check if Daylight Saving Time is active
+    const centralTime = new Date(now.getTime() + (centralOffset + (isDST ? 1 : 0)) * 60 * 60 * 1000);
+    return centralTime;
+  };
+
+  const centralTime = getCentralTime();
 
   // current month and year for filtering the job list while generating the date components
-  const [currentMonth, setCurrentMonth] = useState(d.getUTCMonth());
-  const [currentYear, setCurrentYear] = useState(d.getUTCFullYear());
+  const [currentMonth, setCurrentMonth] = useState(centralTime.getUTCMonth());
+  const [currentYear, setCurrentYear] = useState(centralTime.getUTCFullYear());
 
   // main content state
   const [jobList, setJobList] = useState([]);
@@ -173,16 +182,6 @@ const Calendar = ({token}) => {
 
   return (
     <div className='calendar-page'>
-      {
-        showDetail ? ( 
-        <DetailView
-          setDetailView={setDetailView}
-          detailView={detailView}
-          setFormType={setFormType}
-          setCurrentSelected={setCurrentSelected}
-          setShowDetail={setShowDetail}
-        />) : null
-      }
       <div className='calendar-header'>
         <div className='month-selector'>
           <button id='prevMonth' className='month-arrow' onClick={monthButtons}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -190,14 +189,25 @@ const Calendar = ({token}) => {
           <button className='month-arrow' id='nextMonth' onClick={monthButtons}><i className="fa fa-arrow-right" aria-hidden="true"></i></button>
         </div>
         <div className="calendar-form-controller">
-            {
-              formType === 'edit-job' ? (
-                <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Edit</button>
-              ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
-            }
-          </div>
+          {
+            formType === 'edit-job' ? (
+              <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Edit</button>
+            ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
+          }
+        </div>
       </div>
       <div className='calendar-container'>
+      {
+        showDetail ? ( 
+        <DetailView
+          setDetailView={setDetailView}
+          detailView={detailView}
+          formType={formType}
+          setFormType={setFormType}
+          setCurrentSelected={setCurrentSelected}
+          setShowDetail={setShowDetail}
+        />) : null
+      }
         <div className='calendar'>
           <div className='day-of-week'>
             <div className='dayName'>Sun</div>
@@ -208,7 +218,6 @@ const Calendar = ({token}) => {
             <div className='dayName'>Fri</div>
             <div className='dayName'>Sat</div>
           </div>
-          
           <div className='month-grid'>
             {
               displayDates.map((specificDate,index) => {
@@ -234,10 +243,8 @@ const Calendar = ({token}) => {
                 )
               })
             }
-
           </div>
-
-      </div>
+        </div>
         <div className='calendar-form'>
           {
             (formType === 'unassigned') ? (
@@ -248,7 +255,9 @@ const Calendar = ({token}) => {
                       <div key={job.id} className='unassigned-job'>
                         <div className='job-num'>{job.jobNumber}</div>
                         <div>{job.location}</div>
-                        <button id='edit-job' data-job-id={job.id} className='calendar-form-button' onClick={calendarFormButton}>Edit</button>
+                        <button id='edit-job' data-job-id={job.id} className='calendar-form-button' onClick={calendarFormButton}>
+                          <i id='edit-job' className="fa-solid fa-pen-to-square"></i>
+                        </button>
                       </div>
                     )
                   })
