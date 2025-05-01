@@ -6,8 +6,12 @@ import Login from './Login';
 import JobDatabase from './JobDatabase';
 import Calendar from './Calendar';
 import MapView from './MapView';
-import Footer from './Footer';
+// import Footer from './Footer';
 import AdminTools from './AdminTools';
+import UserDatabase from './UserDatabase';
+import RigDatabase from './RigDatabase';
+import EditSelf from './EditSelf';
+
 
 import { getMe } from '../axios-services';
 
@@ -32,7 +36,12 @@ const App = () => {
       <div className='main-container'>
 
         <BrowserRouter>
-            <Header token={token}/>
+            <Header 
+              token={token}
+              user={user}
+              setUser={setUser}
+              setToken={setToken}
+            />
               <Routes>
                   <Route 
                     exact path="/"
@@ -66,15 +75,48 @@ const App = () => {
                     exact path="/admin"
                     element={
                       !token ? <Navigate to="/" replace /> :
-                      <AdminTools token={token} user={user}/>
+                      <AdminTools/>
                     }
-                  />
+                  >
+                    {/* Redirect from /admin to /admin/users */}
+                    <Route 
+                      index 
+                      element={
+                        user.isAdmin ? (
+                          <Navigate to="users" replace />
+                        ) : (
+                          <Navigate to="editself" replace />
+                        )
+                      }
+                    />
+                    <Route 
+                      path="users"
+                      element={
+                        !token ? <Navigate to="/" replace /> :
+                        <UserDatabase token={token} user={user}/>
+                      }
+                    />
+                    <Route 
+                      path="rigs"
+                      element={
+                        !token ? <Navigate to="/" replace /> :
+                        <RigDatabase token={token} user={user}/>
+                      }
+                    />
+                    <Route 
+                      path="editself"
+                      element={
+                        !token ? <Navigate to="/" replace /> :
+                        <EditSelf token={token} user={user} setUser={setUser} />
+                      }
+                    />
+                  </Route>
               </Routes>
-            <Footer 
+            {/* <Footer 
               user={user}
               setUser={setUser}
               setToken={setToken}
-            />
+            /> */}
         </BrowserRouter>
         
       </div>

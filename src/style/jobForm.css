@@ -1,6 +1,6 @@
 .form-container {
   font-size: 12px;
-  width: 20vw;
+  /* width: 20vw; */
   height: 100%;
   background-color: rgb(205, 205, 205);
 }
@@ -27,8 +27,9 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-  width: 100%;
-  padding: 1rem 0;
+  align-items: center;
+  width: 300px;
+  padding: 2rem 0;
 }
 
 .job-form .input-section {
@@ -40,6 +41,8 @@
   margin-bottom: .5rem;
   border: 1px rgb(170, 170, 170) solid;
   box-shadow: 1px 1px 4px rgba(100, 100, 100, 0.75);
+  background-color: rgb(170,170,170);
+
 }
 
 .job-form .checkbox {
@@ -57,7 +60,6 @@
 }
 
 .job-form .input-label {
-  background-color: rgb(170,170,170);
   padding: .5rem;
   width: 40%;
   height: 100%;

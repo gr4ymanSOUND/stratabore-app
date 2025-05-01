@@ -11,7 +11,11 @@ import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 // axios imports
 import { getAllRigs } from '../axios-services';
 
-const RigDatabase = ({token}) => {
+// importing CSV download helpers
+import Papa from 'papaparse';
+import FileSaver from 'file-saver';
+
+const RigDatabase = ({token, user}) => {
   //for accessing Grid's API
   const gridRef = useRef();
 
@@ -79,6 +83,17 @@ const RigDatabase = ({token}) => {
     })
   }, []);
 
+    //download the rig list
+    const downloadRigList = async (e) => {
+      const d = new Date();
+      let dateString = `${d.getFullYear()}-${d.getUTCMonth() + 1}-${d.getDate()}`
+  
+      const csvFileData = Papa.unparse(rigList);
+      const blob = new Blob([csvFileData], { type: 'text/csv;charset=utf-8' });
+      FileSaver.saveAs(blob, `StrataBore_rigList_${dateString}.csv`);
+  
+    }
+
   // resizes the columns inside the grid to fit the grid/window size (is called when the grid/window gets resized)
   const onGridReady = useCallback((params) => {
     params.api.sizeColumnsToFit();
@@ -97,8 +112,18 @@ const RigDatabase = ({token}) => {
           (formType == "edit-rig" || formType == "add-rig" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
           :
             <>
-              {Object.keys(currentSelected).length !== 0 ? <button id='edit-rig' onClick={buttonListener}>Edit Selected Rig</button> : null}
-              <button id='add-rig' onClick={buttonListener}>Add Rig</button>
+              {Object.keys(currentSelected).length !== 0 ? (
+                <button id='edit-rig' onClick={buttonListener}>
+                  <i id='edit-rig' className="fa-solid fa-pen-to-square"></i>
+                </button>
+                ) : null
+              }
+              <button id='add-rig' onClick={buttonListener}>
+                <i id='add-rig' className="fa-solid fa-plus"></i>
+              </button>
+              <button id='download-list' onClick={downloadRigList}>
+                <i className="fa-solid fa-file-arrow-down"></i>
+              </button>
             </>
         }
       </div>

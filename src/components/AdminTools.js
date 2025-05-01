@@ -1,36 +1,37 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { Link, NavLink, Outlet} from 'react-router-dom';
 
-// tool component imports
-import UserDatabase from './UserDatabase';
-import RigDatabase from './RigDatabase';
 
-// axios imports
-import { getAllUsers, getAllRigs } from '../axios-services';
-
-const AdminTools = ({token, user}) => {
-
+const AdminTools = () => {
+  // create reports component to use later
+  
   return (
     <>
-      {
-        user.isAdmin ? (
-          <div className='admin-tools'>
-            <div className='tool'>
-              <UserDatabase token={token}/>
-            </div>
-            <div className='tool'>
-              <RigDatabase token={token}/>
-            </div>
-          </div>
-        ) : null
-      }
+    <div className='admin-tools'>
+
+      <div className="button-list tool-selector">
+        <NavLink 
+          className={({ isActive }) => (isActive ? "active" : "")}
+          to='/admin/users'
+        >
+          <i id='usertool' className="fa-solid fa-users"></i>
+        </NavLink>
+        <NavLink 
+          className={({ isActive }) => (isActive ? "active" : "")}
+          to='/admin/rigs'
+        >
+          <i id='rigtool' className="fa-solid fa-truck-field"></i>
+        </NavLink>
+      </div>
+
+
+      <div className='tool'>
+        <Outlet />
+      </div>
+    </div>
     </>
 )
 
 };
 
 export default AdminTools;
-
-
-// reminder: add 'status' field to job database, and change "delete" function to mark it as inactive instead
-// that way no jobs are ever lost
-// make another custom filter component for this column

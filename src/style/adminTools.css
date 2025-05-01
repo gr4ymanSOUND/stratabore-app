@@ -6,13 +6,13 @@
   margin: 0 auto;
   height: 100%;
   width: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .tool {
   width: 90vw;
-  max-width: 900px;
-  margin: 0rem auto 1rem auto;
+  max-width: 1000px;
+  margin: .5rem auto 1rem auto;
 }
 
 .admin-table {
@@ -21,9 +21,61 @@
   justify-content: flex-start;
   align-items: stretch;
 
-  height: 375px;
+  height: 80vh;
   border: 1px rgb(175, 175, 175) solid;
   box-shadow: 2px 1px 8px 3px rgba(0, 0, 0, 0.4);
   background-color: rgb(175, 175, 175);
+
+}
+
+.admin-tools .button-list {
+  margin-top: .5rem;
+  justify-content: center;
+}
+
+.button-list.tool-selector {
+  align-self: flex-start;
+}
+
+.tool-selector a {
+  font-size: 2rem;
+
+  background-color:rgb(224, 194, 22);
+  color: rgb(48, 48, 48);
+  border: none;
+  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  margin: .25rem;
+  padding: .5rem;
+}
+
+.tool-selector a:hover {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
+}
+
+.tool-selector .active {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
+}
+
+.rig-database .button-list {
+  width: 300px;
+  justify-self: flex-end;
+}
+
+.user-database .button-list {
+  width: 300px;
+  justify-self: flex-end;
+}
+
+.user-database .button-list button {
+  font-size: 1.25rem;
+  margin-left: 1.5rem;
+
+}
+
+.rig-database .button-list button {
+  font-size: 1.25rem;
+  margin-left: 1.5rem;
 
 }

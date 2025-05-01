@@ -1,28 +1,33 @@
 .mapview-page {
-  margin: .75rem auto;
+  /* margin: .75rem auto; */
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .mapview-button-list {
-  margin: -.75rem 4rem -.75rem 0;
+  margin: 0rem 0rem -2.25rem 0;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: flex-end;
+  justify-content: center;
+  align-self: flex-end;
   min-height: 1.5rem;
-  
+  width: 300px;
   /* hack to put buttons slightly over top of table headers */
   position: relative;
   z-index: 500;
+
 }
 
 .mapview-button-list button {
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);
   border: none;
-  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  box-shadow: 2px 1px 8px -3px black;
   margin: .25rem;
   padding: .25rem;
+  font-size: 1rem;
 }
 
 .mapview-button-list button:hover {
@@ -37,8 +42,8 @@
   align-items: center;
 
   margin: 0rem auto;
-  height: 99%;
-  width: 99%;
+  height: 100%;
+  width: 100%;
 }
 
 .strata-mapper {
@@ -47,14 +52,13 @@
 }
 
 .strata-mapper-tool {
-  width: 275px;
+  width: 350px;
   height: 100%;
   margin-left: 1px;
 }
 
 .mapview-page .form-container {
-  width: 275px;
-  padding-top: 1rem;
+  padding-top: 2rem;
 }
 
 .popUp-window {
@@ -82,7 +86,7 @@
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);
   border: none;
-  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  box-shadow: 2px 1px 8px -3px rgb(0,0,0, 0.4);
   padding: .25rem;
 }
 

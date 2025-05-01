@@ -27,7 +27,7 @@ body {
 
 .main-container {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   height: 100%;
   width: 100%;
 }

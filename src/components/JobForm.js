@@ -18,8 +18,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const [jobStatus, setJobStatus] = useState('pending');
   const [createdDate, setCreatedDate] = useState('');
 
-  console.log('current selected', currentSelected);
-
   // when the current selection or formtype changes, adjust the state to reflect the change
   useEffect(() => {
 
@@ -120,7 +118,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
             // patching didn't work with the db because all 3 fields are combined to make the unique primary key
             // need to delete first, then create the new one
             const jobToUnassign = { jobId: currentSelected.id, rigId: currentSelected.rigId, jobDate: currentSelected.jobDate };
-            console.log('jobform job to unassign', jobToUnassign)
             const deletedJob = await deleteJobRig(token, jobToUnassign);
             const newJobRig = { jobId: currentSelected.id, rigId: rigId, jobDate: jobDate };
             const assignedJob = await createJobRig(token, newJobRig);
@@ -144,7 +141,6 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
     // sets the edited job data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
     newJob.id = currentSelected.id;
-    console.log('newJob after adding id after submission', newJob)
     setCurrentSelected(newJob);
 
     // pull the new jobList to use in the if/else below

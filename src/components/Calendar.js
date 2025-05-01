@@ -1,25 +1,33 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import SingleDate from './SingleDate';
 import JobForm from './JobForm';
+import DetailView from './DetailView';
 
 // axios imports
-import { getAllJobs, getAllRigs, getAssignedAndUnassignedJobs, getAssignedJobs } from '../axios-services/index';
+import { getAllRigs, getAssignedAndUnassignedJobs } from '../axios-services/index';
 
 const Calendar = ({token}) => {
   // will use imported token for pulling data
 
+  // creating a date object to set the current date on startup
+  const d = new Date();
+
   // current month and year for filtering the job list while generating the date components
-  const [currentMonth, setCurrentMonth] = useState('');
-  const [currentYear, setCurrentYear] = useState('');
+  const [currentMonth, setCurrentMonth] = useState(d.getUTCMonth());
+  const [currentYear, setCurrentYear] = useState(d.getUTCFullYear());
 
   // main content state
   const [jobList, setJobList] = useState([]);
-  const [unassignedJobList, setUnassignedJobList] = useState([]);
+  const unassignedJobList = jobList.filter((job) => {
+    if (job.rigId === null) {return true}
+      return false;
+  });
   const [rigList, setRigList] = useState([]);
   const [formType, setFormType] = useState('');
   const [currentSelected, setCurrentSelected] = useState({});
   const [detailView, setDetailView] = useState({});
+  const [showDetail, setShowDetail] = useState(false);
 
   // array to store month names to convert from numbers for label at top of calendar
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -29,40 +37,14 @@ const Calendar = ({token}) => {
     const fetchJobs = async () => {
       try {
         const jobs = await getAssignedAndUnassignedJobs(token);
-        // console.log('new joblist format', jobs);
         setJobList(jobs);
       } catch (error) {
         console.log(error);
       }
     }
     fetchJobs();
+    console.log('job render');
   }, []);
-
-  // set up the unassigned jobs when the joblist changes
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const unassignedJobs = jobList.filter((job) => {
-          if (job.rigId === null) {return true}
-          return false;
-        });
-        setUnassignedJobList(unassignedJobs);
-        // console.log('unassigned jobs', unassignedJobList);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchJobs();
-  }, [jobList]);
-
-  // set the date to current if there's nothing there
-  useEffect(() => {
-    if (!currentMonth) {
-      const d = new Date();
-      setCurrentMonth(d.getUTCMonth());
-      setCurrentYear(d.getUTCFullYear());
-    }
-  },[]);
 
   // get the rig list to pass to each date for coloring and other data
   useEffect(() => {
@@ -75,6 +57,8 @@ const Calendar = ({token}) => {
       }
     }
     fetchRigs();
+    console.log('rig render');
+
   },[]);
 
   // couldn't get form to close after submitting, this does a forced check everytime the form is submitted 
@@ -180,15 +164,25 @@ const Calendar = ({token}) => {
     }
   }
 
-  console.log('form', formType);
-  console.log('current selected', currentSelected);
+  // console.log('form', formType);
+  // console.log('current selected', currentSelected);
   // console.log('jobList', jobList)
   // console.log('unassigned jobs', unassignedJobList);
-  console.log('detail view', detailView);
+  console.log('detail view in calendar', detailView);
 
 
   return (
     <div className='calendar-page'>
+      {
+        showDetail ? ( 
+        <DetailView
+          setDetailView={setDetailView}
+          detailView={detailView}
+          setFormType={setFormType}
+          setCurrentSelected={setCurrentSelected}
+          setShowDetail={setShowDetail}
+        />) : null
+      }
       <div className='calendar-header'>
         <div className='month-selector'>
           <button id='prevMonth' className='month-arrow' onClick={monthButtons}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
@@ -196,12 +190,12 @@ const Calendar = ({token}) => {
           <button className='month-arrow' id='nextMonth' onClick={monthButtons}><i className="fa fa-arrow-right" aria-hidden="true"></i></button>
         </div>
         <div className="calendar-form-controller">
-          {
-            formType === 'edit-job' ? (
-              <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Edit</button>
-            ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
-          }
-        </div>
+            {
+              formType === 'edit-job' ? (
+                <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Edit</button>
+              ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
+            }
+          </div>
       </div>
       <div className='calendar-container'>
         <div className='calendar'>
@@ -214,8 +208,8 @@ const Calendar = ({token}) => {
             <div className='dayName'>Fri</div>
             <div className='dayName'>Sat</div>
           </div>
+          
           <div className='month-grid'>
-
             {
               displayDates.map((specificDate,index) => {
                 return (
@@ -231,6 +225,8 @@ const Calendar = ({token}) => {
                       setFormType={setFormType}
                       currentSelected={currentSelected}
                       setCurrentSelected={setCurrentSelected}
+                      showDetail={showDetail}
+                      setShowDetail={setShowDetail}
                       detailView={detailView}
                       setDetailView={setDetailView}
                     />

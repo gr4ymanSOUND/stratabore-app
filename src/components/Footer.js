@@ -10,15 +10,8 @@ const Footer = ({ user, setUser, token, setToken }) => {
 
     return (
         <footer>
-            <div className="copyright-username">
+            <div className="copyright">
                 <p>&copy; 2022 StrataBore LLC</p>
-                { !Object.keys(user).length ? null : (
-                    <>
-                    <p className="big-vert-line"></p>
-                    <p>Logged in as: <span>{user.userName}</span></p>
-                    <button onClick={logOut}>Log Out</button>
-                    </>
-                )}
             </div>
         </footer>
     )
