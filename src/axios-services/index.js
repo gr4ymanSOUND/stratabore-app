@@ -100,8 +100,12 @@ export async function editUser(token, userId, newUserData) {
       newUserData: backEndUserData
     }
     const { data } = await axios.patch(`/boringApi/users/${userId}`, payload, auth);
+    if (typeof data !== 'string') {
     const frontEndUserData = Syntax.userSyntaxFrontEnd(data);
     return frontEndUserData;
+    } else {
+      return data;
+    }
   } catch (error) {
     console.error(error)
   }

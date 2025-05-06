@@ -7,6 +7,7 @@
 
     width: 100%;
     overflow-y: scroll;
+    box-sizing: border-box;
 }
 
 .calendar-header {
@@ -52,6 +53,28 @@
   font-size: 2rem;
   text-shadow: 2px 1px 3px rgba(100, 100, 100, 0.75);
 
+}
+
+/* setting the view to month, week, or day */
+
+.view-selector {
+  background-color: rgb(170, 170, 170);
+  width: 30vw;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  justify-self: center;
+  margin: .25rem;
+  padding: .5rem;
+  box-shadow: 2px 1px 7px 1px rgba(0, 0, 0, 0.4);
+}
+
+.view-button {
+  background-color:rgb(224, 194, 22);
+  color: rgb(48, 48, 48);
+  border: none;
+  box-shadow: 2px 5px 5px -3px rgb(0,0,0, 0.4);
+  padding: auto;
 }
 
 /* Unassigned jobs label and buttons to control the unassigned joblist and form */
@@ -135,6 +158,7 @@
 .calendar-container {
   display: flex;
   flex-flow: row nowrap;
+  box-sizing: border-box;
 }
 
 .calendar-form {
@@ -266,6 +290,8 @@
   height: 100%;
   background-color: rgba(100, 100, 100, 0.75);
   z-index: 200;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .detail-box {

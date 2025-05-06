@@ -137,7 +137,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setRigId('');
     setJobStatus('');
     setCreatedDate('');
-    setFormType("reset")
+    setFormType("")
 
     // sets the edited job data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
     newJob.id = currentSelected.id;
@@ -175,7 +175,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
       // reset the selection and hide the form
       setCurrentSelected({});
-      setFormType("reset")
+      setFormType("")
 
       // reset the job list to include the changes
       const newJobList = await getAssignedAndUnassignedJobs(token);

@@ -8,19 +8,41 @@ const DetailView = ({detailView, setDetailView, formType, setFormType, setCurren
   console.log('formtype in detail view', formType);
 
   const [detailJobs, setDetailJobs] = useState([]);
+  const [containerWidth, setContainerWidth] = useState('100vw');
 
   useEffect(() => {
-    const rigJobs = detailView.dayJobs.filter((job) => {
-      if (job.rigId === detailView.rig.id) {
-        return true;
-      }
-      return false;
-    })
+    const rigJobs = detailView.dayJobs.filter((job) => job.rigId === detailView.rig.id);
     setDetailJobs(rigJobs);
   },[detailView]);
 
+  useEffect(() => {
+    const calculateContainerWidth = () => {
+      const calendarPage = document.querySelector('.calendar-page');
+      if (!calendarPage) return '100vw'; // Fallback if the element is not found
+
+      const formWidth = formType !== '' ? 300 : 0; // Assume form width is 300px
+      const padding = parseFloat(getComputedStyle(calendarPage).paddingLeft) + parseFloat(getComputedStyle(calendarPage).paddingRight);
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth; // Scroll bar width
+      return `calc(100vw - ${formWidth + padding + scrollBarWidth +5}px)`;
+    };
+
+    setContainerWidth(calculateContainerWidth());
+
+    // Recalculate on window resize
+    const handleResize = () => setContainerWidth(calculateContainerWidth());
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [formType]); // Recalculate when formType changes
+
+  const containerStyle = {
+    width: containerWidth,
+  };
+
+
   const boxStyle = {backgroundColor: `${detailView.rig.boardColor}`, border: 'none'};
-  const containerStyle = {width: '100%'}
   if (detailJobs.length < 1) {
     boxStyle.backgroundColor = `darkgray`
   }
@@ -31,9 +53,6 @@ const DetailView = ({detailView, setDetailView, formType, setFormType, setCurren
   if (detailView.rig.status == 'repairs') {
     boxStyle.border = '1px green solid';
     boxStyle.backgroundColor = `darkgray`
-  }
-  if (formType !== ''){
-    containerStyle.width = 'calc(100% - 325px)';
   }
 
 

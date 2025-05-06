@@ -232,9 +232,10 @@ const MapView = ({token}) => {
   }
 
 // console checks for filter work
-  console.log('filter state', filterState);
-  console.log('jobList', jobList);
-  console.log('location list', locationList);
+  // console.log('filter state', filterState);
+  console.log('form type', formType);
+  // console.log('jobList', jobList);
+  // console.log('location list', locationList);
 
    return (
     <div className='mapview-page'>
@@ -271,6 +272,7 @@ const MapView = ({token}) => {
                     jobList={jobList}
                     setJobList={setJobList}
                     rigList={rigList}
+                    setFormType={setFormType}
                   />
                 ) : null
               }

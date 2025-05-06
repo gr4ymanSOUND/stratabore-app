@@ -3,6 +3,7 @@ import { editUser, getMe } from "../axios-services";
 
 const EditSelf = ({ token, user, setUser}) => {
 
+  const [userId, setUserId] = useState(0);
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -12,15 +13,19 @@ const EditSelf = ({ token, user, setUser}) => {
   const [isChecked, setIsChecked] = useState(false);
   const [userStatus, setUserStatus] = useState('active');
 
+  console.log('user', user)
+
   
   useEffect(()=>{
-      setUserName(user.userName);
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setUserEmail(user.email);
-      setIsAdmin(user.isAdmin);
-      setIsChecked(user.isAdmin)
-      setUserStatus(user.status);
+    if (!user) return;
+      setUserId(user.id || 0);
+      setUserName(user.userName || '');
+      setFirstName(user.firstName || '');
+      setLastName(user.lastName || '');
+      setUserEmail(user.email || '');
+      setIsAdmin(user.isAdmin || false);
+      setIsChecked(user.isAdmin || false);
+      setUserStatus(user.status || 'active');
   },[user])
 
   const submitListener = async (e) => {
@@ -41,10 +46,10 @@ const EditSelf = ({ token, user, setUser}) => {
       status: userStatus
     }
 
-    const userId = currentSelected.id;
     const response = await editUser(token, userId, newUser)
+    console.log('response', response)
     alert(`${newUser.userName} has been edited.`);
-    setUser(newUser);
+    setUser(response);
   };
 
   const handleAdminChange = async (e) => {

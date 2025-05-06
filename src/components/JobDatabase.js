@@ -44,7 +44,7 @@ const JobDatabase = ({ token }) => {
       setCurrentSelected({});
       gridRef.current.api.deselectAll();
     }
-    if (formType == "cancel" || formType == "reset" || formType == "unassigned") {
+    if (formType == "cancel" || formType == "" || formType == "unassigned") {
       setFormType("")
       const buttonTimeout = setTimeout(() => {
         gridRef.current.api.sizeColumnsToFit();

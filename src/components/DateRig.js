@@ -6,27 +6,28 @@ const DateRig = ({specificDate, rig, dayJobs}) => {
 
   // filter the dayJobs for the current rig
   // putting this in state doesn't appear to be necessary, and also ends up causing too many re-renders
-  const findRigJobs = (job) => {
-    if (job.rigId === rig.id) {
-      return true;
-    }
-    return false;
-  };
-  const rigJobs = dayJobs.filter(findRigJobs);
+  // Memoize the filtered jobs for the rig
+  const rigJobs = useMemo(() => {
+    return dayJobs.filter((job) => job.rigId === rig.id);
+  }, [dayJobs, rig.id]);
 
   // logic to determine which coloring option to use for the rig, depending on the number of jobs and rig status
-  const style = {backgroundColor: `${rig.boardColor}`, border: 'none'};
-  if (rigJobs.length < 1) {
-    style.backgroundColor = `darkgray`
-  }
-  if (rig.status == 'inactive') {
-    style.border = '1px red solid';
-    style.backgroundColor = `darkgray`
-  }
-  if (rig.status == 'repairs') {
-    style.border = '1px green solid';
-    style.backgroundColor = `darkgray`
-  }
+  // Memoize the style object
+  const style = useMemo(() => {
+    const baseStyle = { backgroundColor: `${rig.boardColor}`, border: 'none' };
+    if (rigJobs.length < 1) {
+      baseStyle.backgroundColor = `darkgray`;
+    }
+    if (rig.status === 'inactive') {
+      baseStyle.border = '1px red solid';
+      baseStyle.backgroundColor = `darkgray`;
+    }
+    if (rig.status === 'repairs') {
+      baseStyle.border = '1px green solid';
+      baseStyle.backgroundColor = `darkgray`;
+    }
+    return baseStyle;
+  }, [rig, rigJobs]);
 
   return (
     <>

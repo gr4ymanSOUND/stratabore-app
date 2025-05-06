@@ -72,6 +72,8 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
       delete newUser.password;
       const userId = currentSelected.id;
       const response = await editUser(token, userId, newUser)
+      if (typeof response === 'string') {
+        alert(response);      }
       alert(`${newUser.userName} has been edited.`);
     }
     

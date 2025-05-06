@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-const MapFilters = ({filterState, setFilterState, jobList, setJobList, rigList}) => {
+const MapFilters = ({filterState, setFilterState, jobList, setJobList, rigList, setFormType}) => {
 
   const [jobStatus, setJobStatus] = useState(filterState.jobStatus);
   const [client, setClient] = useState(filterState.client);
@@ -20,6 +20,7 @@ const MapFilters = ({filterState, setFilterState, jobList, setJobList, rigList})
       rigsToShow: rigsToShow,
     }
     setFilterState(newFilterState);
+    setFormType("");
   }
 
   const handleMultiSelect = (selectedItems) => {

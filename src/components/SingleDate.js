@@ -1,48 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 import DateRig from './DateRig';
 
 const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailView, showDetail, setShowDetail}) => {
 
 
-  const [dayJobs, setDayJobs] = useState([]);
+  // Memoize the filtered jobs for the specific date
+  const dayJobs = useMemo(() => {
+    return jobList.filter(
+      (job) => job.jobDate === specificDate && job.status !== 'canceled'
+    );
+  }, [jobList, specificDate]);
 
-  // split the date string into parts to create the date labels
-  // check if the day starts with a leading zero, and remove it for a cleaner display at the top of the card
-  // check if the date is in the current month or not, and adjust the label appropriately
-  const dateParts = specificDate.split("-");
-  if (dateParts[2][0] == '0') {
-    dateParts[2] = dateParts[2].slice(1);
-  }
-  if (dateParts[1] != currentMonth + 1) {
-    dateParts[2] = `(${dateParts[2]})`;
-  }
+  // Process the date parts for display
+  const dateParts = useMemo(() => {
+    const parts = specificDate.split('-');
+    if (parts[2][0] === '0') {
+      parts[2] = parts[2].slice(1);
+    }
+    if (parts[1] != currentMonth + 1) {
+      parts[2] = `(${parts[2]})`;
+    }
+    return parts;
+  }, [specificDate, currentMonth]);
 
-  // filter the job list for jobs that are scheduled for the current date
-  useEffect(()=>{
-    const currentDayJobs = jobList.filter((job) => {
-      if (job.jobDate === specificDate && job.status != 'canceled') {
-        return true;
-      }
-      return false;
-    });
-    setDayJobs(currentDayJobs);
-  },[]);
-  if (dayJobs.length != 0) {console.log('day jobs', specificDate, dayJobs);}
-
-
-  const showDetailButton = (e) => {
-    e.preventDefault();
-
-    const detailID = e.currentTarget.id;
-    const detailRig = rigList.find((rig) => rig.id == detailID);
-    console.log('detail id', detailID);
-    console.log('detail rig', detailRig);
-
-    setDetailView({date: specificDate, rig: detailRig, dayJobs: dayJobs});
-
-    !showDetail ? setShowDetail(true): null;
-  }
+  const showDetailButton = useCallback(
+    (e) => {
+      e.preventDefault();
+      const detailID = e.currentTarget.id;
+      const detailRig = rigList.find((rig) => rig.id == detailID);
+      setDetailView({ date: specificDate, rig: detailRig, dayJobs });
+      if (!showDetail) setShowDetail(true);
+    },
+    [rigList, specificDate, dayJobs, setDetailView, showDetail, setShowDetail]
+  );
 
 
   return (
@@ -54,6 +45,7 @@ const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailVie
           return (
             <div onClick={showDetailButton} id={rig.id} key={rig.id}>
               <DateRig
+                key={rig.id}
                 specificDate={specificDate}
                 rig={rig}
                 dayJobs={dayJobs}
