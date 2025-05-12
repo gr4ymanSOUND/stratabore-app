@@ -13,7 +13,7 @@
 .calendar-header {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   margin-bottom: 5px;
   
@@ -22,10 +22,9 @@
 
 /* display for the current month/year and buttons for changing the month */
 
-.month-selector {
+.view-group-selector {
   background-color: rgb(170, 170, 170);
-  width: 30vw;
-  /* min-width: 300px; */
+  width: 40vw;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
@@ -35,7 +34,7 @@
   box-shadow: 2px 1px 7px 1px rgba(0, 0, 0, 0.4);
 }
 
-.month-arrow {
+.view-arrow {
   font-size: 2rem;
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);
@@ -44,12 +43,12 @@
   padding: auto;
 }
 
-.month-arrow:hover {
+.view-arrow:hover {
   background-color: rgb(48, 48, 48);
   color:rgb(224, 194, 22);
 }
 
-.current-monthYear {
+.current-view {
   font-size: 2rem;
   text-shadow: 2px 1px 3px rgba(100, 100, 100, 0.75);
 
@@ -58,23 +57,12 @@
 /* setting the view to month, week, or day */
 
 .view-selector {
-  background-color: rgb(170, 170, 170);
-  width: 30vw;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  justify-self: center;
-  margin: .25rem;
-  padding: .5rem;
-  box-shadow: 2px 1px 7px 1px rgba(0, 0, 0, 0.4);
-}
-
-.view-button {
   background-color:rgb(224, 194, 22);
   color: rgb(48, 48, 48);
   border: none;
   box-shadow: 2px 5px 5px -3px rgb(0,0,0, 0.4);
-  padding: auto;
+  font-weight: bold;
+  width: fit-content;
 }
 
 /* Unassigned jobs label and buttons to control the unassigned joblist and form */

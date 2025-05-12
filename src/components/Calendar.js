@@ -60,29 +60,28 @@ const Calendar = ({token}) => {
   }, [token]);
 
   // handles changing which month is displayed
-  const monthButtons = (e) => {
-    let newYear;
-    let newMonth;
-    // month logic
-    if (e.currentTarget.id == 'prevMonth') {
-      newMonth = currentMonth - 1;
+  const viewButtons = (e) => {
+    let newYear = currentYear;
+    let newMonth = currentMonth;
+  
+    if (e.currentTarget.id === 'prevView') {
+      newMonth -= 1;
     }
-    if (e.currentTarget.id == 'nextMonth') {
-      newMonth = currentMonth + 1;
+    if (e.currentTarget.id === 'nextView') {
+      newMonth += 1;
     }
-    // check if year needs to be updated
+  
     if (newMonth < 0) {
       newMonth += 12;
-      newYear = currentYear - 1;
-      setCurrentYear(newYear);
+      newYear -= 1;
     }
     if (newMonth > 11) {
       newMonth -= 12;
-      newYear = currentYear + 1;
-      setCurrentYear(newYear);
+      newYear += 1;
     }
-    // set month to state after all other updates
+  
     setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
   };
 
   // create an array with dates to use to generate the SingleDate components
@@ -164,6 +163,41 @@ const Calendar = ({token}) => {
   console.log('current selected', currentSelected);
   console.log('view type', viewType);
 
+  let viewContent;
+  if (viewType === 'month') {
+    viewContent = (
+      <div className='month-grid'>
+        {
+          displayDates.map((specificDate,index) => (
+            <div className='day' key={specificDate}>
+              <SingleDate
+                currentMonth={currentMonth}
+                specificDate={specificDate}
+                jobList={jobList}
+                setJobList={setJobList}
+                rigList={rigList}
+                showDetail={showDetail}
+                setShowDetail={setShowDetail}
+                setDetailView={setDetailView}
+              />
+            </div>
+          ))
+        }
+      </div>
+    );
+  } else if (viewType === 'week') {
+    viewContent = (
+      <div className='week-grid'>
+        WEEK
+      </div>
+    );
+  } else if (viewType === 'day') {
+    viewContent = (
+      <div className='day-grid'>
+        DAY
+      </div>
+    );
+  }
 
   return (
     <div className='calendar-page'>
@@ -173,15 +207,18 @@ const Calendar = ({token}) => {
       ) : (
         <>
           <div className='calendar-header'>
-            <div className='month-selector'>
-              <button id='prevMonth' className='month-arrow' onClick={monthButtons}><i className="fa fa-arrow-left" aria-hidden="true"></i></button>
-              <div className='current-monthYear'>{monthNames[currentMonth]} {currentYear}</div>
-              <button className='month-arrow' id='nextMonth' onClick={monthButtons}><i className="fa fa-arrow-right" aria-hidden="true"></i></button>
-            </div>
-            <div className='view-selector'>
-              <select 
+          <div className='view-group-selector'>
+            <button id='prevView' className='view-arrow' onClick={viewButtons}>
+              <i className="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+            <div className='current-view'>{monthNames[currentMonth]} {currentYear}</div>
+            <button id='nextView' className='view-arrow' onClick={viewButtons}>
+              <i className="fa fa-arrow-right" aria-hidden="true"></i>
+            </button>
+            <select 
                 id="view"
                 name="view"
+                className='view-selector'
                 value={viewType}
                 onChange={({ target: { value } }) => setViewType(value)}
               >
@@ -199,70 +236,52 @@ const Calendar = ({token}) => {
             </div>
           </div>
           <div className='calendar-container'>
-          {
-            showDetail ? ( 
-            <DetailView
-              setDetailView={setDetailView}
-              detailView={detailView}
-              formType={formType}
-              setFormType={setFormType}
-              setCurrentSelected={setCurrentSelected}
-              setShowDetail={setShowDetail}
-            />) : null
-          }
+            {
+              showDetail ? ( 
+              <DetailView
+                setDetailView={setDetailView}
+                detailView={detailView}
+                formType={formType}
+                setFormType={setFormType}
+                setCurrentSelected={setCurrentSelected}
+                setShowDetail={setShowDetail}
+              />) : null
+            }
             <div className='calendar'>
-              <div className='day-of-week'>
-                <div className='dayName'>Sun</div>
-                <div className='dayName'>Mon</div>
-                <div className='dayName'>Tues</div>
-                <div className='dayName'>Wed</div>
-                <div className='dayName'>Thur</div>
-                <div className='dayName'>Fri</div>
-                <div className='dayName'>Sat</div>
-              </div>
-              <div className='month-grid'>
-                {
-                  displayDates.map((specificDate,index) => {
-                    return (
-                      <div className='day' key={specificDate}>
-                        <SingleDate
-                          currentMonth={currentMonth}
-                          specificDate={specificDate}
-                          jobList={jobList}
-                          setJobList={setJobList}
-                          rigList={rigList}
-                          showDetail={showDetail}
-                          setShowDetail={setShowDetail}
-                          setDetailView={setDetailView}
-                        />
-                      </div>
-                    )
-                  })
-                }
-              </div>
+              {  
+                viewType !== 'day' ? (
+                  <div className='day-of-week'>
+                    <div className='dayName'>Sun</div>
+                    <div className='dayName'>Mon</div>
+                    <div className='dayName'>Tues</div>
+                    <div className='dayName'>Wed</div>
+                    <div className='dayName'>Thur</div>
+                    <div className='dayName'>Fri</div>
+                    <div className='dayName'>Sat</div>
+                  </div>
+                ) : null
+              }
+              {viewContent}
             </div>
             <div className='calendar-form'>
               {
                 (formType === 'unassigned') ? (
                   <div className='unassigned-joblist'>
                     {
-                      unassignedJobList.map((job, index) => {
-                        // console.log('job in list', job)
-                        return (
-                          <div key={job.id} className='unassigned-job'>
-                            <div className='job-num'>{job.jobNumber}</div>
-                            <div>{job.location}</div>
-                            <button 
-                              id="edit-job" 
-                              data-job-id={job.id} 
-                              className="calendar-form-button"
-                              onClick={calendarFormButton}
-                            >
-                              <i className="fa-solid fa-pen-to-square"></i>
-                            </button>
-                          </div>
-                        )
-                      })
+                      unassignedJobList.map((job, index) => (
+                        <div key={job.id} className='unassigned-job'>
+                          <div className='job-num'>{job.jobNumber}</div>
+                          <div>{job.location}</div>
+                          <button 
+                            id="edit-job" 
+                            data-job-id={job.id} 
+                            className="calendar-form-button"
+                            onClick={calendarFormButton}
+                          >
+                            <i className="fa-solid fa-pen-to-square"></i>
+                          </button>
+                        </div>
+                      ))
                     }
                   </div>
                 ) : (
