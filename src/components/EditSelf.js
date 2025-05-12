@@ -13,8 +13,6 @@ const EditSelf = ({ token, user, setUser}) => {
   const [isChecked, setIsChecked] = useState(false);
   const [userStatus, setUserStatus] = useState('active');
 
-  console.log('user', user)
-
   
   useEffect(()=>{
     if (!user) return;

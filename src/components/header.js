@@ -17,15 +17,12 @@ const Header = ({ user, setUser, token, setToken }) => {
       }
 
       const userPop = () => {
-        console.log('user icon click');
         setIsUserOpen(isUserOpen => !isUserOpen)
       }
 
       const closePop = () => {
         setIsUserOpen(false);
       }
-
-      console.log('user open?', isUserOpen)
 
     return (
         <header>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 import DateRig from './DateRig';
 
-const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailView, showDetail, setShowDetail}) => {
+const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailView, showDetail, setShowDetail, viewType}) => {
 
 
   // Memoize the filtered jobs for the specific date
@@ -35,26 +35,95 @@ const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailVie
     [rigList, specificDate, dayJobs, setDetailView, showDetail, setShowDetail]
   );
 
+  let viewContent;
+  if (viewType === 'month') {
+    viewContent = (
+      <div className='full-month'>
+        {
+          rigList.map((rig,index) => {
+            return (
+              <div onClick={showDetailButton} id={rig.id} key={rig.id}>
+                <DateRig
+                  key={rig.id}
+                  specificDate={specificDate}
+                  rig={rig}
+                  dayJobs={dayJobs}
+                />
+              </div>
+            )
+          })
+        }
+      </div>)
+  } else if (viewType === 'week') {
+     viewContent = (
+      <div className='one-week'>
+        {
+          rigList.map((rig,index) => {
+            return (
+              <div onClick={showDetailButton} id={rig.id} key={rig.id}>
+                <DateRig
+                  key={rig.id}
+                  specificDate={specificDate}
+                  rig={rig}
+                  dayJobs={dayJobs}
+                />
+              </div>
+            )
+          })
+        }
+      </div>
+     )     
+  } else if (viewType === 'day') {
+    viewContent = (
+      <div className='one-day'>
+        {
+          rigList.map((rig,index) => {
+            return (
+                <div onClick={showDetailButton} id={rig.id} key={rig.id}>
+                  <DateRig
+                    key={rig.id}
+                    specificDate={specificDate}
+                    rig={rig}
+                    dayJobs={dayJobs}
+                    viewType={viewType}
+                  />
+                </div>
+            )
+          })
+        }
+      </div>
+    )
+  }
+
+  //helper function for formatting the date for a single day view
+  const formatSpecificDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', {
+      weekday: 'long', // Full name of the day (e.g., Monday)
+      month: 'long',   // Full name of the month (e.g., May)
+      day: 'numeric',  // Day of the month (e.g., 12)
+      year: 'numeric', // Full year (e.g., 2025)
+    }).format(date);
+  };
+
+  let headerStyle = 'day-of-week';
+  if (viewType === 'day') {
+    headerStyle = 'day-of-week' + ' day-single';
+  }
+  
 
   return (
     <>
-      <div className='day-label'>{dateParts[2]}</div>
-      <div className='day-content'>
       {
-        rigList.map((rig,index) => {
-          return (
-            <div onClick={showDetailButton} id={rig.id} key={rig.id}>
-              <DateRig
-                key={rig.id}
-                specificDate={specificDate}
-                rig={rig}
-                dayJobs={dayJobs}
-              />
-            </div>
-          )
-        })
+        viewType === 'day' ? (
+        <div className={headerStyle}>
+          <div className='dayName'>{formatSpecificDate(specificDate)}</div>
+        </div>
+        ) : (
+          <div className='day-label'>{dateParts[2]}</div>
+        )
       }
-      </div>
+      {viewContent}
     </>
   )
 

@@ -233,7 +233,7 @@ const MapView = ({token}) => {
 
 // console checks for filter work
   // console.log('filter state', filterState);
-  console.log('form type', formType);
+  // console.log('form type', formType);
   // console.log('jobList', jobList);
   // console.log('location list', locationList);
 

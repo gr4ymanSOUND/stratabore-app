@@ -120,6 +120,7 @@ header {
 
   border: 2px rgb(224, 194, 22) solid;
   background-image: linear-gradient(120deg, rgb(158, 158, 158), rgb(170, 170, 170));
+  box-shadow: 2px 1px 5px -1px rgb(0,0,0, 0.6);
 }
 
 .username {

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 
 import { deleteJobRig, getAssignedAndUnassignedJobs } from '../axios-services/index';
 
-const DateRig = ({specificDate, rig, dayJobs}) => {
+const DateRig = ({specificDate, rig, dayJobs, viewType}) => {
 
   // filter the dayJobs for the current rig
   // putting this in state doesn't appear to be necessary, and also ends up causing too many re-renders
