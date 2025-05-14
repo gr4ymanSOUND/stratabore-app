@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 import SingleDate from './SingleDate';
 import JobForm from './JobForm';
@@ -82,9 +82,8 @@ const Calendar = ({token}) => {
   const [currentYear, setCurrentYear] = useState(centralTime.getUTCFullYear());
   const [displayMonthDates, setDisplayMonthDates] = useState(() => createDateArray(currentYear, currentMonth));
   const [displayWeekDates, setDisplayWeekDates] = useState(() => {
-    const today = new Date();
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getUTCDay());
+    const startOfWeek = new Date(centralTime);
+    startOfWeek.setDate(centralTime.getDate() - centralTime.getUTCDay());
     startOfWeek.setHours(0, 0, 0, 0); // set time to midnight
   
     const endOfWeek = new Date(startOfWeek);
@@ -102,7 +101,7 @@ const Calendar = ({token}) => {
   });
   const [displaySingleDate, setDisplaySingleDate] = useState(() => {
     const today = `${centralTime.getUTCFullYear()}-${(centralTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${centralTime.getUTCDate().toString().padStart(2, '0')}`;
-    return displayWeekDates.includes(today) ? today : displayWeekDates[0];
+    return displayWeekDates.includes(today) ? today : today;
   });
 
   // main content state
@@ -117,6 +116,35 @@ const Calendar = ({token}) => {
   const [detailView, setDetailView] = useState({});
   const [showDetail, setShowDetail] = useState(false);
   const [viewType, setViewType] = useState('month');
+  // state ref for the size of the calendar
+  const calendarRef = useRef(null);
+  // State to store calendar height
+  const [calendarHeight, setCalendarHeight] = useState(0);
+  
+  // useEffect(() => {
+  //   // Update the height of the calendar div whenever the viewType changes
+  //   if (calendarRef.current) {
+  //     setCalendarHeight(calendarRef.current.offsetHeight);
+  //   }
+  // }, [viewType, jobList]);
+
+  useEffect(() => {
+    // Update the height of the calendar div whenever the viewType or jobList changes
+    const updateHeight = () => {
+      if (calendarRef.current) {
+        setCalendarHeight(calendarRef.current.offsetHeight);
+      }
+    };
+
+    updateHeight();
+
+    // Add a resize event listener to handle window resizing
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, [viewType, jobList]);
 
   // uses the token to pull the job and rig lists
   useEffect(() => {
@@ -282,12 +310,12 @@ const Calendar = ({token}) => {
     }
   }
 
-  // console.log('form', formType);
+  console.log('form', formType);
   // console.log('current selected', currentSelected);
   // console.log('jobList', jobList)
   // console.log('unassigned jobs', unassignedJobList);
   // console.log('detail view in calendar', detailView);
-  // console.log('view type', viewType);
+  console.log('view type', viewType);
   // console.log('displayMonthDates', displayMonthDates);
   // console.log('displayWeekDates', displayWeekDates);
   // console.log('displaySingleDate', displaySingleDate);
@@ -405,7 +433,7 @@ const Calendar = ({token}) => {
                 setShowDetail={setShowDetail}
               />) : null
             }
-            <div className='calendar'>
+            <div className='calendar' ref={calendarRef}>
               {  
                 viewType !== 'day' ? (
                   <div className='day-of-week'>
@@ -421,40 +449,38 @@ const Calendar = ({token}) => {
               }
               {viewContent}
             </div>
-            <div className='calendar-form'>
               {
-                (formType === 'unassigned') ? (
-                  <div className='unassigned-joblist'>
-                    {
-                      unassignedJobList.map((job, index) => (
-                        <div key={job.id} className='unassigned-job'>
-                          <div className='job-num'>{job.jobNumber}</div>
-                          <div>{job.location}</div>
-                          <button 
-                            id="edit-job" 
-                            data-job-id={job.id} 
-                            className="calendar-form-button"
-                            onClick={calendarFormButton}
-                          >
-                            <i className="fa-solid fa-pen-to-square"></i>
-                          </button>
-                        </div>
-                      ))
-                    }
-                  </div>
+                (formType === 'unassigned') ? (                
+                    <div className='unassigned-joblist' style={{maxHeight: `${calendarHeight}px`}}>
+                      {
+                        unassignedJobList.map((job, index) => (
+                          <div key={job.id} className='unassigned-job'>
+                            <div className='job-num'>{job.jobNumber}</div>
+                            <div>{job.location}</div>
+                            <button 
+                              id="edit-job" 
+                              data-job-id={job.id} 
+                              className="calendar-form-button"
+                              onClick={calendarFormButton}
+                            >
+                              <i className="fa-solid fa-pen-to-square"></i>
+                            </button>
+                          </div>
+                        ))
+                      }
+                    </div>
                 ) : (
-                  <JobForm
-                    token={token}
-                    formType={formType}
-                    setFormType={setFormType}
-                    jobList={jobList}
-                    setJobList={setJobList}
-                    currentSelected={currentSelected}
-                    setCurrentSelected={setCurrentSelected}
-                  />
+                    <JobForm
+                      token={token}
+                      formType={formType}
+                      setFormType={setFormType}
+                      jobList={jobList}
+                      setJobList={setJobList}
+                      currentSelected={currentSelected}
+                      setCurrentSelected={setCurrentSelected}
+                    />
                 )
               }
-            </div>
           </div>
         </>
       )

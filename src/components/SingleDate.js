@@ -97,7 +97,10 @@ const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailVie
 
   //helper function for formatting the date for a single day view
   const formatSpecificDate = (dateString) => {
-    const date = new Date(dateString);
+    // Create a Date object directly from the specificDate string
+    const date = new Date(`${dateString}T00:00:00`); // Ensure it's treated as a local date
+  
+    // Format the date into the desired string
     return new Intl.DateTimeFormat('en-US', {
       weekday: 'long', // Full name of the day (e.g., Monday)
       month: 'long',   // Full name of the month (e.g., May)

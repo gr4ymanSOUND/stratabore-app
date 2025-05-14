@@ -23,7 +23,7 @@ const DetailView = ({detailView, setDetailView, formType, setFormType, setCurren
       const formWidth = formType !== '' ? 300 : 0; // Assume form width is 300px
       const padding = parseFloat(getComputedStyle(calendarPage).paddingLeft) + parseFloat(getComputedStyle(calendarPage).paddingRight);
       const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth; // Scroll bar width
-      return `calc(100vw - ${formWidth + padding + scrollBarWidth +5}px)`;
+      return `calc(100vw - ${formWidth + padding + scrollBarWidth +7}px)`;
     };
 
     setContainerWidth(calculateContainerWidth());
