@@ -2,12 +2,12 @@ import axios from 'axios';
 
 import * as Syntax from './syntaxUtil.js'
 
-// if (process.env.NODE_ENV === 'production') {
-//   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-// } else {
-//   axios.defaults.baseURL = 'http://localhost:4000';
-// }
-axios.defaults.baseURL = 'http://localhost:4000';
+if (process.env.NODE_ENV === 'production') {
+  axios.defaults.baseURL = process.env.SERVER_APP_BASE_URL;
+} else {
+  axios.defaults.baseURL = 'http://localhost:4000';
+}
+// axios.defaults.baseURL = 'http://localhost:4000';
 
 
 // user calls
