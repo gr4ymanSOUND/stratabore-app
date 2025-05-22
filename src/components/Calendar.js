@@ -394,16 +394,17 @@ const Calendar = ({token}) => {
         <>
           <div className='calendar-header'>
           <div className='view-group-selector'>
-            <button id='prevView' className='view-arrow' onClick={viewButtons}>
+            <button id='prevView' className='view-arrow' onClick={viewButtons} title='Previous'>
               <i className="fa fa-arrow-left" aria-hidden="true"></i>
             </button>
             <div className='current-view'>{monthNames[currentMonth]} {currentYear}</div>
-            <button id='nextView' className='view-arrow' onClick={viewButtons}>
+            <button id='nextView' className='view-arrow' onClick={viewButtons} title='Next'>
               <i className="fa fa-arrow-right" aria-hidden="true"></i>
             </button>
             <select 
                 id="view"
                 name="view"
+                title='Select View'
                 className='view-selector'
                 value={viewType}
                 onChange={({ target: { value } }) => setViewType(value)}
@@ -416,7 +417,7 @@ const Calendar = ({token}) => {
             <div className="calendar-form-controller">
               {
                 formType === 'edit-job' ? (
-                  <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Edit</button>
+                  <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Editing</button>
                 ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
               }
             </div>

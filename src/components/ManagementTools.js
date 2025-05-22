@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { Link, NavLink, Outlet} from 'react-router-dom';
 
 
-const AdminTools = () => {
+const ManagementTools = () => {
   // create reports component to use later
   
   return (
@@ -12,13 +12,15 @@ const AdminTools = () => {
       <div className="button-list tool-selector">
         <NavLink 
           className={({ isActive }) => (isActive ? "active" : "")}
-          to='/admin/users'
+          to='/management/users'
+          title='User Database'
         >
           <i id='usertool' className="fa-solid fa-users"></i>
         </NavLink>
         <NavLink 
           className={({ isActive }) => (isActive ? "active" : "")}
-          to='/admin/rigs'
+          to='/management/rigs'
+          title='Rig Database'
         >
           <i id='rigtool' className="fa-solid fa-truck-field"></i>
         </NavLink>
@@ -34,4 +36,4 @@ const AdminTools = () => {
 
 };
 
-export default AdminTools;
+export default ManagementTools;

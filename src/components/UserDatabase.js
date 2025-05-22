@@ -109,19 +109,19 @@ const UserDatabase = ({token, user}) => {
     <div className='user-database'>
       <div className='button-list' >
         {
-          (formType == "edit-user" || formType == "add-user" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
+          (formType == "edit-user" || formType == "add-user" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel Editing</button>
           :
             <>
               {Object.keys(currentSelected).length !== 0 ? (
-                <button id='edit-user' onClick={buttonListener}>
+                <button id='edit-user' onClick={buttonListener} title='Edit'>
                   <i id='edit-user' className="fa-solid fa-pen-to-square"></i>
                 </button>
                 ) : null
               }
-              <button id='add-user' onClick={buttonListener}>
+              <button id='add-user' onClick={buttonListener} title='Add'>
                 <i id='add-user' className="fa-solid fa-plus"></i>
               </button>
-              <button id='download-list' onClick={downloadUserList}>
+              <button id='download-list' onClick={downloadUserList} title='Download'>
                 <i className="fa-solid fa-file-arrow-down"></i>
               </button>
             </>

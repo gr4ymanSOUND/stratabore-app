@@ -182,7 +182,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
               <option value="inactive">Inactive</option>
             </select>
           </div>
-          <button className="submit-button" type='submit'>Save and Submit</button>
+          <button className="submit-button" type='submit'>Save</button>
           {(formType === "edit-rig") ? <button id='delete-rig' onClick={deleteListener}>Remove Rig</button> : null}
         </div>
       </form>

@@ -103,7 +103,7 @@ const MapFilters = ({filterState, setFilterState, jobList, setJobList, rigList, 
             <option value="4">4</option>
           </select>
         </div>
-        <button className="submit-button" type='submit'>Save Filters</button>
+        <button className="submit-button" type='submit'>Save</button>
       </div>
       </form>
   )

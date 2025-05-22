@@ -240,7 +240,7 @@ const MapView = ({token}) => {
    return (
     <div className='mapview-page'>
       <div className='mapview-button-list'>
-        { formType=='edit-job' ? <button id='cancel-edit' onClick={cancelEdit}>Cancel Edit</button> : null }
+        { formType=='edit-job' ? <button id='cancel-edit' onClick={cancelEdit}>Cancel Editing</button> : null }
         <button id='show-tool' onClick={filterViewer}>Filters</button>
       </div>
       <div className='strata-mapper-container'>

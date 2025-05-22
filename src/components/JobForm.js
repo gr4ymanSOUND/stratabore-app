@@ -317,9 +317,9 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               <option value="canceled">Canceled</option>
             </select>
           </div>
-          <button className="submit-button" type='submit'>Save and Submit</button>
+          <button className="submit-button" type='submit'>Save</button>
           {
-          formType === "edit-job" ? <button id='cancel-job' onClick={cancelListener}>Cancel Job</button> : null
+          formType === "edit-job" ? <button id='cancel-job' onClick={cancelListener}>Cancel</button> : null
           }
           {
           currentSelected.rigId ? <button id='unnassign-job' onClick={unassignButton}>Unassign Job</button> : null

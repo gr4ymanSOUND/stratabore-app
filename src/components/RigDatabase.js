@@ -113,15 +113,15 @@ const RigDatabase = ({token, user}) => {
           :
             <>
               {Object.keys(currentSelected).length !== 0 ? (
-                <button id='edit-rig' onClick={buttonListener}>
+                <button id='edit-rig' onClick={buttonListener} title='Edit'>
                   <i id='edit-rig' className="fa-solid fa-pen-to-square"></i>
                 </button>
                 ) : null
               }
-              <button id='add-rig' onClick={buttonListener}>
+              <button id='add-rig' onClick={buttonListener} title='Add'>
                 <i id='add-rig' className="fa-solid fa-plus"></i>
               </button>
-              <button id='download-list' onClick={downloadRigList}>
+              <button id='download-list' onClick={downloadRigList} title='Download'>
                 <i className="fa-solid fa-file-arrow-down"></i>
               </button>
             </>

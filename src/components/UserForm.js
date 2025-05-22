@@ -209,7 +209,7 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
               <option value="inactive">Inactive</option>
             </select>
           </div>
-          <button className="submit-button" type='submit'>Save and Submit</button>
+          <button className="submit-button" type='submit'>Save</button>
           {(formType === "edit-user") ? <button id='delete-user' onClick={deleteListener}>Remove User</button> : null}
         </div>
       </form>

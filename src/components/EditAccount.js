@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { editUser, getMe } from "../axios-services";
 
-const EditSelf = ({ token, user, setUser}) => {
+const EditAccount = ({ token, user, setUser}) => {
 
   const [userId, setUserId] = useState(0);
   const [userName, setUserName] = useState('');
@@ -56,7 +56,7 @@ const EditSelf = ({ token, user, setUser}) => {
   }
 
 return (
-  <>
+  <div className='self-form-container'>
     <form className='self-form' onSubmit={submitListener}>
     <div className='self-header'>
           <h2>Edit Your Account</h2>
@@ -140,11 +140,11 @@ return (
           </select>
         </div>
       </div>
-      <button className='edit-self-button' type='submit'>Save and Submit</button>
+      <button className='edit-self-button' type='submit'>Save Changes</button>
     </form>
-  </>
+  </div>
 )
 
 };
 
-export default EditSelf;
+export default EditAccount;

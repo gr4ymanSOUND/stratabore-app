@@ -126,20 +126,20 @@ const JobDatabase = ({ token }) => {
     <div className='database'>
       <div className='button-list' >
         {
-          (formType == "edit-job" || formType == "add-job" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
+          (formType == "edit-job" || formType == "add-job" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel Editing</button>
           :
             <>
               {
                 Object.keys(currentSelected).length !== 0 ? (
-                    <button id='edit-job' onClick={buttonListener}>
+                    <button id='edit-job' onClick={buttonListener} title='Edit'>
                       <i id='edit-job' className="fa-solid fa-pen-to-square"></i>
                     </button>
                 ) : null
               }
-              <button id='add-job' onClick={buttonListener}>
+              <button id='add-job' onClick={buttonListener} title='Add'>
                 <i id='add-job' className="fa-solid fa-plus"></i>
               </button>
-              <button id='download-list' onClick={downloadJobList}>
+              <button id='download-list' onClick={downloadJobList} title='download'>
                 <i className="fa-solid fa-file-arrow-down"></i>
               </button>
             </>
