@@ -101,7 +101,6 @@ const DateRig = ({specificDate, rig, dayJobs, viewType}) => {
   }
   else if (viewType === 'month') { 
     viewContent = (
-      <>
         <div className='day-rig-count'>
           {
             rigJobs.map((job, index) => {
@@ -121,12 +120,10 @@ const DateRig = ({specificDate, rig, dayJobs, viewType}) => {
             })
           }
         </div>
-      </>
     );
   } 
 
   return (
-    <>
       <div className="day-rig" id={rig.id} key={rig.id} style={style}>
         {
           (rig.status !== 'active' || rigJobs.length < 1) ? (
@@ -137,7 +134,7 @@ const DateRig = ({specificDate, rig, dayJobs, viewType}) => {
         <div className='rig-icons'>
           {
             (rig.registrationDueDate == specificDate) ? (
-              <i className="fa fa-id-card-o" aria-hidden="true"></i>
+              <i className="fa fa-id-card-o" aria-hidden="true" id="rig-icon"></i>
             ) : null
           }
           {
@@ -147,7 +144,6 @@ const DateRig = ({specificDate, rig, dayJobs, viewType}) => {
           }
         </div>
       </div>
-    </>
   )
 
 };

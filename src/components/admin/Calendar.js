@@ -104,6 +104,28 @@ const Calendar = ({token}) => {
     return displayWeekDates.includes(today) ? today : today;
   });
 
+  // Memoize the week description string for use in the calendar header display
+  const weekDescription = useMemo(() => {
+    if (displayWeekDates.length === 0) return '';
+
+    // Extract the start and end dates
+    const startDate = new Date(displayWeekDates[0]);
+    const endDate = new Date(displayWeekDates[displayWeekDates.length - 1]);
+
+    // Get the month names and day numbers
+    const startMonthName = monthNames[startDate.getUTCMonth()];
+    const startDay = startDate.getUTCDate();
+    const endMonthName = monthNames[endDate.getUTCMonth()];
+    const endDay = endDate.getUTCDate();
+
+    // Format the string
+    if (startMonthName === endMonthName) {
+      return `${startMonthName} ${startDay}-${endDay}`;
+    } else {
+      return `${startMonthName} ${startDay} - ${endMonthName} ${endDay}`;
+    }
+  }, [displayWeekDates, monthNames]);
+
   // main content state
   const [jobList, setJobList] = useState([]);
   // memoize the unassigned list since it's derived from the job list
@@ -116,35 +138,6 @@ const Calendar = ({token}) => {
   const [detailView, setDetailView] = useState({});
   const [showDetail, setShowDetail] = useState(false);
   const [viewType, setViewType] = useState('month');
-  // state ref for the size of the calendar
-  const calendarRef = useRef(null);
-  // State to store calendar height
-  const [calendarHeight, setCalendarHeight] = useState(0);
-  
-  // useEffect(() => {
-  //   // Update the height of the calendar div whenever the viewType changes
-  //   if (calendarRef.current) {
-  //     setCalendarHeight(calendarRef.current.offsetHeight);
-  //   }
-  // }, [viewType, jobList]);
-
-  useEffect(() => {
-    // Update the height of the calendar div whenever the viewType or jobList changes
-    const updateHeight = () => {
-      if (calendarRef.current) {
-        setCalendarHeight(calendarRef.current.offsetHeight);
-      }
-    };
-
-    updateHeight();
-
-    // Add a resize event listener to handle window resizing
-    window.addEventListener('resize', updateHeight);
-
-    return () => {
-      window.removeEventListener('resize', updateHeight);
-    };
-  }, [viewType, jobList]);
 
   // uses the token to pull the job and rig lists
   useEffect(() => {
@@ -388,104 +381,131 @@ const Calendar = ({token}) => {
   return (
     <div className='calendar-page'>
       {
-      (jobList.length === 0 || rigList.length === 0) ? (
-        <div>Loading...</div> // Show a loading message or spinner while data is being fetched
-      ) : (
-        <>
-          <div className='calendar-header'>
-          <div className='view-group-selector'>
-            <button id='prevView' className='view-arrow' onClick={viewButtons} title='Previous'>
-              <i className="fa fa-arrow-left" aria-hidden="true"></i>
-            </button>
-            <div className='current-view'>{monthNames[currentMonth]} {currentYear}</div>
-            <button id='nextView' className='view-arrow' onClick={viewButtons} title='Next'>
-              <i className="fa fa-arrow-right" aria-hidden="true"></i>
-            </button>
-            <select 
-                id="view"
-                name="view"
-                title='Select View'
-                className='view-selector'
-                value={viewType}
-                onChange={({ target: { value } }) => setViewType(value)}
-              >
-                <option value="month">Month</option>
-                <option value="week">Week</option>
-                <option value="day">Day</option>
-              </select>
+        (jobList.length === 0 || rigList.length === 0) ? (
+          <div>Loading...</div> // Show a loading message or spinner while data is being fetched
+        ) : (
+          <>
+            <div className='calendar-header'>
+              <div className='view-group-selector'>
+                <select 
+                  id="view"
+                  name="view"
+                  title='Select View'
+                  className='view-selector'
+                  value={viewType}
+                  onChange={({ target: { value } }) => setViewType(value)}
+                >
+                  <option value="month">Month</option>
+                  <option value="week">Week</option>
+                  <option value="day">Day</option>
+                </select>
+                <button id='prevView' className='view-arrow' onClick={viewButtons} title='Previous'>
+                  <i className="fa fa-arrow-left" aria-hidden="true"></i>
+                </button>
+                <button id='nextView' className='view-arrow' onClick={viewButtons} title='Next'>
+                  <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+                <div className='current-view'>
+                  {
+                    viewType === 'day' ? (
+                      <div style={{position: 'relative'}}>
+                        <input
+                          className='month-date-input'
+                          type='date' 
+                          id='current-date-view'
+                          placeholder=''
+                          value={displaySingleDate}
+                          onChange={({ target: { value } }) => setDisplaySingleDate(value)}
+                        >
+                        </input>
+                        <button
+                          className="custom-calendar-button"
+                          onClick={() => document.getElementById('current-date-view').showPicker()}
+                        >
+                          <i className="fa-regular fa-calendar"></i>
+                        </button>
+                      </div>
+                      
+                    ) : viewType === 'week' ? (
+                      weekDescription
+                    ) : viewType === 'month' ? (
+                      `${monthNames[currentMonth]} ${currentYear}`
+                    ) : null
+                  }
+                </div>
+              </div>
+              <div className="calendar-form-controller">
+                {
+                  formType === 'edit-job' ? (
+                    <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Editing</button>
+                  ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
+                }
+              </div>
             </div>
-            <div className="calendar-form-controller">
+            <div className='calendar-container'>
               {
-                formType === 'edit-job' ? (
-                  <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Editing</button>
-                ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
+                showDetail ? ( 
+                <DetailView
+                  setDetailView={setDetailView}
+                  detailView={detailView}
+                  formType={formType}
+                  setFormType={setFormType}
+                  setCurrentSelected={setCurrentSelected}
+                  setShowDetail={setShowDetail}
+                />) : null
               }
-            </div>
-          </div>
-          <div className='calendar-container'>
-            {
-              showDetail ? ( 
-              <DetailView
-                setDetailView={setDetailView}
-                detailView={detailView}
-                formType={formType}
-                setFormType={setFormType}
-                setCurrentSelected={setCurrentSelected}
-                setShowDetail={setShowDetail}
-              />) : null
-            }
-            <div className='calendar' ref={calendarRef}>
-              {  
-                viewType !== 'day' ? (
-                  <div className='day-of-week'>
-                    <div className='dayName'>Sun</div>
-                    <div className='dayName'>Mon</div>
-                    <div className='dayName'>Tues</div>
-                    <div className='dayName'>Wed</div>
-                    <div className='dayName'>Thur</div>
-                    <div className='dayName'>Fri</div>
-                    <div className='dayName'>Sat</div>
-                  </div>
-                ) : null
-              }
-              {viewContent}
-            </div>
-              {
-                (formType === 'unassigned') ? (                
-                    <div className='unassigned-joblist' style={{maxHeight: `${calendarHeight}px`}}>
-                      {
-                        unassignedJobList.map((job, index) => (
-                          <div key={job.id} className='unassigned-job'>
-                            <div className='job-num'>{job.jobNumber}</div>
-                            <div>{job.location}</div>
-                            <button 
-                              id="edit-job" 
-                              data-job-id={job.id} 
-                              className="calendar-form-button"
-                              onClick={calendarFormButton}
-                            >
-                              <i className="fa-solid fa-pen-to-square"></i>
-                            </button>
-                          </div>
-                        ))
-                      }
+              <div className='calendar'>
+                {  
+                  viewType !== 'day' ? (
+                    <div className='day-of-week'>
+                      <div className='dayName'>Sun</div>
+                      <div className='dayName'>Mon</div>
+                      <div className='dayName'>Tues</div>
+                      <div className='dayName'>Wed</div>
+                      <div className='dayName'>Thur</div>
+                      <div className='dayName'>Fri</div>
+                      <div className='dayName'>Sat</div>
                     </div>
-                ) : (
-                    <JobForm
-                      token={token}
-                      formType={formType}
-                      setFormType={setFormType}
-                      jobList={jobList}
-                      setJobList={setJobList}
-                      currentSelected={currentSelected}
-                      setCurrentSelected={setCurrentSelected}
-                    />
-                )
-              }
-          </div>
-        </>
-      )
-    }
+                  ) : null
+                }
+                {viewContent}
+              </div>
+                {
+                  (formType === 'unassigned') ? (                
+                      <div className='unassigned-joblist'>
+                        {
+                          unassignedJobList.map((job, index) => (
+                            <div key={job.id} className='unassigned-job'>
+                              <div className='job-num'>{job.jobNumber}</div>
+                              <div>{job.location}</div>
+                              <button 
+                                id="edit-job" 
+                                data-job-id={job.id} 
+                                className="calendar-form-button"
+                                onClick={calendarFormButton}
+                              >
+                                <i className="fa-solid fa-pen-to-square"></i>
+                              </button>
+                            </div>
+                          ))
+                        }
+                      </div>
+                  ) : (
+                      <JobForm
+                        token={token}
+                        formType={formType}
+                        setFormType={setFormType}
+                        jobList={jobList}
+                        setJobList={setJobList}
+                        currentSelected={currentSelected}
+                        setCurrentSelected={setCurrentSelected}
+                      />
+                  )
+                }
+            </div>
+          </>
+        )
+      }
     </div>
   );
 

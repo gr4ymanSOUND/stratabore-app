@@ -1,5 +1,4 @@
 .calendar-page {
-    padding: 0.25rem .5rem .1rem .5rem;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-evenly;
@@ -13,9 +12,8 @@
 .calendar-header {
   display: flex;
   flex-flow: row nowrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 100%;
-  margin-bottom: 5px;
   
   position: relative;
 }
@@ -23,15 +21,15 @@
 /* display for the current month/year and buttons for changing the month */
 
 .view-group-selector {
-  background-color: rgb(170, 170, 170);
-  width: 40vw;
+  /* background-color: rgb(170, 170, 170); */
+  min-width: 50vw;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: flex-start;
   justify-self: center;
   margin: .25rem;
   padding: .5rem;
-  box-shadow: 2px 1px 7px 1px rgba(0, 0, 0, 0.4);
+  /* box-shadow: 2px 1px 7px 1px rgba(0, 0, 0, 0.4); */
 }
 
 .view-arrow {
@@ -41,6 +39,7 @@
   border: none;
   box-shadow: 2px 5px 5px -3px rgb(0,0,0, 0.4);
   padding: auto;
+  margin: 0 0 0 .5rem;
 }
 
 .view-arrow:hover {
@@ -50,8 +49,49 @@
 
 .current-view {
   font-size: 2rem;
-  text-shadow: 2px 1px 3px rgba(100, 100, 100, 0.75);
+  text-shadow: 2px 1px 3px black;
+  color: rgb(224, 194, 22);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-left: 3rem;
+}
 
+.month-date-input {
+  height: 100%;
+  width: 16rem;
+  font-size: 2rem;
+  background-color: transparent;
+  color: rgb(224, 194, 22);
+  text-shadow: 2px 1px 3px black;
+  border: none;
+  overflow: visible;
+}
+
+/* styles for the calendar date picker in the single date view */
+
+.month-date-input::-webkit-calendar-picker-indicator {
+  display: none; /* Hide the default indicator */
+}
+
+.custom-calendar-button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgb(224, 194, 22);
+  border: none;
+  box-shadow: 2px 5px 5px -3px rgb(0, 0, 0, 0.8);
+  font-size: 25px;
+  padding: 0 7px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.custom-calendar-button:hover {
+  background-color: rgb(48, 48, 48);
+  color: rgb(224, 194, 22);
 }
 
 /* setting the view to month, week, or day */
@@ -63,17 +103,19 @@
   box-shadow: 2px 5px 5px -3px rgb(0,0,0, 0.4);
   font-weight: bold;
   width: fit-content;
+  margin-right: 1rem;
 }
 
 /* Unassigned jobs label and buttons to control the unassigned joblist and form */
 
 .calendar-form-controller {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+
   display: flex;
   flex-flow: row nowrap;
-  padding: 5px;
+  justify-self: flex-end;
+
+  margin: .25rem;
+  padding: .5rem;
 }
 
 .calendar-form-button {
@@ -146,9 +188,7 @@
   box-sizing: border-box;
   align-items: stretch;
   width: 100%;
-  height: 90vh;
-  /* overflow: hidden; */
-  margin-bottom: 1rem;
+  height: 91vh;
 }
 
 .calendar {
@@ -204,6 +244,9 @@
 }
 
 .day {
+  display: flex;
+  flex-flow: column nowrap;
+
   background-color: rgb(205, 205, 205);
   border: 1px black solid;
   width: 100%;
@@ -230,11 +273,10 @@
 .one-week {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
   padding: 0 .5rem;
   flex-grow: 1;
-  min-height: 70vh;
 }
 
 .one-day {
@@ -243,8 +285,12 @@
   justify-content: space-around;
 
   width: 100%;
-  min-height: 70vh;
   padding: 1rem .5rem;
+  flex-grow: 1;
+}
+
+/* the div structure was set up so that the day-rig is contained in another div, so this is used to adjust the style for that container ONLY IN WEEEK AND DAY VIEW*/
+.date-rig-container {
   flex-grow: 1;
 }
 
@@ -262,8 +308,7 @@
   padding: 5px;
   min-width: 50px;
   box-shadow: 2px 1px 6px -3px rgb(50, 50, 50);
-
-  border: 1px blue solid;
+  height: 90%;
 }
 
 .day-rig-id {
@@ -280,6 +325,12 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: 80%;
+  margin-right: 5px;
+}
+
+.week-rig-summary .day-rig-count {
+  height: 100%;
 }
 
 .day-rig-summary {
@@ -394,4 +445,8 @@
   position: absolute;
   top: 0;
   right: 0;
+}
+
+#rig-icon {
+  margin-bottom: 4px;
 }

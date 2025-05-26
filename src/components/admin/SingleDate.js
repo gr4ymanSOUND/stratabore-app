@@ -60,7 +60,7 @@ const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailVie
         {
           rigList.map((rig,index) => {
             return (
-              <div onClick={showDetailButton} id={rig.id} key={rig.id}>
+              <div onClick={showDetailButton} id={rig.id} key={rig.id} className='date-rig-container'>
                 <DateRig
                   key={rig.id}
                   specificDate={specificDate}
@@ -80,7 +80,7 @@ const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailVie
         {
           rigList.map((rig,index) => {
             return (
-                <div onClick={showDetailButton} id={rig.id} key={rig.id}>
+                <div onClick={showDetailButton} id={rig.id} key={rig.id} className='date-rig-container'>
                   <DateRig
                     key={rig.id}
                     specificDate={specificDate}
