@@ -40,15 +40,20 @@ const JobDatabase = ({ token }) => {
 
   // effect to deal with formtype changes
   useEffect(() => {
-    if (formType == "add-job") {
+    if (formType === "add-job") {
       setCurrentSelected({});
-      gridRef.current.api.deselectAll();
+      if (gridRef.current && gridRef.current.api) {
+        gridRef.current.api.deselectAll();
+      }
     }
-    if (formType == "cancel" || formType == "" || formType == "unassigned") {
-      setFormType("")
+    if (formType === "cancel" || formType === "" || formType === "unassigned") {
+      setFormType("");
       const buttonTimeout = setTimeout(() => {
-        gridRef.current.api.sizeColumnsToFit();
-      })
+        if (gridRef.current && gridRef.current.api) {
+          gridRef.current.api.sizeColumnsToFit();
+        }
+      });
+      return () => clearTimeout(buttonTimeout); // Clean up the timeout
     }
   }, [formType]);
 
