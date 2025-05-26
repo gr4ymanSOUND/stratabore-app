@@ -6,7 +6,7 @@
     align-items: center;
 
     width: 100%;
-    overflow-y: scroll;
+    overflow: hidden; /* Prevents overflow of the calendar page */
     box-sizing: border-box;
 }
 
@@ -146,6 +146,7 @@
   box-sizing: border-box;
   align-items: stretch;
   width: 100%;
+  height: 90vh;
   /* overflow: hidden; */
   margin-bottom: 1rem;
 }
@@ -156,6 +157,7 @@
   flex-grow: 1; /* Allow the calendar to take up remaining space */
   display: flex;
   flex-direction: column;
+  overflow-y: auto; /* Enable vertical scrolling for the calendar */
 }
 
 /* use a flexbox for the names of the days of the week, to keep it separate totally from the code for generating the data for the grid */
@@ -184,6 +186,7 @@
 /* actual month grid */
 .month-grid {
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: 1fr;
@@ -193,6 +196,7 @@
 
 .no-grid {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -203,6 +207,7 @@
   background-color: rgb(205, 205, 205);
   border: 1px black solid;
   width: 100%;
+  height: 100%;
 }
 
 .day-single {
