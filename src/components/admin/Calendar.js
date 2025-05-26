@@ -5,7 +5,7 @@ import JobForm from './JobForm';
 import DetailView from './DetailView';
 
 // axios imports
-import { getAllRigs, getAssignedAndUnassignedJobs } from '../axios-services/index';
+import { getAllRigs, getAssignedAndUnassignedJobs } from '../../axios-services/index';
 
 const Calendar = ({token}) => {
   // will use imported token for pulling data
@@ -310,12 +310,12 @@ const Calendar = ({token}) => {
     }
   }
 
-  console.log('form', formType);
+  // console.log('form', formType);
   // console.log('current selected', currentSelected);
   // console.log('jobList', jobList)
   // console.log('unassigned jobs', unassignedJobList);
   // console.log('detail view in calendar', detailView);
-  console.log('view type', viewType);
+  // console.log('view type', viewType);
   // console.log('displayMonthDates', displayMonthDates);
   // console.log('displayWeekDates', displayWeekDates);
   // console.log('displaySingleDate', displaySingleDate);

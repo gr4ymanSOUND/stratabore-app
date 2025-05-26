@@ -1,0 +1,45 @@
+.crew-page {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+/* temp styles for playing with in prototype */
+.driller-view {
+  width: 60vw;
+  height: 80vh;
+  padding: 1rem;
+  border: 1px solid red;
+  overflow-y: auto;
+}
+
+.driller-view h2 {
+  text-align: center;
+  text-decoration: underline;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+#bore-graphic {
+  position: absolute;
+  font-size: .9rem;
+  margin-left: -1.25rem;
+  margin-top: .35rem;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+#tablet-graphic {
+  font-size: 1.8rem;
+  background-color: black;
+  border-radius: 30%;
+}
+
+.other-nav a:hover #tablet-graphic,
+.other-nav .active #tablet-graphic {
+  background-color: transparent; /* Transparent when hovered or active */
+}
+

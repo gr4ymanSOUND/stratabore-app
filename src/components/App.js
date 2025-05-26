@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
+// Admin components
+import Calendar from './admin/Calendar';
+import JobDatabase from './admin/JobDatabase';
+import ManagementTools from './admin/ManagementTools';
+import MapView from './admin/MapView';
+import RigDatabase from './admin/RigDatabase';
+import UserDatabase from './admin/UserDatabase';
+
+// Crew components
+import CrewCalendar from './crew/CrewCalendar';
+import TodayDetail from './crew/TodayDetail';
+import RigDetails from './crew/RigDetails';
+
+// Other components
+import EditAccount from './EditAccount';
 import Header from './Header';
 import Login from './Login';
-import JobDatabase from './JobDatabase';
-import Calendar from './Calendar';
-import MapView from './MapView';
-import ManagementTools from './ManagementTools';
-import UserDatabase from './UserDatabase';
-import RigDatabase from './RigDatabase';
-import EditAccount from './EditAccount';
-import DrillerView from './DrillerView';
 
 import { getMe } from '../axios-services';
 
@@ -56,9 +63,9 @@ const App = () => {
               element={
                 token ? (
                 user.isAdmin ? (
-                  <Navigate to="/database" replace /> 
+                  <Navigate to="/admin/database" replace /> 
                 ) : (
-                  <Navigate to="/driller_view" replace />
+                  <Navigate to="/crew/todays_details" replace />
                 )
                 ) : (
                   <Login token={token} setToken={setToken} setUser={setUser}/>
@@ -67,24 +74,24 @@ const App = () => {
             />
             {/* Admin-Only Routes */}
             {user.isAdmin && (
-              <>
+              <Route
+                path="/admin"
+              >
+                <Route index element={<Navigate to="database" replace />} />
                 <Route
-                  exact
-                  path="/database"
+                  path="database"
                   element={<JobDatabase token={token} />}
                 />
                 <Route
-                  exact
-                  path="/calendar"
+                  path="calendar"
                   element={<Calendar token={token} />}
                 />
                 <Route
-                  exact
-                  path="/map"
+                  path="map"
                   element={<MapView token={token} />}
                 />
                 <Route
-                  path="/management"
+                  path="management"
                   element={<ManagementTools />}
                 >
                   <Route
@@ -100,17 +107,27 @@ const App = () => {
                     element={<RigDatabase token={token} user={user} />}
                   />
                 </Route>
-              </>
+              </Route>
             )}
             {/* Non-Admin Routes */}
             {!user.isAdmin && (
-              <>
+              <Route
+                path='/crew'
+              >
                 {/* Future non-admin routes can be added here */}
                 <Route
-                  path="/driller_view"
-                  element={<DrillerView token={token} user={user} />}
+                  path="todays_details"
+                  element={<TodayDetail token={token} user={user} />}
                 />
-              </>
+                 <Route
+                  path="crew_calendar"
+                  element={<CrewCalendar token={token} user={user} />}
+                />
+                 <Route
+                  path="rig_details"
+                  element={<RigDetails token={token} user={user} />}
+                />
+              </Route>
             )}
             <Route
               path="/edit_account"

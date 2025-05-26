@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllUsers, editUser, removeUser, createUser } from '../axios-services';
+import { getAllUsers, editUser, removeUser, createUser } from '../../axios-services';
 
 const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSelected, setUserList}) => {
 

@@ -4,7 +4,6 @@ import DateRig from './DateRig';
 
 const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailView, showDetail, setShowDetail, viewType}) => {
 
-
   // Memoize the filtered jobs for the specific date
   const dayJobs = useMemo(() => {
     return jobList.filter(
@@ -48,6 +47,7 @@ const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailVie
                   specificDate={specificDate}
                   rig={rig}
                   dayJobs={dayJobs}
+                  viewType={viewType}
                 />
               </div>
             )
@@ -66,6 +66,7 @@ const SingleDate = ({ currentMonth, specificDate, jobList, rigList, setDetailVie
                   specificDate={specificDate}
                   rig={rig}
                   dayJobs={dayJobs}
+                  viewType={viewType}
                 />
               </div>
             )

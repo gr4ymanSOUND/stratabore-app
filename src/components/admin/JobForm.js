@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllJobs, addJob, cancelJob, editJob, createJobRig, getAssignedAndUnassignedJobs, updateJobRig, deleteJobRig } from '../axios-services';
+import { getAllJobs, addJob, cancelJob, editJob, createJobRig, getAssignedAndUnassignedJobs, updateJobRig, deleteJobRig } from '../../axios-services';
 
 import { statusFilter, clientFilter, rigFilter } from './mapFilterHelpers';
 

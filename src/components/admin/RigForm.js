@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 
-import { getAllRigs, editRig, removeRig, createRig } from '../axios-services';
+import { getAllRigs, editRig, removeRig, createRig } from '../../axios-services';
 
 const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelected, rigList, setRigList}) => {
 

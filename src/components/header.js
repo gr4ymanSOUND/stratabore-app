@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const Header = ({ user, setUser, token, setToken }) => {
@@ -6,6 +6,7 @@ const Header = ({ user, setUser, token, setToken }) => {
     const [ isNavOpen, setIsNavOpen ] = useState(false);
     const [ isUserOpen, setIsUserOpen ] = useState(false);
     const navigate = useNavigate();
+    const userPopRef = useRef(null);
   
     const userPop = () => {
       setIsUserOpen(isUserOpen => !isUserOpen)
@@ -27,6 +28,18 @@ const Header = ({ user, setUser, token, setToken }) => {
       navigate('/');
     }
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (userPopRef.current && !userPopRef.current.contains(event.target)) {
+                closePop();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
 
     let routeSelection;
@@ -36,28 +49,28 @@ const Header = ({ user, setUser, token, setToken }) => {
           <NavLink 
             className={({ isActive }) => (isActive ? "active" : "")}  
             title='Database' 
-            to="/database"
+            to="/admin/database"
           >
             <i className="fa-solid fa-list"></i>
           </NavLink>
           <NavLink
             className={({ isActive }) => (isActive ? "active" : "")}
             title='Calendar' 
-            to="/calendar"
+            to="/admin/calendar"
           >
             <i className="fa-regular fa-calendar-check"></i>
           </NavLink>
           <NavLink 
             className={({ isActive }) => (isActive ? "active" : "")}
             title='Map View' 
-            to="/map"
+            to="/admin/map"
           >
             <i className="fa-solid fa-map-location-dot"></i>
           </NavLink>
           <NavLink 
             className={({ isActive }) => (isActive ? "active" : "")}
             title='Managment Tools' 
-            to="/management"
+            to="/admin/management"
           >
             <i className="fa-solid fa-gear"></i>                    
           </NavLink>
@@ -65,13 +78,33 @@ const Header = ({ user, setUser, token, setToken }) => {
       )
     } else {
       routeSelection = (
-        <NavLink 
+        <div className={`other-nav ${isNavOpen ? "open" : ""}`}>
+          <NavLink 
             className={({ isActive }) => (isActive ? "active" : "")}
-            title='DrillerView' 
-            to="/driller_view"
-        >
-          <i className="fa-solid fa-bore-hole"></i>                    
-        </NavLink>
+            title="Today's Details" 
+            to="/crew/todays_details"
+          >
+            <i id='tablet-graphic' className="fa-solid fa-tablet-screen-button">
+              {/* <i id='bore-graphic' className="fa-solid fa-bore-hole"></i>                     */}
+            </i>
+            <i id='bore-graphic' className="fa-solid fa-bore-hole"></i>                    
+
+          </NavLink>
+          <NavLink 
+            className={({ isActive }) => (isActive ? "active" : "")}
+            title='Crew Calendar' 
+            to="/crew/crew_calendar"
+          >
+            <i className="fa-regular fa-calendar-check"></i>
+          </NavLink>
+          <NavLink 
+            className={({ isActive }) => (isActive ? "active" : "")}
+            title='Rig Details' 
+            to="/crew/rig_details"
+          >
+          <i className="fa-solid fa-truck-field"></i>
+          </NavLink>
+        </div>
       )
     }
       
@@ -97,7 +130,10 @@ const Header = ({ user, setUser, token, setToken }) => {
                       <button id='user-icon' title='User Account' onClick={userPop}>
                         <i className="fa-solid fa-user"></i>
                       </button>
-                      <div className={isUserOpen ? "user-pop open" : "user-pop"}>
+                      <div
+                        ref={userPopRef} 
+                        className={isUserOpen ? "user-pop open" : "user-pop"}
+                      >
                         <NavLink className="username" to='/edit_account' title="Edit Account">
                           <div onClick={closePop}>{user.userName}</div>
                         </NavLink>

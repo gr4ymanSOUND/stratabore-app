@@ -12,14 +12,14 @@ const ManagementTools = () => {
       <div className="button-list tool-selector">
         <NavLink 
           className={({ isActive }) => (isActive ? "active" : "")}
-          to='/management/users'
+          to='/admin/management/users'
           title='User Database'
         >
           <i id='usertool' className="fa-solid fa-users"></i>
         </NavLink>
         <NavLink 
           className={({ isActive }) => (isActive ? "active" : "")}
-          to='/management/rigs'
+          to='/admin/management/rigs'
           title='Rig Database'
         >
           <i id='rigtool' className="fa-solid fa-truck-field"></i>

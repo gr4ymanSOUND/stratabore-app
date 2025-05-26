@@ -12,6 +12,7 @@ import './style/login.css';
 import './style/adminTools.css';
 import './style/mapView.css';
 import './style/selfForm.css';
+import './style/crew.css'
 
 const root = createRoot(document.getElementById('root'));
 root.render(
