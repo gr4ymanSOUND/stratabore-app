@@ -281,9 +281,8 @@
 
 .one-day {
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row wrap;
   justify-content: space-around;
-
   width: 100%;
   padding: 1rem .5rem;
   flex-grow: 1;
@@ -292,6 +291,12 @@
 /* the div structure was set up so that the day-rig is contained in another div, so this is used to adjust the style for that container ONLY IN WEEEK AND DAY VIEW*/
 .date-rig-container {
   flex-grow: 1;
+}
+
+.one-day .date-rig-container {
+  width: 45%;
+  flex-grow: 1;
+  margin: 5px 10px;
 }
 
 /* styles for the individual rig on the calendar for each day */

@@ -14,17 +14,23 @@ const DateRig = ({specificDate, rig, dayJobs, viewType}) => {
   // logic to determine which coloring option to use for the rig, depending on the number of jobs and rig status
   // Memoize the style object, helping to avoid unnecessary re-renders
   const style = useMemo(() => {
-    const baseStyle = { backgroundColor: `${rig.boardColor}`, border: 'none' };
+    const baseStyle = { backgroundColor: `${rig.boardColor}`, border: 'none', color: 'white', textShadow: '1px 1px 2px black' };
     if (rigJobs.length < 1) {
       baseStyle.backgroundColor = `darkgray`;
+      baseStyle.color = 'black'
+      baseStyle.textShadow = 'none'
     }
     if (rig.status === 'inactive') {
       baseStyle.border = '1px red solid';
       baseStyle.backgroundColor = `darkgray`;
+      baseStyle.color = 'black'
+      baseStyle.textShadow = 'none'
     }
     if (rig.status === 'repairs') {
       baseStyle.border = '1px green solid';
       baseStyle.backgroundColor = `darkgray`;
+      baseStyle.color = 'black'
+      baseStyle.textShadow = 'none'
     }
     return baseStyle;
   }, [rig, rigJobs]);

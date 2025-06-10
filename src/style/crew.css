@@ -1,16 +1,17 @@
 .crew-page {
   display: flex;
   flex-flow: column nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 100%;
   width: 100%;
+
 }
 
 /* temp styles for playing with in prototype */
 .driller-view {
   width: 60vw;
-  height: 80vh;
+  min-height: 80vh;
   padding: 1rem;
   border: 1px solid red;
   overflow-y: auto;
@@ -42,4 +43,124 @@
 .other-nav .active #tablet-graphic {
   background-color: transparent; /* Transparent when hovered or active */
 }
+
+/* for the page of today's details */
+
+.today-details {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 50vh;
+  padding: 0.5rem;
+  /* border: 1px red solid; */
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.today-options {
+  width: 100%;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: .75rem;
+  /* border: 1px blue solid; */
+}
+
+.today-jobs {
+  width: 85vw;
+  background-color: rgb(205, 205, 205);
+
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.today-jobs h2 {
+  text-align: center;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  margin: 0;
+  background-image: linear-gradient(to top right, rgba(224, 194, 22, 1), rgba(224, 194, 22, 0.95), rgba(224, 194, 22, 0.8), rgba(224, 194, 22, 0.5));
+}
+
+.today-jobs h3 {
+  background-color: rgb(170, 170, 170);
+  color: rgba(224, 194, 22);
+  text-shadow: 2px 1px 3px black;
+  text-align: center;
+  text-decoration: underline;
+
+  width: 100%;
+  padding: .75rem 0;
+  margin-top: 0;
+}
+
+.job-card {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+  padding: 2rem .5rem;
+}
+
+.job-card:not(:last-child) {
+  border-bottom: 1px rgb(170,170,170) dashed;
+}
+
+.job-details {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  flex-grow: 1;
+  border: 1px rgb(170,170,170) solid;
+  border-left: none;
+  box-shadow: 1px 1px 3px rgba(100, 100, 100, 0.75);
+
+}
+
+.job-map {
+  width: 35%;
+  height: auto;
+  border: 1px rgb(170,170,170) solid;
+  border-right: none;
+  box-shadow: -1px 1px 3px rgba(100, 100, 100, 0.75);
+  z-index: 10;
+}
+
+.detail {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 90%;
+  margin-bottom: .5rem;
+  border: 1px rgb(170, 170, 170) solid;
+  box-shadow: 1px 1px 4px rgba(100, 100, 100, 0.75);
+  background-color: rgb(170,170,170);
+  z-index: 40;
+}
+
+.detail-data {
+  float: right;
+  padding: .5rem;
+  width: 60%;
+  height: 100%;
+  min-width: 50px;
+  border: none;
+  background-color: white;
+  overflow-wrap: break-word;
+}
+
+.detail-label {
+  padding: .5rem;
+  width: 40%;
+  height: 100%;
+  text-align: center;
+}
+
 
