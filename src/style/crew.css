@@ -8,22 +8,6 @@
 
 }
 
-/* temp styles for playing with in prototype */
-.driller-view {
-  width: 60vw;
-  min-height: 80vh;
-  padding: 1rem;
-  border: 1px solid red;
-  overflow-y: auto;
-}
-
-.driller-view h2 {
-  text-align: center;
-  text-decoration: underline;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
 #bore-graphic {
   position: absolute;
   font-size: .9rem;
@@ -136,7 +120,7 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  align-items: center;
+  align-items: stretch;
   width: 90%;
   margin-bottom: .5rem;
   border: 1px rgb(170, 170, 170) solid;
@@ -149,7 +133,6 @@
   float: right;
   padding: .5rem;
   width: 60%;
-  height: 100%;
   min-width: 50px;
   border: none;
   background-color: white;
@@ -163,4 +146,92 @@
   text-align: center;
 }
 
+/* for the mini job card on the calendar */
+
+.mini-job-card {
+  position: relative;
+  font-size: 10px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 10px;
+  margin: 2px;
+  padding: 5px;
+  box-shadow: 2px 1px 6px -3px rgb(50, 50, 50);
+  height: 90%;
+}
+
+.mini-job-list {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  height: 100%;
+}
+
+.mini-job {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.mini-job:not(:last-child) {
+  border-bottom: 1px rgb(170,170,170) dashed;
+}
+
+.mini-job-description {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 85%;
+  height: 100%;
+  min-width: 0;
+}
+
+.mini-job-description h3 {
+  width: 85%;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.mini-job-description p {
+  width: 85%;
+  overflow-wrap: break-word;
+}
+
+.mini-job .day-rig-count {
+  width: 15%;
+  height: 60%;
+  max-height: 100px;
+}
+
+/* for the rig detail page */
+
+.rig-view {
+  min-height: 80vh;
+  width: 40vw;
+  min-width: 500px;
+  margin-top: 63px; /* to account for the header on the other crew pages, putting this view at the same margin from the top of the page*/
+  background-color: rgb(205, 205, 205);
+}
+
+.rig-view h2 {
+  text-align: center;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  margin: 0;
+  background-image: linear-gradient(to top right, rgba(224, 194, 22, 1), rgba(224, 194, 22, 0.95), rgba(224, 194, 22, 0.8), rgba(224, 194, 22, 0.5));
+}
+
+.rig-details {
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
 

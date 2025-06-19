@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { getAllRigs, getAssignedJobs } from '../../axios-services/index';
 
 import DetailView from '../admin/DetailView';
+import MiniJobCard from './MiniJobCard';
 
 const CrewCalendar = ({token, user}) => {
 
@@ -120,12 +121,7 @@ const CrewCalendar = ({token, user}) => {
 
   // main content state
   const [jobList, setJobList] = useState([]);
-  // memoize the unassigned list since it's derived from the job list
-  const unassignedJobList = useMemo(() => {
-    return jobList.filter((job) => job.rigId === null);
-  }, [jobList]);
-  const [rigList, setRigList] = useState([]);
-  const [formType, setFormType] = useState('');
+  const [assignedRig, setAssignedRig] = useState({});
   const [currentSelected, setCurrentSelected] = useState({});
   const [detailView, setDetailView] = useState({});
   const [showDetail, setShowDetail] = useState(false);
@@ -139,8 +135,9 @@ const CrewCalendar = ({token, user}) => {
           getAssignedJobs(token),
           getAllRigs(token),
         ]);
-        setJobList(jobs);
-        setRigList(rigs);
+        // temporarily setting the job list and assigned rig to only jobs for rig 1, this will be adjusted later to use the assigned rig for the user
+        setJobList(jobs.filter(job => job.rigId === 1)); 
+        setAssignedRig(rigs.find(rig => rig.id === 1) || {});
       } catch (error) {
         console.log(error);
       }
@@ -230,16 +227,36 @@ const CrewCalendar = ({token, user}) => {
     } 
   };
 
+  const getDateParts = (specificDate, currentMonth) => {
+    const parts = specificDate.split('-');
+    if (parts[2][0] === '0') {
+      parts[2] = parts[2].slice(1);
+    }
+    if (parseInt(parts[1], 10) !== currentMonth + 1) {
+      parts[2] = `(${parts[2]})`;
+    }
+    return parts;
+  };
+
   let viewContent;
   if (viewType === 'month') {
     viewContent = (
       <div className='month-grid'>
         {
-          displayMonthDates.map((specificDate,index) => (
-            <div className='day' key={specificDate}>
-              {specificDate}
-            </div>
-          ))
+          displayMonthDates.map((specificDate,index) => {
+          const dateParts = getDateParts(specificDate, currentMonth);
+            return (
+              <div className='day' key={specificDate}>
+                <div className='day-label'>{dateParts[2]}</div>
+                <MiniJobCard 
+                  jobList={jobList} 
+                  assignedRig={assignedRig} 
+                  specificDate={specificDate}
+                  viewType={viewType}
+                />
+              </div>
+            );
+          })
         }
       </div>
     );
@@ -247,21 +264,34 @@ const CrewCalendar = ({token, user}) => {
     viewContent = (
       <div className='month-grid'>
         {
-          displayWeekDates.map((specificDate,index) => (
-            <div className='day' key={specificDate}>
-              {specificDate}
-
-            </div>
-          ))
+          displayWeekDates.map((specificDate,index) => {
+          const dateParts = getDateParts(specificDate, currentMonth);
+            return (
+              <>
+                <div className='day' key={specificDate}>
+                  <div className='day-label'>{dateParts[2]}</div>
+                  <MiniJobCard 
+                    jobList={jobList} 
+                    assignedRig={assignedRig} 
+                    viewType={viewType}
+                  />
+                </div>
+              </>
+              
+            );
+          })
         }
       </div>
     );
   }
 
+  console.log('jobList', jobList);
+  console.log('assignedRig', assignedRig);
+
   return (
     <div className='calendar-page'>
       {
-        (jobList.length === 0 || rigList.length === 0) ? (
+        (jobList.length === 0) ? (
           <div>Loading...</div> // Show a loading message or spinner while data is being fetched
         ) : (
           <>

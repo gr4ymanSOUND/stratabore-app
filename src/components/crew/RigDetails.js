@@ -25,22 +25,29 @@ const RigDetails = ({token, user}) => {
 
   return (
     <div className='crew-page'>
-      <div className="driller-view">
-        <article>
-          <h2>Rig Details</h2>
-          <p>
-            This is where you will see the details of the rig the user is currently assigned to, inlcuding maintenance and registration due dates, license plate, maybe even some other tracking like the equipment on board.
-
-            Until the database is updated with the required fields and tables to link users and rigs, this will contain details of only rig ID# 1.
+      <div className="rig-view">
+        <h2>Assigned Rig</h2>
+        <article className='rig-details'>
+          <p className='detail'>
+            <div className='detail-label'>License Plate: </div>
+            <div className='detail-data'>{rigDetails.licensePlate}</div>
           </p>
-          <ul>
-            <li>Rig ID: {rigDetails.id}</li>
-            <li>License Plate: {rigDetails.licensePlate}</li>
-            <li>Maintenance Due Date: {rigDetails.maintenanceDueDate}</li>
-            <li>Registration Due Date: {rigDetails.registrationDueDate}</li>
-            <li>Type: {rigDetails.rigType}</li>
-            <li>Status: {rigDetails.status}</li>
-          </ul>
+          <p className='detail'>
+            <div className='detail-label'>Type: </div>
+            <div className='detail-data'>{rigDetails.rigType}</div>
+          </p>
+          <p className='detail'>
+            <div className='detail-label'>Maintenance Due: </div>
+            <div className='detail-data'>{rigDetails.maintenanceDueDate}</div>
+          </p>
+          <p className='detail'>
+            <div className='detail-label'>Registration Due: </div>
+            <div className='detail-data'>{rigDetails.registrationDueDate}</div>
+          </p>
+          <p className='detail'>
+            <div className='detail-label'>Status: </div>
+            <div className='detail-data'>{rigDetails.status}</div>
+          </p>
         </article>
       </div>
     </div>
