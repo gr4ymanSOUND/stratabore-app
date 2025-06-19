@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { loginUser } from "../axios-services";
 
-const Login = ({ setToken, setUser}) => {
+const Login = ({ setToken, setUser, setLoading}) => {
 
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
@@ -14,17 +14,21 @@ const Login = ({ setToken, setUser}) => {
           alert('Please enter a username and/or password!')
           return;
         }
-
+        setLoading(true);
         // call API to attempt to log in
-        const response = await loginUser(userName, password);
-        setToken(response.token);
-        setUser(response.user);
-        localStorage.setItem("userToken", response.token);
+        try {
+          const response = await loginUser(userName, password);
+          setToken(response.token);
+          setUser(response.user);
+          localStorage.setItem("userToken", response.token);
 
-        // reset state for the form
-        setUserName("");
-        setPassword("");
-    }
+          // reset state for the form
+          setUserName("");
+          setPassword("");
+        } finally {
+          setLoading(false);
+        }  
+    };
 
 
     return (

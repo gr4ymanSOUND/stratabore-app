@@ -5,7 +5,7 @@ import { getAllRigs, getAssignedJobs } from '../../axios-services/index';
 import DetailView from '../admin/DetailView';
 import MiniJobCard from './MiniJobCard';
 
-const CrewCalendar = ({token, user}) => {
+const CrewCalendar = ({token, user, setLoading}) => {
 
   // creating a date object to set the current date on startup, adjusted to central time
   const getCentralTime = () => {
@@ -130,6 +130,7 @@ const CrewCalendar = ({token, user}) => {
   // uses the token to pull the job and rig lists
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [jobs, rigs] = await Promise.all([
           getAssignedJobs(token),
@@ -140,6 +141,8 @@ const CrewCalendar = ({token, user}) => {
         setAssignedRig(rigs.find(rig => rig.id === 1) || {});
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();

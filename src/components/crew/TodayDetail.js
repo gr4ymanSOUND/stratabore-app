@@ -4,7 +4,7 @@ import { getAssignedJobs } from '../../axios-services';
 import '../../mapquest/mapquest.js';
 
 
-const TodayDetail = ({token, user}) => {
+const TodayDetail = ({token, user, setLoading}) => {
 
   // creating a date object to set the current date on startup, adjusted to central time
   const getCentralTime = () => {
@@ -28,6 +28,7 @@ const TodayDetail = ({token, user}) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [jobs] = await Promise.all([
           getAssignedJobs(token),
@@ -37,6 +38,8 @@ const TodayDetail = ({token, user}) => {
       setTodayJobs(rigJobs);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -47,7 +50,6 @@ const TodayDetail = ({token, user}) => {
   return (
     <div className='crew-page'>
       <div className='today-options'>
-        <div style={{position: 'relative', width: '25%'}}>
           <input
             className='month-date-input'
             type='date' 
@@ -63,7 +65,6 @@ const TodayDetail = ({token, user}) => {
           >
             <i className="fa-regular fa-calendar"></i>
           </button>
-        </div>
       </div>
       <div className="today-details">
 
@@ -71,7 +72,7 @@ const TodayDetail = ({token, user}) => {
 
         <div className='today-jobs'>
           {/* <h2>Jobs for {selectedDate} </h2> */}
-          <h2>Jobs for 2025-02-27</h2>
+          <h2>Rig: 1 <span>Date: 2025-02-27</span></h2>
 
           {todayJobs.length > 0 ? (
             todayJobs.map((job) => (

@@ -26,6 +26,7 @@ const App = () => {
   const tokenFromStorage = localStorage.getItem('userToken');
   const [ token, setToken ] = useState(tokenFromStorage);
   const [ user, setUser ] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -49,99 +50,106 @@ const App = () => {
 
   //contains the routes for each main page
     return (
-      <div className='main-container'>
-        <BrowserRouter>
-        <Header 
-          token={token}
-          user={user}
-          setUser={setUser}
-          setToken={setToken}
-        />
-          <Routes>
-            <Route 
-              exact path="/"
-              element={
-                token ? (
-                user.isAdmin ? (
-                  <Navigate to="/admin/database" replace /> 
-                ) : (
-                  <Navigate to="/crew/todays_details" replace />
-                )
-                ) : (
-                  <Login token={token} setToken={setToken} setUser={setUser}/>
-                )  
-              } 
+      <>
+        {loading && (
+          <div className="global-loading">
+            <h2>Loading...</h2>
+            {/* You can use a spinner here */}
+          </div>
+        )}
+        <div className='main-container'>
+          <BrowserRouter>
+            <Header 
+              token={token}
+              user={user}
+              setUser={setUser}
+              setToken={setToken}
             />
-            {/* Admin-Only Routes */}
-            {user.isAdmin && (
-              <Route
-                path="/admin"
-              >
-                <Route index element={<Navigate to="database" replace />} />
+            <Routes>
+              <Route 
+                exact path="/"
+                element={
+                  token ? (
+                  user.isAdmin ? (
+                    <Navigate to="/admin/database" replace /> 
+                  ) : (
+                    <Navigate to="/crew/todays_details" replace />
+                  )
+                  ) : (
+                    <Login token={token} setToken={setToken} setUser={setUser} setLoading={setLoading} />
+                  )  
+                } 
+              />
+              {/* Admin-Only Routes */}
+              {user.isAdmin && (
                 <Route
-                  path="database"
-                  element={<JobDatabase token={token} />}
-                />
-                <Route
-                  path="calendar"
-                  element={<Calendar token={token} />}
-                />
-                <Route
-                  path="map"
-                  element={<MapView token={token} />}
-                />
-                <Route
-                  path="management"
-                  element={<ManagementTools />}
+                  path="/admin"
                 >
+                  <Route index element={<Navigate to="database" replace />} />
                   <Route
-                    index
-                    element={<Navigate to="users" replace />}
+                    path="database"
+                    element={<JobDatabase token={token} setLoading={setLoading} />}
                   />
                   <Route
-                    path="users"
-                    element={<UserDatabase token={token} user={user} />}
+                    path="calendar"
+                    element={<Calendar token={token} setLoading={setLoading} />}
                   />
                   <Route
-                    path="rigs"
-                    element={<RigDatabase token={token} user={user} />}
+                    path="map"
+                    element={<MapView token={token} setLoading={setLoading} />}
+                  />
+                  <Route
+                    path="management"
+                    element={<ManagementTools setLoading={setLoading} />}
+                  >
+                    <Route
+                      index
+                      element={<Navigate to="users" replace />}
+                    />
+                    <Route
+                      path="users"
+                      element={<UserDatabase token={token} user={user} setLoading={setLoading} />}
+                    />
+                    <Route
+                      path="rigs"
+                      element={<RigDatabase token={token} user={user} setLoading={setLoading} />}
+                    />
+                  </Route>
+                </Route>
+              )}
+              {/* Non-Admin Routes */}
+              {!user.isAdmin && (
+                <Route
+                  path='/crew'
+                >
+                  {/* Future non-admin routes can be added here */}
+                  <Route
+                    path="todays_details"
+                    element={<TodayDetail token={token} user={user} setLoading={setLoading} />}
+                  />
+                  <Route
+                    path="crew_calendar"
+                    element={<CrewCalendar token={token} user={user} setLoading={setLoading} />}
+                  />
+                  <Route
+                    path="rig_details"
+                    element={<RigDetails token={token} user={user} setLoading={setLoading} />}
                   />
                 </Route>
-              </Route>
-            )}
-            {/* Non-Admin Routes */}
-            {!user.isAdmin && (
+              )}
               <Route
-                path='/crew'
-              >
-                {/* Future non-admin routes can be added here */}
-                <Route
-                  path="todays_details"
-                  element={<TodayDetail token={token} user={user} />}
-                />
-                 <Route
-                  path="crew_calendar"
-                  element={<CrewCalendar token={token} user={user} />}
-                />
-                 <Route
-                  path="rig_details"
-                  element={<RigDetails token={token} user={user} />}
-                />
-              </Route>
-            )}
-            <Route
-              path="/edit_account"
-              element={<EditAccount token={token} user={user} setUser={setUser} />}
-            /> 
-            {/* Catch-All Route */}
-            <Route
-              path="*"
-              element={<Navigate to="/" replace />}
-            />
-          </Routes>
-    </BrowserRouter>
-    
-      </div>
+                path="/edit_account"
+                element={<EditAccount token={token} user={user} setUser={setUser} setLoading={setLoading} />}
+              /> 
+              {/* Catch-All Route */}
+              <Route
+                path="*"
+                element={<Navigate to="/" replace />}
+              />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </>
     )
   }
 

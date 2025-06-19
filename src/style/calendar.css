@@ -60,12 +60,12 @@
 
 .month-date-input {
   height: 100%;
-  width: 16rem;
+  width: 14rem;
   font-size: 2rem;
+  border: none;
   background-color: transparent;
   color: rgb(224, 194, 22);
   text-shadow: 2px 1px 3px black;
-  border: none;
   overflow: visible;
 }
 
@@ -76,17 +76,13 @@
 }
 
 .custom-calendar-button {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative;
   background-color: rgb(224, 194, 22);
   border: none;
   box-shadow: 2px 5px 5px -3px rgb(0, 0, 0, 0.8);
   font-size: 25px;
-  padding: 0 7px;
-  height: 100%;
   cursor: pointer;
+  align-self: stretch;
 }
 
 .custom-calendar-button:hover {

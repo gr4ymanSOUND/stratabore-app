@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import { getAllRigs } from '../../axios-services';
 
-const RigDetails = ({token, user}) => {
+const RigDetails = ({token, user, setLoading}) => {
 
   const [rigDetails, setRigDetails] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [rigs] = await Promise.all([
           getAllRigs(token),
@@ -16,6 +17,8 @@ const RigDetails = ({token, user}) => {
       setRigDetails(rigs[0]);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();

@@ -408,7 +408,7 @@ const Calendar = ({token}) => {
                 <div className='current-view'>
                   {
                     viewType === 'day' ? (
-                      <div style={{position: 'relative'}}>
+                      <div className='today-options'>
                         <input
                           className='month-date-input'
                           type='date' 

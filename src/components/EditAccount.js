@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { editUser, getMe } from "../axios-services";
 
-const EditAccount = ({ token, user, setUser}) => {
+const EditAccount = ({ token, user, setUser, setLoading}) => {
 
   const [userId, setUserId] = useState(0);
   const [userName, setUserName] = useState('');
@@ -44,10 +44,19 @@ const EditAccount = ({ token, user, setUser}) => {
       status: userStatus
     }
 
-    const response = await editUser(token, userId, newUser)
+    setLoading(true);
+    try {
+      const response = await editUser(token, userId, newUser)
     console.log('response', response)
     alert(`${newUser.userName} has been edited.`);
     setUser(response);
+    } catch (error) {
+      console.error('Error editing user:', error);
+      alert('There was an error editing your account. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+    
   };
 
   const handleAdminChange = async (e) => {
