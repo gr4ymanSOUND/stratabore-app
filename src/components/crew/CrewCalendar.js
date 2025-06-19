@@ -267,7 +267,6 @@ const CrewCalendar = ({token, user}) => {
           displayWeekDates.map((specificDate,index) => {
           const dateParts = getDateParts(specificDate, currentMonth);
             return (
-              <>
                 <div className='day' key={specificDate}>
                   <div className='day-label'>{dateParts[2]}</div>
                   <MiniJobCard 
@@ -276,8 +275,6 @@ const CrewCalendar = ({token, user}) => {
                     viewType={viewType}
                   />
                 </div>
-              </>
-              
             );
           })
         }

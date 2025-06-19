@@ -28,26 +28,26 @@ const RigDetails = ({token, user}) => {
       <div className="rig-view">
         <h2>Assigned Rig</h2>
         <article className='rig-details'>
-          <p className='detail'>
+          <div className='detail'>
             <div className='detail-label'>License Plate: </div>
             <div className='detail-data'>{rigDetails.licensePlate}</div>
-          </p>
-          <p className='detail'>
+          </div>
+          <div className='detail'>
             <div className='detail-label'>Type: </div>
             <div className='detail-data'>{rigDetails.rigType}</div>
-          </p>
-          <p className='detail'>
+          </div>
+          <div className='detail'>
             <div className='detail-label'>Maintenance Due: </div>
             <div className='detail-data'>{rigDetails.maintenanceDueDate}</div>
-          </p>
-          <p className='detail'>
+          </div>
+          <div className='detail'>
             <div className='detail-label'>Registration Due: </div>
             <div className='detail-data'>{rigDetails.registrationDueDate}</div>
-          </p>
-          <p className='detail'>
+          </div>
+          <div className='detail'>
             <div className='detail-label'>Status: </div>
             <div className='detail-data'>{rigDetails.status}</div>
-          </p>
+          </div>
         </article>
       </div>
     </div>
