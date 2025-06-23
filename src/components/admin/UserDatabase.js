@@ -58,10 +58,12 @@ const UserDatabase = ({token, user}) => {
     { headerName: 'First Name', field: 'firstName', filter: true },
     { headerName: 'Last Name', field: 'lastName', filter: true },
     { headerName: 'Email', field: 'email', filter: true },
+    { headerName: 'Rig ID', field: 'rigId', filter: true },
     { headerName: 'Admin', field: 'isAdmin',
       filter: customFilter, filterParams: {values: ['true', 'false']} },
     { headerName: 'Status', field: 'status',
       filter: customFilter, filterParams: {values: ['active', 'inactive']} }
+    
   ]);
 
   // DefaultColDef sets props common to all Columns
@@ -104,6 +106,7 @@ const UserDatabase = ({token, user}) => {
     });
     gridRef.current.api.sizeColumnsToFit();
   }, []);
+
 
   return (
     <div className='user-database'>

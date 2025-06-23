@@ -60,6 +60,7 @@ const RigDatabase = ({token, user}) => {
     { headerName: 'Color', field: 'boardColor', filter: true },
     { headerName: 'Registration Due', field: 'registrationDueDate', filter: true},
     { headerName: 'Maintenance Due', field: 'maintenanceDueDate', filter: true},
+    { headerName: 'Notes', field: 'notes', filter: true },
     { headerName: 'Status', field: 'status',
       filter: customFilter, filterParams: {values: ['active', 'repairs', 'inactive']} }
   ]);

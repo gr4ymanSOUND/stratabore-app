@@ -67,6 +67,7 @@ const JobDatabase = ({ token }) => {
     { headerName: 'Holes', field: 'numHoles', width: 70 },
     { headerName: '# Ft', field: 'numFeet', width: 70 },
     { headerName: 'Length', field: 'jobLength', filter: true, width: 80},
+    { headerName: 'Notes', field: 'notes', filter: true, minWidth: 150, width: 150 },
     { headerName: 'Book Date', field: 'createdDate', filter: true, width: 100 },
     { headerName: 'Drill Date', field: 'jobDate', filter: true, minWidth: 110,width: 110 },
     { headerName: 'Rig', field: 'rigId', filter: true, width: 60},
@@ -126,6 +127,7 @@ const JobDatabase = ({ token }) => {
       });
     })
   }
+
 
   return (
     <div className='database'>

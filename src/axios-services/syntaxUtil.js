@@ -12,6 +12,7 @@ const userSyntaxFrontEnd = (userObject) => {
     email: userObject.email,
     isAdmin: userObject.is_admin,
     status: userObject.status,
+    rigId: userObject.rig_id || null, // Ensure rigId is null if not present
   }
 }
 
@@ -24,6 +25,7 @@ const userSyntaxBackEnd = (userObject) => {
     email: userObject.email,
     is_admin: userObject.isAdmin,
     status: userObject.status,
+    rig_id: userObject.rigId || null, // Ensure rigId is null if not present
   }
 }
 
@@ -38,6 +40,7 @@ const rigSyntaxFrontEnd = (rigObject) => {
     registrationDueDate: rigObject.registration_due,
     maintenanceDueDate: rigObject.maintenance_due,
     status: rigObject.status,
+    notes: rigObject.notes || '', // Ensure notes is always a string
   }
 }
 
@@ -50,6 +53,7 @@ const rigSyntaxBackEnd = (rigObject) => {
     registration_due: rigObject.registrationDueDate,
     maintenance_due: rigObject.maintenanceDueDate,
     status: rigObject.status,
+    notes: rigObject.notes || '', // Ensure notes is always a string
   }
 }
 
@@ -66,6 +70,7 @@ const jobSyntaxFrontEnd = (jobObject) => {
     jobLength: jobObject.job_length,
     status: jobObject.status,
     createdDate: jobObject.created_date,
+    notes: jobObject.notes || '', // Ensure notes is always a string
   }
 }
 
@@ -80,6 +85,8 @@ const jobSyntaxBackEnd = (jobObject) => {
     job_length: jobObject.jobLength,
     status: jobObject.status,
     created_date: jobObject.createdDate,
+    notes: jobObject.notes || '', // Ensure notes is always a string
+
   }
 }
 
@@ -96,6 +103,7 @@ const assignmentSyntaxBackEnd = (assignmentObject) => {
     location:  assignmentObject.location,
     num_feet:  assignmentObject.numFeet,
     num_holes:  assignmentObject.numHoles,
+    notes:  assignmentObject.notes || '', // Ensure notes is always a string
     job_id:  assignmentObject.jobId,
     rig_id:  assignmentObject.rigId,
     status:  assignmentObject.status,
@@ -113,6 +121,7 @@ const assignmentSyntaxFrontEnd = (assignmentObject) => {
     location:  assignmentObject.location,
     numFeet:  assignmentObject.num_feet,
     numHoles:  assignmentObject.num_holes,
+    notes:  assignmentObject.notes || '', // Ensure notes is always a string
     jobId:  assignmentObject.job_id,
     rigId:  assignmentObject.rig_id,
     status:  assignmentObject.status,
