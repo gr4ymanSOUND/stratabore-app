@@ -9,6 +9,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
   const [ boardColor , setBoardColor ] = useState('');
   const [ registrationDueDate, setRegistrationDueDate ] = useState('');
   const [ maintenanceDueDate, setMaintenanceDueDate ] = useState('');
+  const [ rigNotes, setRigNotes ] = useState('');
   const [ rigStatus, setRigStatus ] = useState('active');
 
   // when the current selection or formtype changes, adjust the state to reflect the change
@@ -20,6 +21,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       setRegistrationDueDate(currentSelected.registrationDueDate);
       setMaintenanceDueDate(currentSelected.maintenanceDueDate);
       setRigStatus(currentSelected.status);
+      setRigNotes(currentSelected.notes);
 
     }
 
@@ -30,6 +32,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       setBoardColor('');
       setRegistrationDueDate('');
       setMaintenanceDueDate('');
+      setRigNotes('');
       setRigStatus('active');
     }
 
@@ -50,6 +53,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
       boardColor: boardColor,
       registrationDueDate: registrationDueDate,
       maintenanceDueDate: maintenanceDueDate,
+      notes: rigNotes,
       status: rigStatus
     }
 
@@ -67,6 +71,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
     setBoardColor('');
     setRegistrationDueDate('');
     setMaintenanceDueDate('');
+    setRigNotes('');
     setRigStatus('active');
     setFormType("reset")
 
@@ -167,6 +172,16 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
               className="form-control"
               id="maintenanceDate"
               placeholder=""
+            />
+          </div>
+          <div className="input-section">
+            <label className="input-label">Notes:</label>
+            <textarea
+              value={rigNotes}
+              onChange={({ target: { value } }) => setRigNotes(value)}
+              className="form-control notes-textarea"
+              id="notes"
+              placeholder="needs new tires, augers in bad shape, etc."
             />
           </div>
           <div className="input-section">

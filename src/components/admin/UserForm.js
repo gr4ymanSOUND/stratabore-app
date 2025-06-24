@@ -9,6 +9,7 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userEmail, setUserEmail] = useState('');
+  const [rigId, setRigId] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [userStatus, setUserStatus] = useState('active');
@@ -24,6 +25,7 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
       setIsAdmin(currentSelected.isAdmin);
       setIsChecked(currentSelected.isAdmin)
       setUserStatus(currentSelected.status);
+      setRigId(currentSelected.rigId);
     }
 
     // makes sure the form is empty when it is hidden
@@ -33,6 +35,7 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
       setFirstName('');
       setLastName('');
       setUserEmail('');
+      setRigId('');
       setIsAdmin(false);
       setIsChecked(false)
       setUserStatus('active');
@@ -60,6 +63,7 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
       firstName: firstName,
       lastName: lastName,
       email: userEmail,
+      rigId: rigId,
       isAdmin: isAdmin,
       status: userStatus
     }
@@ -83,6 +87,7 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
     setFirstName('');
     setLastName('');
     setUserEmail('');
+    setRigId('');
     setIsAdmin(false);
     setIsChecked(false);
     setUserStatus('active')
@@ -187,6 +192,22 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
               placeholder="user2023@stratabore.com"
             />
           </div>
+          {
+            isAdmin ? null : (
+              <div className="input-section">
+                <label className="input-label">Rig ID:</label>
+                <input
+                  type="number"
+                  value={rigId}
+                  onChange={({ target: { value } }) => setRigId(value)}
+                  className="form-control"
+                  id="rigId"
+                  min='0'
+                  max='6'
+                />
+              </div>
+            )
+          }
           <div className='input-section checkbox'>
             <label className='input-label'>Admin</label>
             <input

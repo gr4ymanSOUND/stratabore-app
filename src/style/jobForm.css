@@ -65,3 +65,13 @@
   height: 100%;
   text-align: center;
 }
+
+.job-form .notes-textarea {
+  min-height: 4em;      /* Twice the height of a typical input */
+  resize: vertical;     /* Allow only vertical resizing */
+  width: 60%;           /* Match the width of other inputs */
+  max-width: 100%;      /* Prevent overflow */
+  padding: .5rem;
+  font-size: 12px;
+  border: none;
+}

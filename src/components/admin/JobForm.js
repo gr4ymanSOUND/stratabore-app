@@ -14,6 +14,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
   const [numFeet, setNumFeet] = useState('');
   const [jobDate, setJobDate] = useState('');
   const [jobLength, setJobLength] = useState(1);
+  const [jobNotes, setJobNotes] = useState('');
   const [rigId, setRigId] = useState('');
   const [jobStatus, setJobStatus] = useState('pending');
   const [createdDate, setCreatedDate] = useState('');
@@ -31,6 +32,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setJobLength(currentSelected.jobLength);
       currentSelected.rigId ? setRigId(currentSelected.rigId) : setRigId('')
       setJobStatus(currentSelected.status);
+      setJobNotes(currentSelected.notes);
     }
 
     // makes sure the form is empty when it is hidden
@@ -43,6 +45,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       setJobDate('')
       setRigId('');
       setJobStatus('pending');
+      setJobNotes('');
     }
 
   }, [formType, currentSelected])
@@ -71,7 +74,8 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
       numHoles: numHoles,
       numFeet: numFeet,
       jobLength: jobLength,
-      status: jobStatus
+      status: jobStatus,
+      notes: jobNotes,
     }
 
     // if adding a job, get the current date and set it in the createdDate state
@@ -137,6 +141,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
     setRigId('');
     setJobStatus('');
     setCreatedDate('');
+    setJobNotes('');
     setFormType("")
 
     // sets the edited job data into react state as the currently selected row - used on the database page to re-select the row after editing has finished
@@ -272,6 +277,16 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
               min='0.1'
               max='1'
               step='0.1'
+            />
+          </div>
+          <div className="input-section">
+            <label className="input-label">Notes:</label>
+            <textarea
+              value={jobNotes}
+              onChange={({ target: { value } }) => setJobNotes(value)}
+              className="form-control notes-textarea"
+              id="notes"
+              placeholder="tall grass, sandy soil, etc."
             />
           </div>
           {
