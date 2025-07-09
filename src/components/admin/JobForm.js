@@ -196,7 +196,7 @@ const JobForm = ({ token, formType, setFormType, setJobList, currentSelected, se
 
     if (confirm(`Are you sure you want to unassign this job? \n Job:${jobToUnassign.jobId}, Rig:${jobToUnassign.rigId}, Date: ${jobToUnassign.jobDate}`)) {
       const unassignedJob = await deleteJobRig(token, jobToUnassign);
-      setFormType('unassigned');
+      setFormType('');
       alert(unassignedJob)
       // reload the joblist to reflect the changes in the spreadsheet
       const newJobList = await getAssignedAndUnassignedJobs(token)

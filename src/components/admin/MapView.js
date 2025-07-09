@@ -10,7 +10,7 @@ import { statusFilter, clientFilter, rigFilter, dateFilter } from './mapFilterHe
 
 import { getAllJobs, getAllRigs, getAssignedAndUnassignedJobs } from '../../axios-services/index.js';
 
-const MapView = ({token}) => {
+const MapView = ({token, setLoading}) => {
 
   const [filterState, setFilterState] = useState({
     jobStatus: 'pending',
@@ -79,6 +79,12 @@ const MapView = ({token}) => {
 
   // loads the map and creates the markers
   useEffect(()=> {
+
+
+    // Only show loading if there are locations and rigs to render
+    if (locationList.length === 0 || rigList.length === 0) return;
+    setLoading(true);
+
     // api key
     L.mapquest.key = 'SboTAEZ9t8caAhRqQ3GSGWNmmcCz1Ag8';
       
@@ -111,7 +117,7 @@ const MapView = ({token}) => {
         // add map markers based on the geocode results
         .then((results) => {
           // can only add markers if there is a map to add them to
-          if (Object.keys(mapObject).length != 0) {
+          if (map) {
 
             // adding a map marker and a pop-up attached to it at for each location in the results
             // can change type and style the individual map marker, will make one style for each rig and apply dynamically
@@ -122,7 +128,7 @@ const MapView = ({token}) => {
               if(!itemRig) {
                 itemColor = colourNameToHex('gray');
               } else {
-                itemColor = colourNameToHex(itemRig.boardColor);
+                itemColor = itemRig.boardColor;
               }
               const latlong = item.locations[0].latLng;
               const marker = L.marker(latlong, {
@@ -186,7 +192,8 @@ const MapView = ({token}) => {
               icon: smallMarker
             }).addTo(map);
             customMarker.bindPopup("<b>StrataBore Office</b>");
-          } 
+          }
+          setLoading(false);
         })
         .catch((error) => {
           console.error(error);

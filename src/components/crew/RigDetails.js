@@ -51,6 +51,10 @@ const RigDetails = ({token, user, setLoading}) => {
             <div className='detail-label'>Status: </div>
             <div className='detail-data'>{rigDetails.status}</div>
           </div>
+          <div className='detail'>
+            <div className='detail-label'>Notes: </div>
+            <div className='detail-data'>{rigDetails.notes}</div>
+          </div>
         </article>
       </div>
     </div>

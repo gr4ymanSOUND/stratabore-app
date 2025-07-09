@@ -15,7 +15,7 @@ import { getAllRigs } from '../../axios-services';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
 
-const RigDatabase = ({token, user}) => {
+const RigDatabase = ({token, user, setLoading}) => {
   //for accessing Grid's API
   const gridRef = useRef();
 
@@ -27,11 +27,14 @@ const RigDatabase = ({token, user}) => {
   // get rig data
   useEffect(() => {
     const fetchRigs = async () => {
+      setLoading(true);
       try {
         const allRigs = await getAllRigs(token);
         setRigList(allRigs);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchRigs();
@@ -39,16 +42,19 @@ const RigDatabase = ({token, user}) => {
 
   // effect to deal with formtype changes
   useEffect(() => {
-    if (formType == "add-rig") {
+    let timeoutId;
+    if (formType === "add-rig") {
       setCurrentSelected({});
-      gridRef.current.api.deselectAll();
+      if (gridRef.current && gridRef.current.deselectAll) {
+        gridRef.current.deselectAll();
+      }
     }
-    if (formType == "cancel" || formType == "reset") {
-      setFormType("")
-      const buttonTimeout = setTimeout(() => {
-        gridRef.current.api.sizeColumnsToFit();
-      })
-    }
+    timeoutId = setTimeout(() => {
+      if (gridRef.current && gridRef.current.sizeColumnsToFit) {
+        gridRef.current.sizeColumnsToFit();
+      }
+    });
+    return () => clearTimeout(timeoutId);
   }, [formType]);
 
   // Each Column Definition results in one Column.
@@ -78,39 +84,47 @@ const RigDatabase = ({token, user}) => {
   // sets the formType when any button is clicked
   // also resizes the grid to show all columns when the form is added/removed in the sidebar
   const buttonListener = useCallback((e) => {
-    setFormType(e.target.id);
-    const buttonResizeTrigger = setTimeout(() => {
-      gridRef.current.api.sizeColumnsToFit();
-    })
+    if (e.target.id == "cancel" || e.target.id == "reset") {
+      setFormType("");
+    } else {
+      setFormType(e.target.id);
+    }
   }, []);
 
-    //download the rig list
-    const downloadRigList = async (e) => {
-      const d = new Date();
-      let dateString = `${d.getFullYear()}-${d.getUTCMonth() + 1}-${d.getDate()}`
-  
-      const csvFileData = Papa.unparse(rigList);
-      const blob = new Blob([csvFileData], { type: 'text/csv;charset=utf-8' });
-      FileSaver.saveAs(blob, `StrataBore_rigList_${dateString}.csv`);
-  
-    }
+  //download the rig list
+  const downloadRigList = async (e) => {
+    const d = new Date();
+    let dateString = `${d.getFullYear()}-${d.getUTCMonth() + 1}-${d.getDate()}`
+
+    const csvFileData = Papa.unparse(rigList);
+    const blob = new Blob([csvFileData], { type: 'text/csv;charset=utf-8' });
+    FileSaver.saveAs(blob, `StrataBore_rigList_${dateString}.csv`);
+
+  }
 
   // resizes the columns inside the grid to fit the grid/window size (is called when the grid/window gets resized)
   const onGridReady = useCallback((params) => {
     params.api.sizeColumnsToFit();
-    window.addEventListener('resize', function () {
-      setTimeout(function () {
-        params.api.sizeColumnsToFit();
-      });
-    });
-    gridRef.current.api.sizeColumnsToFit();
+    gridRef.current = params.api;
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (gridRef.current && gridRef.current.sizeColumnsToFit) {
+        gridRef.current.sizeColumnsToFit();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
     <div className='rig-database'>
       <div className='button-list' >
         {
-          (formType == "edit-rig" || formType == "add-rig" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
+          (formType == "edit-rig" || formType == "add-rig") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel</button>
           :
             <>
               {Object.keys(currentSelected).length !== 0 ? (

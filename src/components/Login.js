@@ -45,7 +45,7 @@ const Login = ({ setToken, setUser, setLoading}) => {
                             minLength={'6'}
                             value={userName}
                             onChange={({target: {value}}) => setUserName(value)}
-                            className="form-control"
+                            className="login-form-control"
                             id="user"
                             placeholder="Your User Name Here"
                         />
@@ -57,7 +57,7 @@ const Login = ({ setToken, setUser, setLoading}) => {
                             minLength={'6'}
                             value={password}
                             onChange={({target: {value}}) => setPassword(value)}
-                            className="form-control"
+                            className="login-form-control"
                             id="pass"
                             placeholder="********"
                         />

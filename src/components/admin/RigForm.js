@@ -6,7 +6,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
 
   const [ licensePlate, setLicensePlate ] = useState('');
   const [ rigType, setRigType ] = useState('lil');
-  const [ boardColor , setBoardColor ] = useState('');
+  const [ boardColor , setBoardColor ] = useState('#000000');
   const [ registrationDueDate, setRegistrationDueDate ] = useState('');
   const [ maintenanceDueDate, setMaintenanceDueDate ] = useState('');
   const [ rigNotes, setRigNotes ] = useState('');
@@ -29,7 +29,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
     if (formType == "") {
       setLicensePlate('');
       setRigType('');
-      setBoardColor('');
+      setBoardColor('#000000');
       setRegistrationDueDate('');
       setMaintenanceDueDate('');
       setRigNotes('');
@@ -68,12 +68,12 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
     //reset form state and close the form after sumbission
     setLicensePlate('');
     setRigType('');
-    setBoardColor('');
+    setBoardColor('#000000');
     setRegistrationDueDate('');
     setMaintenanceDueDate('');
     setRigNotes('');
     setRigStatus('active');
-    setFormType("reset")
+    setFormType("")
 
    // for this form, we will always unselect after submitting
    setCurrentSelected({});
@@ -96,7 +96,7 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
 
       // reset the selection and hide the form
       setCurrentSelected({});
-      setFormType("reset")
+      setFormType("")
 
       // reset the rig list to include the changes
       const newRigList = await getAllRigs(token);
@@ -136,12 +136,11 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
           <div className="input-section">
             <label className="input-label">Color</label>
             <input 
-              type="text"
+              type="color"
               value={boardColor}
               onChange={({ target: { value } }) => setBoardColor(value)}
               className="form-control"
               id="boardColor"
-              placeholder="#FF0000 OR red"
             />
               {/* decided to use a text imput instead
               <option value="red">red</option>

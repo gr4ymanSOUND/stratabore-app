@@ -16,7 +16,7 @@ import Papa from 'papaparse';
 import FileSaver from 'file-saver';
 
 
-const JobDatabase = ({ token }) => {
+const JobDatabase = ({ token, setLoading }) => {
   //for accessing Grid's API
   const gridRef = useRef();
 
@@ -28,11 +28,14 @@ const JobDatabase = ({ token }) => {
   // get all the jobs when the page loads
   useEffect(() => {
     const fetchJobs = async () => {
+      setLoading(true);
       try {
         const jobs = await getAssignedAndUnassignedJobs(token);
         setJobList(jobs);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchJobs();
@@ -40,21 +43,19 @@ const JobDatabase = ({ token }) => {
 
   // effect to deal with formtype changes
   useEffect(() => {
+    let timeoutId;
     if (formType === "add-job") {
       setCurrentSelected({});
-      if (gridRef.current && gridRef.current.api) {
-        gridRef.current.api.deselectAll();
+      if (gridRef.current && gridRef.current.deselectAll) {
+        gridRef.current.deselectAll();
       }
     }
-    if (formType === "cancel" || formType === "" || formType === "unassigned") {
-      setFormType("");
-      const buttonTimeout = setTimeout(() => {
-        if (gridRef.current && gridRef.current.api) {
-          gridRef.current.api.sizeColumnsToFit();
-        }
-      });
-      return () => clearTimeout(buttonTimeout); // Clean up the timeout
-    }
+    timeoutId = setTimeout(() => {
+      if (gridRef.current && gridRef.current.sizeColumnsToFit) {
+        gridRef.current.sizeColumnsToFit();
+      }
+    });
+    return () => clearTimeout(timeoutId);
   }, [formType]);
 
   // Each Column Definition results in one Column.
@@ -89,11 +90,11 @@ const JobDatabase = ({ token }) => {
   // sets the formType when any button is clicked
   // also resizes the grid to show all columns when the form is added/removed in the sidebar
   const buttonListener = useCallback((e) => {
-    console.log('button clicked', e.target.id)
-    setFormType(e.target.id);
-    const buttonResizeTrigger = setTimeout(() => {
-      gridRef.current.api.sizeColumnsToFit();
-    })
+    if (e.target.id == "cancel" || e.target.id == "reset") {
+      setFormType("");
+    } else {
+      setFormType(e.target.id);
+    }
   }, []);
 
   // 
@@ -109,23 +110,31 @@ const JobDatabase = ({ token }) => {
 
   // resizes the columns inside the grid to fit the grid/window size (is called when the grid/window gets resized)
   const onGridReady = useCallback((params) => {
-    gridRef.current.api.sizeColumnsToFit();
-    window.addEventListener('resize', function () {
-      setTimeout(function () {
-        params.api.sizeColumnsToFit();
-      });
-    });
+    params.api.sizeColumnsToFit();
+    gridRef.current = params.api;
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (gridRef.current && gridRef.current.sizeColumnsToFit) {
+        gridRef.current.sizeColumnsToFit();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // only run this if there is a "currentSelected", but run it after the final render every time
   // // have to do this so late because only the final re-render seems to capture updated job numbers in state properly for this to access it
 
-  if (currentSelected.jobNumber) {
-    const timer = setTimeout(() => {
-      gridRef.current.api.forEachNode(function (node) {
+  if (currentSelected.jobNumber && gridRef.current && gridRef.current.forEachNode) {
+    setTimeout(() => {
+      gridRef.current.forEachNode(function (node) {
         node.setSelected(node.data.jobNumber === currentSelected.jobNumber);
       });
-    })
+    },100);
   }
 
 
@@ -133,7 +142,7 @@ const JobDatabase = ({ token }) => {
     <div className='database'>
       <div className='button-list' >
         {
-          (formType == "edit-job" || formType == "add-job" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel Editing</button>
+          (formType == "edit-job" || formType == "add-job") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel Editing</button>
           :
             <>
               {

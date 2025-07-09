@@ -7,7 +7,7 @@ import DetailView from './DetailView';
 // axios imports
 import { getAllRigs, getAssignedAndUnassignedJobs } from '../../axios-services/index';
 
-const Calendar = ({token}) => {
+const Calendar = ({token, setLoading}) => {
   // will use imported token for pulling data
 
   // creating a date object to set the current date on startup, adjusted to central time
@@ -142,6 +142,7 @@ const Calendar = ({token}) => {
   // uses the token to pull the job and rig lists
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const [jobs, rigs] = await Promise.all([
           getAssignedAndUnassignedJobs(token),
@@ -151,6 +152,8 @@ const Calendar = ({token}) => {
         setRigList(rigs);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -380,132 +383,124 @@ const Calendar = ({token}) => {
 
   return (
     <div className='calendar-page'>
-      {
-        (jobList.length === 0 || rigList.length === 0) ? (
-          <div>Loading...</div> // Show a loading message or spinner while data is being fetched
-        ) : (
-          <>
-            <div className='calendar-header'>
-              <div className='view-group-selector'>
-                <select 
-                  id="view"
-                  name="view"
-                  title='Select View'
-                  className='view-selector'
-                  value={viewType}
-                  onChange={({ target: { value } }) => setViewType(value)}
-                >
-                  <option value="month">Month</option>
-                  <option value="week">Week</option>
-                  <option value="day">Day</option>
-                </select>
-                <button id='prevView' className='view-arrow' onClick={viewButtons} title='Previous'>
-                  <i className="fa fa-arrow-left" aria-hidden="true"></i>
-                </button>
-                <button id='nextView' className='view-arrow' onClick={viewButtons} title='Next'>
-                  <i className="fa fa-arrow-right" aria-hidden="true"></i>
-                </button>
-                <div className='current-view'>
+      <div className='calendar-header'>
+        <div className='view-group-selector'>
+          <select 
+            id="view"
+            name="view"
+            title='Select View'
+            className='view-selector'
+            value={viewType}
+            onChange={({ target: { value } }) => setViewType(value)}
+          >
+            <option value="month">Month</option>
+            <option value="week">Week</option>
+            <option value="day">Day</option>
+          </select>
+          <button id='prevView' className='view-arrow' onClick={viewButtons} title='Previous'>
+            <i className="fa fa-arrow-left" aria-hidden="true"></i>
+          </button>
+          <button id='nextView' className='view-arrow' onClick={viewButtons} title='Next'>
+            <i className="fa fa-arrow-right" aria-hidden="true"></i>
+          </button>
+          <div className='current-view'>
+            {
+              viewType === 'day' ? (
+                <div className='today-options'>
+                  <input
+                    className='month-date-input'
+                    type='date' 
+                    id='current-date-view'
+                    placeholder=''
+                    value={displaySingleDate}
+                    onChange={({ target: { value } }) => setDisplaySingleDate(value)}
+                  >
+                  </input>
+                  <button
+                    className="custom-calendar-button"
+                    onClick={() => document.getElementById('current-date-view').showPicker()}
+                  >
+                    <i className="fa-regular fa-calendar"></i>
+                  </button>
+                </div>
+                
+              ) : viewType === 'week' ? (
+                weekDescription
+              ) : viewType === 'month' ? (
+                `${monthNames[currentMonth]} ${currentYear}`
+              ) : null
+            }
+          </div>
+        </div>
+        <div className="calendar-form-controller">
+          {
+            formType === 'edit-job' ? (
+              <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Editing</button>
+            ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
+          }
+        </div>
+      </div>
+      <div className='calendar-container'>
+        {
+          showDetail ? ( 
+          <DetailView
+            setDetailView={setDetailView}
+            detailView={detailView}
+            formType={formType}
+            setFormType={setFormType}
+            setCurrentSelected={setCurrentSelected}
+            setShowDetail={setShowDetail}
+          />) : null
+        }
+        <div className='calendar'>
+          {  
+            viewType !== 'day' ? (
+              <div className='day-of-week'>
+                <div className='dayName'>Sun</div>
+                <div className='dayName'>Mon</div>
+                <div className='dayName'>Tues</div>
+                <div className='dayName'>Wed</div>
+                <div className='dayName'>Thur</div>
+                <div className='dayName'>Fri</div>
+                <div className='dayName'>Sat</div>
+              </div>
+            ) : null
+          }
+          {viewContent}
+        </div>
+          {
+            (formType === 'unassigned') ? (                
+                <div className='unassigned-joblist'>
                   {
-                    viewType === 'day' ? (
-                      <div className='today-options'>
-                        <input
-                          className='month-date-input'
-                          type='date' 
-                          id='current-date-view'
-                          placeholder=''
-                          value={displaySingleDate}
-                          onChange={({ target: { value } }) => setDisplaySingleDate(value)}
+                    unassignedJobList.map((job, index) => (
+                      <div key={job.id} className='unassigned-job'>
+                        <div className='job-num'>{job.jobNumber}</div>
+                        <div>{job.location}</div>
+                        <button 
+                          id="edit-job" 
+                          data-job-id={job.id} 
+                          className="calendar-form-button"
+                          onClick={calendarFormButton}
                         >
-                        </input>
-                        <button
-                          className="custom-calendar-button"
-                          onClick={() => document.getElementById('current-date-view').showPicker()}
-                        >
-                          <i className="fa-regular fa-calendar"></i>
+                          <i className="fa-solid fa-pen-to-square"></i>
                         </button>
                       </div>
-                      
-                    ) : viewType === 'week' ? (
-                      weekDescription
-                    ) : viewType === 'month' ? (
-                      `${monthNames[currentMonth]} ${currentYear}`
-                    ) : null
+                    ))
                   }
                 </div>
-              </div>
-              <div className="calendar-form-controller">
-                {
-                  formType === 'edit-job' ? (
-                    <button id='cancel-edit' className='calendar-form-button' onClick={calendarFormButton}>Cancel Editing</button>
-                  ) : <button id='unassigned' className='calendar-form-button' onClick={calendarFormButton}>Unassigned Jobs ({unassignedJobList.length})</button>
-                }
-              </div>
-            </div>
-            <div className='calendar-container'>
-              {
-                showDetail ? ( 
-                <DetailView
-                  setDetailView={setDetailView}
-                  detailView={detailView}
+            ) : (
+                <JobForm
+                  token={token}
                   formType={formType}
                   setFormType={setFormType}
+                  jobList={jobList}
+                  setJobList={setJobList}
+                  currentSelected={currentSelected}
                   setCurrentSelected={setCurrentSelected}
-                  setShowDetail={setShowDetail}
-                />) : null
-              }
-              <div className='calendar'>
-                {  
-                  viewType !== 'day' ? (
-                    <div className='day-of-week'>
-                      <div className='dayName'>Sun</div>
-                      <div className='dayName'>Mon</div>
-                      <div className='dayName'>Tues</div>
-                      <div className='dayName'>Wed</div>
-                      <div className='dayName'>Thur</div>
-                      <div className='dayName'>Fri</div>
-                      <div className='dayName'>Sat</div>
-                    </div>
-                  ) : null
-                }
-                {viewContent}
-              </div>
-                {
-                  (formType === 'unassigned') ? (                
-                      <div className='unassigned-joblist'>
-                        {
-                          unassignedJobList.map((job, index) => (
-                            <div key={job.id} className='unassigned-job'>
-                              <div className='job-num'>{job.jobNumber}</div>
-                              <div>{job.location}</div>
-                              <button 
-                                id="edit-job" 
-                                data-job-id={job.id} 
-                                className="calendar-form-button"
-                                onClick={calendarFormButton}
-                              >
-                                <i className="fa-solid fa-pen-to-square"></i>
-                              </button>
-                            </div>
-                          ))
-                        }
-                      </div>
-                  ) : (
-                      <JobForm
-                        token={token}
-                        formType={formType}
-                        setFormType={setFormType}
-                        jobList={jobList}
-                        setJobList={setJobList}
-                        currentSelected={currentSelected}
-                        setCurrentSelected={setCurrentSelected}
-                      />
-                  )
-                }
-            </div>
-          </>
-        )
-      }
+                />
+            )
+          }
+      </div>
     </div>
   );
 

@@ -25,7 +25,11 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
       setIsAdmin(currentSelected.isAdmin);
       setIsChecked(currentSelected.isAdmin)
       setUserStatus(currentSelected.status);
+      if (currentSelected.rigId === undefined || currentSelected.rigId === null) {
+        setRigId('');
+      } else {
       setRigId(currentSelected.rigId);
+      }
     }
 
     // makes sure the form is empty when it is hidden
@@ -91,7 +95,7 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
     setIsAdmin(false);
     setIsChecked(false);
     setUserStatus('active')
-    setFormType("reset")
+    setFormType("")
 
     // for this form, we will always unselect after submitting
     setCurrentSelected({});
@@ -114,7 +118,7 @@ const UserForm = ({token, formType, setFormType, currentSelected, setCurrentSele
 
       // reset the selection and hide the form
       setCurrentSelected({});
-      setFormType("reset")
+      setFormType("")
 
       // reset the user list to include the changes
       const newUserList = await getAllUsers(token);

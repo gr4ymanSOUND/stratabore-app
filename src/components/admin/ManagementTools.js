@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { Link, NavLink, Outlet} from 'react-router-dom';
 
 
-const ManagementTools = () => {
+const ManagementTools = ({setLoading}) => {
   // create reports component to use later
   
   return (

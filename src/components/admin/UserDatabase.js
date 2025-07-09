@@ -16,7 +16,7 @@ import { getAllUsers } from '../../axios-services';
 import Papa from 'papaparse';
 import FileSaver from 'file-saver';
 
-const UserDatabase = ({token, user}) => {
+const UserDatabase = ({token, user, setLoading}) => {
   //for accessing Grid's API
   const gridRef = useRef();
 
@@ -28,11 +28,14 @@ const UserDatabase = ({token, user}) => {
   // get user data
   useEffect(() => {
     const fetchUsers = async () => {
+      setLoading(true);
       try {
         const allUsers = await getAllUsers(token);
         setUserList(allUsers);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchUsers();
@@ -40,16 +43,19 @@ const UserDatabase = ({token, user}) => {
 
   // effect to deal with formtype changes
   useEffect(() => {
-    if (formType == "add-user") {
+    let timeoutId;
+    if (formType === "add-user") {
       setCurrentSelected({});
-      gridRef.current.api.deselectAll();
+      if (gridRef.current && gridRef.current.deselectAll) {
+        gridRef.current.deselectAll();
+      }
     }
-    if (formType == "cancel" || formType == "reset") {
-      setFormType("")
-      const buttonTimeout = setTimeout(() => {
-        gridRef.current.api.sizeColumnsToFit();
-      })
-    }
+    timeoutId = setTimeout(() => {
+      if (gridRef.current && gridRef.current.sizeColumnsToFit) {
+        gridRef.current.sizeColumnsToFit();
+      }
+    });
+    return () => clearTimeout(timeoutId);
   }, [formType]);
 
   // Each Column Definition results in one Column.
@@ -79,10 +85,11 @@ const UserDatabase = ({token, user}) => {
   // sets the formType when any button is clicked
   // also resizes the grid to show all columns when the form is added/removed in the sidebar
   const buttonListener = useCallback((e) => {
-    setFormType(e.target.id);
-    const buttonResizeTrigger = setTimeout(() => {
-      gridRef.current.api.sizeColumnsToFit();
-    })
+    if (e.target.id == "cancel" || e.target.id == "reset") {
+      setFormType("");
+    } else {
+      setFormType(e.target.id);
+    }
   }, []);
 
   //download the user list
@@ -99,12 +106,19 @@ const UserDatabase = ({token, user}) => {
   // resizes the columns inside the grid to fit the grid/window size (is called when the grid/window gets resized)
   const onGridReady = useCallback((params) => {
     params.api.sizeColumnsToFit();
-    window.addEventListener('resize', function () {
-      setTimeout(function () {
-        params.api.sizeColumnsToFit();
-      });
-    });
-    gridRef.current.api.sizeColumnsToFit();
+    gridRef.current = params.api;
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (gridRef.current && gridRef.current.sizeColumnsToFit) {
+        gridRef.current.sizeColumnsToFit();
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
 
@@ -112,7 +126,7 @@ const UserDatabase = ({token, user}) => {
     <div className='user-database'>
       <div className='button-list' >
         {
-          (formType == "edit-user" || formType == "add-user" || formType == "reset") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel Editing</button>
+          (formType == "edit-user" || formType == "add-user") ? <button id='cancel' className="cancel-button" onClick={buttonListener}>Cancel Editing</button>
           :
             <>
               {Object.keys(currentSelected).length !== 0 ? (

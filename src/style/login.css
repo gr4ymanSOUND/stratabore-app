@@ -52,6 +52,7 @@
     padding: .5rem;
     width: 65%;
     min-width: 150px;
+    height: 100%;
 }
 
 .input-label {
@@ -72,6 +73,11 @@
 .login-button:hover {
     background-color: rgb(48, 48, 48);
     color:rgb(224, 194, 22);
+}
+
+.login-form-control {
+  height: 2.5rem;
+  max-height: 2.5rem;
 }
 
 /* @media only screen and (max-width: 740px) { 
