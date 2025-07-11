@@ -34,7 +34,7 @@ const TodayDetail = ({token, user, setLoading}) => {
           getAssignedJobs(token),
         ]);
       // temporarily setting the todayJobs to the the jobs on 2/27/2025 for rig 1. this date and rig has 2 jobs, so it will give a good example of what the page will look like.
-      const rigJobs = jobs.filter(job => job.jobDate === '2025-02-27' && job.rigId === 1);
+      const rigJobs = jobs.filter(job => job.jobDate === selectedDate && job.rigId === user.rigId);
       setTodayJobs(rigJobs);
       } catch (error) {
         console.log(error);
@@ -43,9 +43,7 @@ const TodayDetail = ({token, user, setLoading}) => {
       }
     };
     fetchData();
-  }, [user]);
-
-  console.log('today jobs', todayJobs);
+  }, [user, selectedDate]);
 
   return (
     <div className='crew-page'>
@@ -71,8 +69,7 @@ const TodayDetail = ({token, user, setLoading}) => {
 
 
         <div className='today-jobs'>
-          {/* <h2>Jobs for {selectedDate} </h2> */}
-          <h2>Rig: 1 <span>Date: 2025-02-27</span></h2>
+          <h2>Rig: 1 <span>Date: {selectedDate}</span></h2>
 
           {todayJobs.length > 0 ? (
             todayJobs.map((job) => (

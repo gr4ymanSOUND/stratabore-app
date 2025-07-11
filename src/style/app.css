@@ -33,6 +33,15 @@ body {
   width: 100%;
 }
 
+.main-container.crew-mobile {
+  display: block;
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+  min-width: 0;
+  position: relative;
+}
+
 .global-loading {
   position: absolute;
   top: 0;
