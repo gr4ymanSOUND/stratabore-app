@@ -13,6 +13,7 @@ import './style/adminTools.css';
 import './style/mapView.css';
 import './style/selfForm.css';
 import './style/crew.css'
+import './style/headermobile.css';
 
 const root = createRoot(document.getElementById('root'));
 root.render(

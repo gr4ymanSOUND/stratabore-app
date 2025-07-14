@@ -6,6 +6,7 @@ import DetailView from '../admin/DetailView';
 import MiniJobCard from './MiniJobCard';
 
 const CrewCalendar = ({token, user, setLoading}) => {
+
   // Central Time helper
   const getCentralTime = () => {
     const now = new Date();
@@ -58,7 +59,6 @@ const CrewCalendar = ({token, user, setLoading}) => {
   // Main content state
   const [jobList, setJobList] = useState([]);
   const [assignedRig, setAssignedRig] = useState({});
-  const [currentSelected, setCurrentSelected] = useState({});
   const [detailView, setDetailView] = useState({});
   const [showDetail, setShowDetail] = useState(false);
 
@@ -71,8 +71,8 @@ const CrewCalendar = ({token, user, setLoading}) => {
           getAssignedJobs(token),
           getAllRigs(token),
         ]);
-        setJobList(jobs.filter(job => job.rigId === 1)); 
-        setAssignedRig(rigs.find(rig => rig.id === 1) || {});
+        setJobList(jobs.filter(job => job.rigId === user.rigId)); 
+        setAssignedRig(rigs.find(rig => rig.id === user.rigId) || {});
       } catch (error) {
         console.log(error);
       } finally {
@@ -80,7 +80,7 @@ const CrewCalendar = ({token, user, setLoading}) => {
       }
     };
     fetchData();
-  }, [token]);
+  }, [token,user]);
 
   // Week navigation
   const viewButtons = (e) => {
@@ -106,63 +106,57 @@ const CrewCalendar = ({token, user, setLoading}) => {
 
   // Only week view (vertical)
   const viewContent = (
-  <div className='week-grid-vertical'>
-    {displayWeekDates.map((specificDate, index) => {
-      const dateParts = getDateParts(specificDate);
-      return (
-        <div className='week-row' key={specificDate}>
-          <div className='vertical-day-label'>
-            <span className="vertical-day-number">{dateParts[2]}</span>
-            <span>{dayNames[index]}</span>
+    <div className='week-grid-vertical'>
+      {displayWeekDates.map((specificDate, index) => {
+        const dateParts = getDateParts(specificDate);
+        return (
+          <div className='week-row' key={specificDate}>
+            <div className='vertical-day-label'>
+              <span className="vertical-day-number">{dateParts[2]}</span>
+              <span>{dayNames[index]}</span>
+            </div>
+            <div className='week-job-cell'>
+              <MiniJobCard 
+                jobList={jobList} 
+                assignedRig={assignedRig} 
+                specificDate={specificDate}
+              />
+            </div>
           </div>
-          <div className='week-job-cell'>
-            <MiniJobCard 
-              jobList={jobList} 
-              assignedRig={assignedRig} 
-              specificDate={specificDate}
-            />
-          </div>
-        </div>
-      );
-    })}
-  </div>
-);
+        );
+      })}
+    </div>
+  );
+
+console.log('CrewCalendar jobList', jobList);
 
   return (
-    <div className='calendar-page'>
-      {
-        (jobList.length === 0) ? (
-          <div>Loading...</div>
-        ) : (
-          <>
-            <div className='calendar-header'>
-              <div className='mobile-view-group-selector'>
-                <button id='prevView' className='view-arrow' onClick={viewButtons} title='Previous'>
-                  <i className="fa fa-arrow-left" aria-hidden="true"></i>
-                </button>
-                <div className='current-view'>
-                  {weekDescription}
-                </div>
-                <button id='nextView' className='view-arrow' onClick={viewButtons} title='Next'>
-                  <i className="fa fa-arrow-right" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-            <div className='calendar-container'>
-              {showDetail ? ( 
-                <DetailView
-                  setDetailView={setDetailView}
-                  detailView={detailView}
-                  setCurrentSelected={setCurrentSelected}
-                  setShowDetail={setShowDetail}
-                />) : null}
-              <div className='crew-calendar-vertical'>
-                {viewContent}
-              </div>
-            </div>
-          </>
-        )
-      }
+    <div className='calendar-page crew-calendar'>
+      <div className='calendar-header'>
+        <div className='mobile-view-group-selector'>
+          <button id='prevView' className='view-arrow' onClick={viewButtons} title='Previous'>
+            <i className="fa fa-arrow-left" aria-hidden="true"></i>
+          </button>
+          <div className='current-view'>
+            {weekDescription}
+          </div>
+          <button id='nextView' className='view-arrow' onClick={viewButtons} title='Next'>
+            <i className="fa fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div className='calendar-container'>
+        {showDetail ? ( 
+          <DetailView
+            setDetailView={setDetailView}
+            detailView={detailView}
+            setCurrentSelected={setCurrentSelected}
+            setShowDetail={setShowDetail}
+          />) : null}
+        <div className='crew-calendar-vertical'>
+          {viewContent}
+        </div>
+      </div>
     </div>
   );
 };

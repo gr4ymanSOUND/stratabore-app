@@ -5,27 +5,7 @@
   align-items: center;
   height: 100%;
   width: 100%;
-
-}
-
-#bore-graphic {
-  position: absolute;
-  font-size: .9rem;
-  margin-left: -1.25rem;
-  margin-top: .35rem;
-  box-shadow: none;
-  text-shadow: none;
-}
-
-#tablet-graphic {
-  font-size: 1.8rem;
-  background-color: black;
-  border-radius: 30%;
-}
-
-.other-nav a:hover #tablet-graphic,
-.other-nav .active #tablet-graphic {
-  background-color: transparent; /* Transparent when hovered or active */
+  padding-bottom: 3.5rem;
 }
 
 /* for the page of today's details */
@@ -37,7 +17,6 @@
   align-items: center;
   width: 100%;
   min-height: 50vh;
-  padding: 0.5rem;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -57,9 +36,8 @@
 }
 
 .today-jobs {
-  width: 85vw;
+  width: 98%;
   background-color: rgb(205, 205, 205);
-
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -74,6 +52,7 @@
   padding: 1rem 1.5rem;
   margin: 0;
   background-image: linear-gradient(to top right, rgba(224, 194, 22, 1), rgba(224, 194, 22, 0.95), rgba(224, 194, 22, 0.8), rgba(224, 194, 22, 0.5));
+  font-size: 1rem;
 }
 
 
@@ -87,11 +66,13 @@
   width: 100%;
   padding: .75rem 0;
   margin-top: 0;
+  font-size: 18px;
 }
 
 .job-card {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
+  align-items: center;
   width: 100%;
   padding: 2rem .5rem;
 }
@@ -106,13 +87,14 @@
   align-items: center;
   flex-grow: 1;
   border: 1px rgb(170,170,170) solid;
-  border-left: none;
+  border-bottom: none;
   box-shadow: 1px 1px 3px rgba(100, 100, 100, 0.75);
-
+  width: 100%;
+  padding: 0 0 1rem 0;
 }
 
 .job-map {
-  width: 35%;
+  width: 100%;
   height: auto;
   border: 1px rgb(170,170,170) solid;
   border-right: none;
@@ -132,7 +114,7 @@
   background-color: rgb(170,170,170);
   z-index: 40;
 
-  font-size: 1rem;
+  font-size: 12px;
 }
 
 .detail-data {
@@ -150,6 +132,28 @@
   width: 40%;
   height: 100%;
   text-align: center;
+}
+
+.detail .notes-textarea {
+  min-height: 8rem;      /* Twice the height of a typical input */
+  resize: vertical;     /* Allow only vertical resizing */
+  width: 60%;
+  border: none;
+}
+
+.rig-details button {
+  background-color:rgb(224, 194, 22);
+  color: rgb(48, 48, 48);
+  border: none;
+  box-shadow: 1px 1px 8px -3px rgb(0,0,0, 0.4);
+  margin: 1rem .25rem .25rem 0;
+  padding: 1rem 2rem;
+  font-size: 1.75rem;
+}
+
+.rig-details button:active {
+  background-color: rgb(48, 48, 48);
+  color:rgb(224, 194, 22);
 }
 
 /* for the mini job card on the calendar */
@@ -225,10 +229,9 @@
 
 .rig-view {
   min-height: 80vh;
-  width: 40vw;
-  min-width: 500px;
-  margin-top: 63px; /* to account for the header on the other crew pages, putting this view at the same margin from the top of the page*/
+  width: 98%;
   background-color: rgb(205, 205, 205);
+  margin-top: .5rem;
 }
 
 .rig-view h2 {
@@ -250,13 +253,28 @@
 
 /* for the crew-specific week view (vertical style) */
 
+/* Override calendar-page for crew mobile calendar */
+.calendar-page.crew-calendar {
+  box-sizing: border-box;
+  min-height: 100vh;
+  overflow: hidden;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+}
+
+.crew-calendar .calendar-container {
+  height: calc(100vh - 3.5rem - 4rem); /* 3.5rem for header, 3.5rem for bottom nav */
+  overflow-y: auto;
+  box-sizing: border-box;
+  background: inherit;
+}
+
 .crew-calendar-vertical {
   background-color: rgb(150, 150, 150);
   box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);
   flex-grow: 1;
   display: flex;
   flex-direction: column nowrap;
-  overflow-y: auto;
   height: auto;
   min-height: 100%;
   min-width: 0;
@@ -332,6 +350,8 @@
   align-items: center;
   margin: .25rem;
   padding: .5rem;
+  z-index: 1000;
+  height: 3.5rem;
 }
 
 .mobile-view-group-selector .current-view {

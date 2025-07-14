@@ -10,18 +10,17 @@
 }
 
 .calendar-header {
+  position: relative;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
-  
-  position: relative;
+  z-index: 1000;
 }
 
 /* display for the current month/year and buttons for changing the month */
 
 .view-group-selector {
-  /* background-color: rgb(170, 170, 170); */
   min-width: 50vw;
   display: flex;
   flex-flow: row nowrap;
@@ -29,7 +28,6 @@
   justify-self: center;
   margin: .25rem;
   padding: .5rem;
-  /* box-shadow: 2px 1px 7px 1px rgba(0, 0, 0, 0.4); */
 }
 
 .view-arrow {

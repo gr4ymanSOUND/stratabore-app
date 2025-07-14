@@ -1,36 +1,60 @@
 import React, { useEffect, useState } from 'react';
 
-import { getAllRigs } from '../../axios-services';
+import { getAllRigs, editRig } from '../../axios-services';
 
 const RigDetails = ({token, user, setLoading}) => {
 
   const [rigDetails, setRigDetails] = useState({});
+  const [rigNotes, setRigNotes] = useState('');
 
+  // helper that fetches the rig details and notes for the assigned rig
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [rigs] = await Promise.all([
+        getAllRigs(token),
+      ]);
+      const rig = rigs.find(r => r.id === user.rigId) || {};
+      setRigDetails(rig);
+      setRigNotes(rig.notes || '');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // useEffect to fetch rig details when the component mounts or when the user changes
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const [rigs] = await Promise.all([
-          getAllRigs(token),
-        ]);
-      // temporarily setting the details to rig 0, not the logged in user's rig since there is nothing to tell which rig they are assigned to in the database yet
-      setRigDetails(rigs[0]);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, [user]);
 
-  console.log('rigDetails', rigDetails);
+  // listens to the submit event to update the rig notes
+  const submitListener = async (e) => {
+    e.preventDefault();
+
+    if (confirm('Are you sure you want to save your changes? The previous notes will be overwritten.')) {
+      const newRig = {
+        notes: rigNotes,
+      }
+      const response = await editRig(token, user.rigId, newRig)
+      console.log('response', response);
+      // re-fetch rig details after updating notes
+      fetchData();
+      alert('Notes updated successfully!');
+    } else {
+      alert('Changes were not saved.');
+      // Reset the notes to the original value if not saved
+      setRigNotes(rigDetails.notes || '');
+    }
+
+  };
 
   return (
     <div className='crew-page'>
       <div className="rig-view">
         <h2>Assigned Rig</h2>
-        <article className='rig-details'>
+        <form className='rig-details' onSubmit={submitListener}>
           <div className='detail'>
             <div className='detail-label'>License Plate: </div>
             <div className='detail-data'>{rigDetails.licensePlate}</div>
@@ -51,11 +75,18 @@ const RigDetails = ({token, user, setLoading}) => {
             <div className='detail-label'>Status: </div>
             <div className='detail-data'>{rigDetails.status}</div>
           </div>
-          <div className='detail'>
-            <div className='detail-label'>Notes: </div>
-            <div className='detail-data'>{rigDetails.notes}</div>
+          <div className="detail">
+            <label className="detail-label">Notes:</label>
+            <textarea
+              value={rigNotes}
+              onChange={({ target: { value } }) => setRigNotes(value)}
+              className="notes-textarea"
+              id="notes"
+              placeholder="needs new tires, augers in bad shape, etc."
+            />
           </div>
-        </article>
+          <button type='submit'>Save</button>
+        </form>
       </div>
     </div>
     

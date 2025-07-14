@@ -142,14 +142,6 @@ const RigForm = ({token, formType, setFormType, currentSelected, setCurrentSelec
               className="form-control"
               id="boardColor"
             />
-              {/* decided to use a text imput instead
-              <option value="red">red</option>
-              <option value="green">green</option>
-              <option value="blue">blue</option>
-              <option value="orange">orange</option>
-              <option value="purple">purple</option>
-              <option value="yellow">yellow</option>
-            </select> */}
           </div>
           <div className="input-section">
             <label className="input-label">Registration Due:</label>

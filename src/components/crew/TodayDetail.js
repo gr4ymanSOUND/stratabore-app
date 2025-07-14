@@ -74,7 +74,7 @@ const TodayDetail = ({token, user, setLoading}) => {
           {todayJobs.length > 0 ? (
             todayJobs.map((job) => (
               <div key={job.id} className='job-card'>
-                <img className="job-map" src={`https://www.mapquestapi.com/staticmap/v5/map?key=SboTAEZ9t8caAhRqQ3GSGWNmmcCz1Ag8&locations=${job.location}&zoom=12`} alt="office-map-marker"></img>
+                
                 <article className='job-details'>
                   <h3>{job.jobNumber}</h3>
                   <div className='detail'>
@@ -92,8 +92,15 @@ const TodayDetail = ({token, user, setLoading}) => {
                   <div className='detail'>
                     <div className='detail-label'>Location: </div>
                     <div className='detail-data'>{job.location}</div>
-                  </div>                  
+                  </div>
+                  <div className='detail'>
+                    <div className='detail-label'>Notes: </div>
+                    <div className='detail-data'>{job.notes}</div>
+                  </div>                      
                 </article>
+
+                <img className="job-map" src={`https://www.mapquestapi.com/staticmap/v5/map?key=SboTAEZ9t8caAhRqQ3GSGWNmmcCz1Ag8&locations=${job.location}&zoom=12`} alt="office-map-marker"></img>
+
               </div>
             ))
           ) : (
