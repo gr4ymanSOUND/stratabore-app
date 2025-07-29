@@ -269,6 +269,21 @@
   background: inherit;
 }
 
+.crew-custom-calendar-button {
+  position: relative;
+  background-color: rgb(224, 194, 22);
+  border: none;
+  box-shadow: 2px 5px 5px -3px rgb(0, 0, 0, 0.8);
+  font-size: 25px;
+  cursor: pointer;
+  align-self: stretch;
+}
+
+.crew-custom-calendar-button:active {
+  background-color: rgb(48, 48, 48);
+  color: rgb(224, 194, 22);
+}
+
 .crew-calendar-vertical {
   background-color: rgb(150, 150, 150);
   box-shadow: 2px 1px 5px 1px rgba(0, 0, 0, 0.4);

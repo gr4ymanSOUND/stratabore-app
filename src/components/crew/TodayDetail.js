@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { getAssignedJobs } from '../../axios-services';
 import '../../mapquest/mapquest.js';
 
+import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer';
+
+
+
 
 const TodayDetail = ({token, user, setLoading}) => {
 
@@ -58,7 +62,7 @@ const TodayDetail = ({token, user, setLoading}) => {
           >
           </input>
           <button
-            className="custom-calendar-button"
+            className="crew-custom-calendar-button"
             onClick={() => document.getElementById('current-date-view').showPicker()}
           >
             <i className="fa-regular fa-calendar"></i>
