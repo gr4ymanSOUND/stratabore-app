@@ -27,7 +27,6 @@
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  align-self: flex-start;
   /* padding: .75rem; */
 }
 
@@ -358,17 +357,21 @@
 }
 
 .mobile-view-group-selector {
-  min-width: 100%;
+  width: 100%;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin: .25rem;
-  padding: .5rem;
+  margin: 0;
+  padding: .5rem;;
   z-index: 1000;
   height: 3.5rem;
 }
 
 .mobile-view-group-selector .current-view {
-  margin: 0 3rem 0 3rem;;
+  margin: 0;
+}
+
+.mobile-view-group-selector .view-arrow {
+  margin: 0;
 }
